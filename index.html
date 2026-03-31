@@ -548,9 +548,9 @@ function seed(){return{
     {date:'2025-06-15',weight:60.6,bf:30.9,muscle:64.8,hydration:47.1,bone:4.2,tdee:1880,waist:null,hip:null,note:'Surgery'},
     {date:'2025-06-24',weight:60.0,bf:30.6,muscle:65.1,hydration:47.1,bone:4.2,tdee:1872,waist:null,hip:null,note:''},
     {date:'2025-07-01',weight:60.0,bf:30.6,muscle:65.1,hydration:47.1,bone:4.2,tdee:1872,waist:78,hip:null,note:'Mami visiting'},
-    {date:'2025-07-09',weight:60.1,bf:30.6,muscle:65.1,hydration:47.1,bone:4.2,tdee:1873,waist:76,hip:null,note:'Before Vietnam'},
-    {date:'2025-07-11',weight:59.4,bf:30.1,muscle:65.6,hydration:47.2,bone:4.2,tdee:1864,waist:75,hip:null,note:'After Vietnam'},
-    {date:'2025-07-22',weight:60.1,bf:30.6,muscle:65.1,hydration:47.1,bone:4.2,tdee:1873,waist:null,hip:null,note:'Before UAE'},
+    {date:'2025-07-09',weight:60.1,bf:30.6,muscle:65.1,hydration:47.1,bone:4.2,tdee:1873,waist:76,hip:null,note:''},
+    {date:'2025-07-11',weight:59.4,bf:30.1,muscle:65.6,hydration:47.2,bone:4.2,tdee:1864,waist:75,hip:null,note:''},
+    {date:'2025-07-22',weight:60.1,bf:30.6,muscle:65.1,hydration:47.1,bone:4.2,tdee:1873,waist:null,hip:null,note:''},
     {date:'2025-07-30',weight:58.4,bf:29.5,muscle:66.1,hydration:47.6,bone:4.3,tdee:1851,waist:null,hip:null,note:'After holidays + wedding'},
     {date:'2025-08-10',weight:58.7,bf:29.8,muscle:65.9,hydration:47.4,bone:4.2,tdee:1856,waist:74.5,hip:98,note:'Resumed gym after surgery'},
     {date:'2025-08-27',weight:58.7,bf:29.8,muscle:65.9,hydration:47.4,bone:4.2,tdee:1826,waist:74,hip:null,note:''},
@@ -574,6 +574,15 @@ function seed(){return{
 
 let D=load();
 if(D.gymSessions.length===0){D.gymSessions=[...SEED_SESSIONS];save(D);}
+// Migration: clear old incorrect notes from specific scan dates
+(function migrateBadNotes(){
+  var badDates={'2025-02-11':true,'2025-02-17':true};
+  var changed=false;
+  (D.bodyScans||[]).forEach(function(s){
+    if(badDates[s.date]&&s.note){s.note='';changed=true;}
+  });
+  if(changed){localStorage.setItem(SK,JSON.stringify(D));}
+})();
 
 // KD categories: trip, nutrition, arup, medical, gym, other
 const KD_CAT={
@@ -584,6 +593,9 @@ const KD_CAT={
   '2025-05-14':{label:'2nd Thailand trip',        cat:'trip'},
   '2025-06-05':{label:'Started nutritionist',     cat:'nutrition'},
   '2025-06-15':{label:'Surgery',                  cat:'medical'},
+  '2025-07-09':{label:'Vietnam trip (before)',    cat:'trip'},
+  '2025-07-11':{label:'Vietnam trip (after)',     cat:'trip'},
+  '2025-07-22':{label:'UAE trip',                 cat:'trip'},
   '2025-08-10':{label:'Resumed gym',              cat:'gym'},
 };
 const KD_CAT_COLORS={
