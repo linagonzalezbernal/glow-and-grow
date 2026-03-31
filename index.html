@@ -1220,10 +1220,10 @@ async function pullFromCloud(){
       var cloud=JSON.parse(result.data);
       if(cloud.bodyScans&&cloud.bodyScans.length>(D.bodyScans||[]).length)D.bodyScans=cloud.bodyScans;
       if(cloud.gymSessions&&cloud.gymSessions.length>(D.gymSessions||[]).length)D.gymSessions=cloud.gymSessions;
-      if(cloud.suppChecks){if(!D.suppChecks)D.suppChecks={};Object.keys(cloud.suppChecks).forEach(function(k){if(!D.suppChecks[k])D.suppChecks[k]=cloud.suppChecks[k];});}
-      if(cloud.skinChecks){if(!D.skinChecks)D.skinChecks={};Object.keys(cloud.skinChecks).forEach(function(k){if(!D.skinChecks[k])D.skinChecks[k]=cloud.skinChecks[k];});}
+      if(cloud.suppChecks){if(!D.suppChecks)D.suppChecks={};Object.keys(cloud.suppChecks).forEach(function(k){if(!D.suppChecks[k])D.suppChecks[k]={};Object.assign(D.suppChecks[k],cloud.suppChecks[k]);});}
+      if(cloud.skinChecks){if(!D.skinChecks)D.skinChecks={};Object.keys(cloud.skinChecks).forEach(function(k){if(!D.skinChecks[k])D.skinChecks[k]={};Object.assign(D.skinChecks[k],cloud.skinChecks[k]);});}
       if(cloud.bfChecks){if(!D.bfChecks)D.bfChecks={};Object.assign(D.bfChecks,cloud.bfChecks);}
-      if(cloud.habitChecks){if(!D.habitChecks)D.habitChecks={};Object.keys(cloud.habitChecks).forEach(function(k){if(!D.habitChecks[k])D.habitChecks[k]=cloud.habitChecks[k];});}
+      if(cloud.habitChecks){if(!D.habitChecks)D.habitChecks={};Object.keys(cloud.habitChecks).forEach(function(k){if(!D.habitChecks[k])D.habitChecks[k]={};Object.assign(D.habitChecks[k],cloud.habitChecks[k]);});}
       if(cloud.photos&&cloud.photos.length>(D.photos||[]).length)D.photos=cloud.photos;
       localStorage.setItem(SK,JSON.stringify(D));
       renderAll();
