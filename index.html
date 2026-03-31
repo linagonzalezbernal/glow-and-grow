@@ -578,7 +578,7 @@ if(D.gymSessions.length===0){D.gymSessions=[...SEED_SESSIONS];save(D);}
 // KD categories: trip, nutrition, arup, medical, gym, other
 const KD_CAT={
   '2022-10-27':{label:'Arrived in Australia',    cat:'other'},
-  '2023-01-05':{label:'1st Colombia trip',        cat:'trip'},
+  '2023-01-05':{label:'Joined Arup',             cat:'arup'},
   '2024-08-14':{label:'Joined Remedy gym',        cat:'gym'},
   '2025-04-03':{label:'2nd Colombia trip',        cat:'trip'},
   '2025-05-14':{label:'2nd Thailand trip',        cat:'trip'},
@@ -785,6 +785,17 @@ function renderChart(){
     } else kdEl.innerHTML='';
   }
 
+  // ── X-AXIS: fixed monthly labels, equally spaced, decoupled from scan points ──
+  // Use date strings as labels so Chart.js time axis can space them evenly
+  const lbl=sc.map(function(s){return s.date;});// ISO dates e.g. "2023-01-05"
+  var _lastYM=-999;
+  const lblVisible=lbl.map(function(l){
+    var p=l.split('-');
+    var mm=parseInt(p[1]),yy=parseInt(p[0]);
+    var ym=yy*12+mm;
+    if(_lastYM===-999||(ym-_lastYM)>=3){_lastYM=ym;return p[1]+'-'+p[0].slice(2);}
+    return null;
+  });
 
   const baseOpts={responsive:true,maintainAspectRatio:false,
     plugins:{
@@ -805,26 +816,7 @@ function renderChart(){
       backgroundColor:'rgba(28,20,16,0.92)',titleColor:'#FAF7F2',bodyColor:'#DDD4C2',borderColor:'rgba(196,130,106,0.3)',borderWidth:1,cornerRadius:8,padding:10}
     },
     scales:{
-      x:{ticks:{color:'#A8977F',font:{size:9},maxRotation:40,minRotation:20,
-        callback:function(val,idx){
-          // Generate evenly-spaced quarterly labels regardless of scan density
-          var label=lbl[idx];if(!label)return null;
-          var p=label.split('-');
-          var mm=parseInt(p[1]),yy=parseInt(p[0]);
-          // Show only Jan, Apr, Jul, Oct (quarterly) 
-          if(mm===1||mm===4||mm===7||mm===10){
-            // Check if we already showed this quarter
-            var qKey=yy+'-'+mm;
-            if(!window._shownQ)window._shownQ={};
-            if(window._shownQ[qKey])return null;
-            window._shownQ[qKey]=true;
-            return (mm<10?'0'+mm:mm)+'-'+String(yy).slice(2);
-          }
-          // Always show first point
-          if(idx===0){return (mm<10?'0'+mm:mm)+'-'+String(yy).slice(2);}
-          return null;
-        }
-      },grid:{color:'rgba(58,46,34,0.04)'}},
+      x:{ticks:{display:false},grid:{color:'rgba(58,46,34,0.04)'}},
       y:{ticks:{color:'#A8977F',font:{size:9}},grid:{color:'rgba(58,46,34,0.04)'}}
     }
   };
