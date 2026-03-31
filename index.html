@@ -6,131 +6,191 @@
 <title>Glow & Grow</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Figtree:wght@300;400;500;600;700&family=DM+Mono:wght@300;400&display=swap');
 :root{
-  --cream:#FAF7F2;--cream2:#F3EDE3;--cream3:#EDE4D8;--cream4:#E4D9C8;
-  --border:#DDD4C2;--border2:#CFC3AD;
-  --text:#3A2E22;--text-mid:#7A6A56;--text-dim:#A8977F;
-  --rose:#C4826A;--rose-l:#E8B8A4;--rose-bg:#F7EDE8;
-  --sage:#7A9B7A;--sage-l:#A8C4A0;--sage-bg:#EEF4EE;
-  --blush:#D4889A;--blush-bg:#FDF0F2;--blush-l:#F0C8D0;
-  --mauve:#B89ACC;--brown:#6B4F35;
-  --radius:16px;--shadow:0 2px 12px rgba(58,46,34,0.08);--shadowS:0 1px 4px rgba(58,46,34,0.06);
+  --cream:#F5F0E8;--cream2:#EDE6D8;--cream3:#E2D8C4;--cream4:#D4C9B0;
+  --border:#C8BAA0;--border2:#B5A486;
+  --text:#1C1410;--text-mid:#5C4A32;--text-dim:#8C7456;
+  --rose:#B85C3C;--rose-l:#D4906E;--rose-bg:#F5EAE4;
+  --sage:#4A7C59;--sage-l:#7AAD8A;--sage-bg:#E8F2EC;
+  --blush:#C0415A;--blush-bg:#FAE8ED;--blush-l:#E8A0B0;
+  --mauve:#7C5C9A;--brown:#2C1A0E;--gold:#C4922A;
+  --radius:14px;--shadow:0 4px 20px rgba(28,20,16,0.10);--shadowS:0 2px 8px rgba(28,20,16,0.07);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;padding-bottom:84px;max-width:430px;margin:0 auto;overflow-x:hidden;}
-.header{padding:44px 20px 14px;background:var(--cream);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);backdrop-filter:blur(12px);}
+body{font-family:'Figtree',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;padding-bottom:88px;max-width:430px;margin:0 auto;overflow-x:hidden;}
+.header{padding:48px 20px 14px;background:var(--cream);position:sticky;top:0;z-index:100;border-bottom:2px solid var(--text);backdrop-filter:blur(12px);}
 .header-top{display:flex;justify-content:space-between;align-items:flex-start;}
-.header h1{font-family:'Playfair Display',serif;font-size:27px;font-weight:400;color:var(--brown);letter-spacing:-0.3px;line-height:1.1;}
+.header h1{font-family:'DM Serif Display',serif;font-size:30px;font-weight:400;color:var(--brown);letter-spacing:-0.5px;line-height:1;}
 .header h1 em{font-style:italic;color:var(--blush);}
-.header-sub{font-size:11px;color:var(--text-dim);margin-top:3px;}
-.phase-badge{background:var(--blush-bg);color:var(--blush);border:1px solid var(--blush-l);padding:4px 11px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:0.5px;white-space:nowrap;}
-.sync-dot{font-size:9px;color:var(--text-dim);text-align:right;margin-top:4px;}
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--cream);border-top:1px solid var(--border);display:flex;z-index:200;padding:8px 0 18px;box-shadow:0 -2px 12px rgba(58,46,34,0.06);}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;cursor:pointer;border:none;background:none;color:var(--text-dim);transition:all 0.2s;font-family:'Jost',sans-serif;}
+.header-sub{font-size:11px;color:var(--text-dim);margin-top:4px;font-weight:400;letter-spacing:0.2px;}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.phase-badge{background:var(--brown);color:var(--cream);padding:4px 11px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.sync-dot{font-size:9px;color:var(--text-dim);text-align:right;cursor:pointer;}
+.gear-btn{background:none;border:none;cursor:pointer;color:var(--text-dim);padding:2px;display:flex;align-items:center;}
+.gear-btn svg{width:16px;height:16px;stroke-width:1.8;}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--cream);border-top:2px solid var(--text);display:flex;z-index:200;padding:6px 0 18px;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;cursor:pointer;border:none;background:none;color:var(--text-dim);transition:all 0.18s;font-family:'Figtree',sans-serif;}
 .nav-item.active{color:var(--blush);}
-.nav-item svg{width:20px;height:20px;stroke-width:1.6;}
-.nav-label{font-size:9px;font-weight:500;letter-spacing:0.3px;}
-.page{display:none;padding:16px 16px 0;animation:fadeUp 0.25s ease;}
+.nav-item.active .nav-label{font-weight:700;}
+.nav-item svg{width:18px;height:18px;stroke-width:1.6;flex-shrink:0;}
+.nav-label{font-size:7.5px;font-weight:500;letter-spacing:0.3px;text-transform:uppercase;white-space:nowrap;}
+.nav-item svg{width:18px;height:18px;stroke-width:1.6;}
+.nav-label{font-size:7.5px;font-weight:500;letter-spacing:0.3px;text-transform:uppercase;white-space:nowrap;}
+.page{display:none;padding:16px 16px 0;animation:fadeUp 0.2s ease;}
 .page.active{display:block;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-.card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadowS);}
-.card-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:400;color:var(--brown);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
-.card-title span{font-size:10px;color:var(--text-dim);font-family:'Jost',sans-serif;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.card{background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadowS);}
+.card-title{font-family:'DM Serif Display',serif;font-size:17px;font-weight:400;color:var(--brown);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;letter-spacing:-0.2px;}
+.card-title span{font-size:10px;color:var(--text-dim);font-family:'Figtree',sans-serif;font-weight:400;}
 .metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.metric-tile{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 13px;box-shadow:var(--shadowS);position:relative;overflow:hidden;}
-.metric-tile::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blush-l),var(--blush));border-radius:0 0 12px 12px;opacity:0.6;}
-.metric-val{font-family:'Playfair Display',serif;font-size:30px;font-weight:400;color:var(--text);line-height:1;}
-.metric-unit{font-size:13px;color:var(--text-dim);}
-.metric-label{font-size:9px;color:var(--text-dim);margin-top:5px;text-transform:uppercase;letter-spacing:1px;}
-.metric-delta{font-size:10px;margin-top:5px;}
+.metric-tile{background:white;border:1.5px solid var(--border);border-radius:12px;padding:15px 14px;box-shadow:var(--shadowS);position:relative;overflow:hidden;}
+.metric-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--blush);border-radius:12px 12px 0 0;}
+.metric-val{font-family:'DM Serif Display',serif;font-size:32px;font-weight:400;color:var(--text);line-height:1;}
+.metric-unit{font-size:14px;color:var(--text-dim);}
+.metric-label{font-size:9px;color:var(--text-dim);margin-top:6px;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;}
+.metric-delta{font-size:10px;margin-top:4px;font-weight:500;}
 .dp{color:var(--sage);}.dn{color:var(--rose);}
-.insight-box{background:linear-gradient(135deg,var(--blush-bg) 0%,var(--cream2) 100%);border:1px solid var(--blush-l);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;}
-.insight-label{font-size:9px;color:var(--blush);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px;font-weight:600;}
-.insight-box p{font-size:12px;color:var(--text-mid);line-height:1.6;}
-.insight-box p strong{color:var(--brown);font-weight:600;}
+.insight-box{background:linear-gradient(135deg,rgba(44,26,14,0.95) 0%,rgba(61,37,24,0.88) 50%,rgba(42,31,48,0.92) 100%);border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;backdrop-filter:blur(10px);}
+.insight-label{font-size:9px;color:var(--rose-l);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;font-weight:700;}
+.insight-box p{font-size:12px;color:rgba(245,240,232,0.85);line-height:1.65;}
+.insight-box p strong{color:white;font-weight:700;}
+.today-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:12px;}
+/* Progress tracker cards — editorial arc style */
+.pg-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.pg-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+.pg-card{border-radius:14px;padding:14px 12px 11px;position:relative;overflow:hidden;background:white;border:1.5px solid var(--border);box-shadow:var(--shadowS);display:flex;flex-direction:column;gap:6px;}
+.pg-arc-wrap{width:100%;height:52px;position:relative;}
+.pg-arc-svg{width:100%;height:52px;}
+.pg-val{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);line-height:1;white-space:nowrap;}
+.pg-val-sm{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);line-height:1;white-space:nowrap;text-align:center;}
+.pg-label{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim);font-weight:700;text-align:center;}
+.pg-sub{font-size:8px;color:var(--text-dim);text-align:center;font-family:'DM Mono',monospace;}
+.pg-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 12px 12px;}
+/* keep ring- names for JS compat */
+.ring-tile,.ring-wrap,.ring-svg,.ring-bg,.ring-fg,.ring-label-inner,.ring-name{display:none;}
+.supp-info-modal{display:none;position:fixed;inset:0;background:rgba(28,20,16,0.5);z-index:600;align-items:flex-end;}
+.supp-info-modal.open{display:flex;}
+.supp-info-box{background:var(--cream);border-radius:20px 20px 0 0;padding:22px 18px 38px;width:100%;max-width:430px;margin:0 auto;animation:slideUp 0.3s ease;max-height:60vh;overflow-y:auto;}
+.supp-info-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--brown);margin-bottom:6px;}
+.supp-info-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;margin-bottom:10px;margin-right:4px;}
+.badge-mandatory{background:var(--brown);color:var(--cream);}
+.badge-weekdays{background:var(--cream3);color:var(--text-mid);}
+.supp-info-text{font-size:13px;color:var(--text-mid);line-height:1.7;}
+.supp-i-btn{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:9px;font-weight:700;color:var(--text-dim);font-family:'DM Mono',monospace;margin-right:8px;transition:all 0.15s;}
+.supp-mandatory .supp-row-name{font-weight:700;color:var(--brown);}
 .range-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.range-pill{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--cream2);color:var(--text-mid);transition:all 0.18s;font-family:'Jost',sans-serif;}
-.range-pill.active{background:var(--blush);color:white;border-color:var(--blush);}
+.range-pill{padding:5px 13px;border-radius:3px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--text-mid);transition:all 0.15s;font-family:'Figtree',sans-serif;letter-spacing:0.2px;}
+.range-pill.active{background:var(--brown);color:var(--cream);border-color:var(--brown);}
 .custom-range{display:flex;gap:6px;margin-bottom:10px;align-items:center;}
-.custom-range input{flex:1;background:var(--cream2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Jost',sans-serif;font-size:12px;padding:7px 10px;outline:none;-webkit-appearance:none;}
+.custom-range input{flex:1;background:var(--cream2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Figtree',sans-serif;font-size:12px;padding:7px 10px;outline:none;-webkit-appearance:none;}
 .custom-range input:focus{border-color:var(--blush);}
 .custom-range span{font-size:11px;color:var(--text-dim);flex-shrink:0;}
 .chart-tabs{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none;}
 .chart-tabs::-webkit-scrollbar{display:none;}
-.chart-tab{flex-shrink:0;padding:4px 13px;border-radius:20px;font-size:10px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--cream2);color:var(--text-dim);transition:all 0.15s;font-family:'Jost',sans-serif;}
-.chart-tab.active{background:var(--cream3);color:var(--text);border-color:var(--border2);}
+.chart-tab{flex-shrink:0;padding:4px 13px;border-radius:3px;font-size:10px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--text-dim);transition:all 0.15s;font-family:'Figtree',sans-serif;letter-spacing:0.3px;}
+.chart-tab.active{background:var(--brown);color:var(--cream);border-color:var(--brown);}
 .chart-wrap{position:relative;height:180px;}
 .kd-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
 .kd-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text-dim);}
 .kd-dot{width:7px;height:7px;border-radius:50%;background:var(--mauve);flex-shrink:0;}
 .form-group{margin-bottom:12px;}
-.form-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.9px;margin-bottom:6px;display:block;font-weight:500;}
+.form-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:block;font-weight:700;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-input[type="number"],input[type="text"],input[type="date"],textarea{width:100%;background:var(--cream2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Jost',sans-serif;font-size:14px;padding:10px 13px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
+input[type="number"],input[type="text"],input[type="date"],textarea{width:100%;background:var(--cream2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Figtree',sans-serif;font-size:14px;padding:10px 13px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
 input:focus,textarea:focus{border-color:var(--blush);background:white;}
 textarea{resize:none;height:72px;}
-.btn{width:100%;padding:13px;border-radius:10px;font-family:'Jost',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all 0.2s;letter-spacing:0.2px;}
+.btn{width:100%;padding:13px;border-radius:6px;font-family:'Figtree',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all 0.18s;letter-spacing:0.3px;}
 .btn-rose{background:var(--blush);color:white;}.btn-rose:active{opacity:0.85;}
-.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text-mid);}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-mid);}
 .btn-sage{background:var(--sage);color:white;}
-.vbtn{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:500;background:var(--blush-bg);border:1px solid var(--blush-l);color:var(--blush);cursor:pointer;text-decoration:none;flex-shrink:0;transition:all 0.15s;font-family:'Jost',sans-serif;}
-.vbtn:active{background:var(--blush);color:white;}
+.btn-dark{background:var(--brown);color:var(--cream);}
+.vbtn{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:3px;font-size:10px;font-weight:600;background:var(--rose-bg);border:1.5px solid var(--rose-l);color:var(--rose);cursor:pointer;text-decoration:none;flex-shrink:0;transition:all 0.15s;font-family:'Figtree',sans-serif;letter-spacing:0.2px;}
+.vbtn:active{background:var(--rose);color:white;}
 .vbtn svg{width:9px;height:9px;fill:currentColor;}
-.hbtn{font-size:10px;color:var(--sage);cursor:pointer;background:none;border:none;font-family:'Jost',sans-serif;padding:0;text-decoration:underline;margin-top:6px;display:inline-block;}
+.hbtn{font-size:10px;color:var(--sage);cursor:pointer;background:none;border:none;font-family:'Figtree',sans-serif;padding:0;text-decoration:underline;margin-top:6px;display:inline-block;font-weight:600;}
 .day-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none;}
 .day-tabs::-webkit-scrollbar{display:none;}
-.day-tab{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--cream2);color:var(--text-mid);transition:all 0.2s;white-space:nowrap;font-family:'Jost',sans-serif;}
-.day-tab.active{background:var(--blush);color:white;border-color:var(--blush);}
+.day-tab{flex-shrink:0;padding:6px 14px;border-radius:3px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--text-mid);transition:all 0.18s;white-space:nowrap;font-family:'Figtree',sans-serif;letter-spacing:0.2px;}
+.day-tab.active{background:var(--brown);color:var(--cream);border-color:var(--brown);}
 .ex-log{display:flex;flex-direction:column;gap:8px;}
-.ex-item{background:white;border:1px solid var(--border);border-radius:12px;padding:13px;box-shadow:var(--shadowS);}
+.ex-item{background:white;border:1.5px solid var(--border);border-left:4px solid var(--blush);border-radius:12px;padding:13px;box-shadow:var(--shadowS);}
 .ex-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;gap:8px;}
-.ex-name{font-size:13px;font-weight:500;color:var(--text);flex:1;}
+.ex-name{font-size:13px;font-weight:600;color:var(--text);flex:1;}
 .ex-target{font-size:10px;color:var(--text-dim);margin-bottom:8px;font-family:'DM Mono',monospace;}
 .w-inputs{display:flex;gap:5px;}
 .w-set{flex:1;}
-.w-field{width:100%;background:var(--cream2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;padding:8px 3px;text-align:center;font-family:'DM Mono',monospace;outline:none;}
+.w-field{width:100%;background:var(--cream2);border:1.5px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;padding:8px 3px;text-align:center;font-family:'DM Mono',monospace;outline:none;}
 .w-field:focus{border-color:var(--blush);background:white;}
 .w-lbl{font-size:9px;color:var(--text-dim);text-align:center;margin-top:2px;}
 .prev-row{margin-top:6px;padding-top:6px;border-top:1px solid var(--border);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
 .prev-lbl{font-size:9px;color:var(--text-dim);font-family:'DM Mono',monospace;}
-.prev-pill{background:var(--blush-bg);border-radius:4px;padding:2px 7px;color:var(--blush);font-size:10px;font-family:'DM Mono',monospace;border:1px solid var(--blush-l);}
+.prev-pill{background:var(--rose-bg);border-radius:3px;padding:2px 7px;color:var(--rose);font-size:10px;font-family:'DM Mono',monospace;border:1px solid var(--rose-l);}
 .ex-hist-panel{display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
 .ex-hist-panel.open{display:block;}
 .ex-hist-chart{height:80px;margin-bottom:6px;}
 .ex-hist-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);font-family:'DM Mono',monospace;padding:2px 0;border-bottom:1px solid var(--cream2);}
 .ex-hist-row:last-child{border-bottom:none;}
 .ex-hist-row span:last-child{color:var(--text);}
-.done-item{background:white;border:1px solid var(--border);border-radius:12px;padding:13px;box-shadow:var(--shadowS);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.done-item{background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px;box-shadow:var(--shadowS);display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .done-item.done-active{border-color:var(--sage-l);background:var(--sage-bg);}
-.done-label{font-size:13px;font-weight:500;color:var(--text);}
+.done-label{font-size:13px;font-weight:600;color:var(--text);}
 .done-sub{font-size:10px;color:var(--text-dim);margin-top:2px;font-family:'DM Mono',monospace;}
-.done-toggle{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s;}
+.done-toggle{width:34px;height:34px;border-radius:50%;border:2px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s;}
 .done-toggle.ticked{background:var(--sage);border-color:var(--sage);}
-.done-section-label{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim);margin:12px 0 6px;font-weight:600;padding-left:2px;}
-.supp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.supp-item{background:white;border:1px solid var(--border);border-radius:12px;padding:13px;cursor:pointer;transition:all 0.2s;position:relative;box-shadow:var(--shadowS);}
-.supp-item.done{border-color:var(--sage-l);background:var(--sage-bg);}
-.supp-item.done::after{content:'✓';position:absolute;top:9px;right:11px;color:var(--sage);font-size:14px;font-weight:700;}
-.s-name{font-size:12px;font-weight:500;color:var(--text);}
-.s-detail{font-size:10px;color:var(--text-dim);margin-top:2px;}
-.s-time{font-size:10px;color:var(--rose);font-family:'DM Mono',monospace;margin-top:3px;}
+.done-section-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin:14px 0 6px;font-weight:700;padding-left:2px;}
+/* SUPPLEMENTS — time block style */
+.supp-block{margin-bottom:16px;}
+.supp-block-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--text);}
+.supp-block-title{font-family:'DM Serif Display',serif;font-size:15px;color:var(--brown);}
+.supp-block-prog{flex:1;height:3px;background:var(--cream3);border-radius:3px;overflow:hidden;}
+.supp-block-fill{height:100%;background:var(--sage);border-radius:3px;transition:width 0.4s;}
+.supp-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--cream3);}
+.supp-row:last-child{border-bottom:none;}
+.supp-row-info{flex:1;}
+.supp-row-name{font-size:13px;font-weight:600;color:var(--text);}
+.supp-row-name.done-txt{color:var(--text-dim);text-decoration:line-through;}
+.supp-row-detail{font-size:10px;color:var(--text-dim);margin-top:1px;}
+.supp-row-time{font-size:9px;color:var(--rose);font-family:'DM Mono',monospace;margin-top:2px;font-weight:500;}
+.supp-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.18s;}
+.supp-check.ticked{background:var(--sage);border-color:var(--sage);}
+/* SKINCARE */
+.skin-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--cream3);}
+.skin-row:last-child{border-bottom:none;}
+.skin-step-num{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);width:18px;flex-shrink:0;}
+.skin-row-info{flex:1;margin:0 10px;}
+.skin-row-name{font-size:13px;font-weight:600;color:var(--text);}
+.skin-row-name.done-txt{color:var(--text-dim);text-decoration:line-through;}
+.skin-row-product{font-size:10px;color:var(--text-dim);margin-top:2px;line-height:1.4;}
+.skin-check{width:26px;height:26px;border-radius:50%;border:2px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.18s;}
+.skin-check.ticked{background:var(--blush);border-color:var(--blush);}
+.congrats-banner{background:linear-gradient(135deg,var(--blush) 0%,var(--mauve) 100%);border-radius:var(--radius);padding:18px;text-align:center;margin-bottom:12px;display:none;}
+.congrats-banner.show{display:block;animation:fadeUp 0.4s ease;}
+.congrats-banner h3{font-family:'DM Serif Display',serif;font-size:20px;color:white;margin-bottom:4px;}
+.congrats-banner p{font-size:12px;color:rgba(255,255,255,0.85);}
+/* PHOTOS */
 .photo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
-.photo-tile{aspect-ratio:3/4;background:var(--cream2);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;font-size:9px;color:var(--text-dim);text-align:center;padding:8px;overflow:hidden;position:relative;}
+.photo-tile{aspect-ratio:3/4;background:var(--cream2);border:1.5px solid var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;font-size:9px;color:var(--text-dim);text-align:center;padding:8px;overflow:hidden;position:relative;}
 .photo-tile img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;border-radius:10px;}
-.hist-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+.hist-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--cream3);}
 .hist-item:last-child{border-bottom:none;}
 .hist-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);}
-.sec-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin-bottom:10px;font-weight:600;}
+.sec-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1.8px;color:var(--text-dim);margin-bottom:12px;font-weight:700;}
 .export-row{display:flex;gap:8px;margin-top:8px;}
-.toast{position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--brown);color:white;padding:10px 22px;border-radius:20px;font-size:12px;z-index:999;opacity:0;transition:all 0.3s;white-space:nowrap;box-shadow:var(--shadow);}
+.toast{position:fixed;top:90px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--brown);color:var(--cream);padding:10px 22px;border-radius:4px;font-size:12px;font-weight:600;z-index:999;opacity:0;transition:all 0.3s;white-space:nowrap;box-shadow:var(--shadow);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(58,46,34,0.4);z-index:500;align-items:flex-end;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,20,16,0.5);z-index:500;align-items:flex-end;}
 .modal-overlay.open{display:flex;}
-.modal{background:white;border-radius:20px 20px 0 0;padding:20px 16px 36px;width:100%;max-width:430px;margin:0 auto;animation:slideUp 0.3s ease;max-height:80vh;overflow-y:auto;}
+.modal{background:var(--cream);border-radius:20px 20px 0 0;padding:22px 18px 38px;width:100%;max-width:430px;margin:0 auto;animation:slideUp 0.3s ease;max-height:85vh;overflow-y:auto;}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.modal-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--brown);margin-bottom:14px;}
-.modal-close{float:right;background:none;border:none;font-size:20px;color:var(--text-dim);cursor:pointer;}
+.modal-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--brown);margin-bottom:14px;}
+.modal-close{float:right;background:none;border:none;font-size:22px;color:var(--text-dim);cursor:pointer;}
+.settings-row{display:flex;flex-direction:column;gap:8px;}
+.supp-info-modal{display:none;position:fixed;inset:0;background:rgba(28,20,16,0.5);z-index:600;align-items:flex-end;}
+.supp-info-modal.open{display:flex;}
+.supp-info-inner{background:var(--cream);border-radius:20px 20px 0 0;padding:22px 18px 38px;width:100%;max-width:430px;margin:0 auto;animation:slideUp 0.3s ease;}
+.info-icon{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--text-dim);font-size:10px;font-weight:700;font-family:'DM Mono',monospace;margin-right:6px;transition:all 0.15s;}
+.info-icon:hover{background:var(--blush);border-color:var(--blush);color:white;}
 ::-webkit-scrollbar{width:0;}
 </style>
 </head>
@@ -138,18 +198,102 @@ textarea{resize:none;height:72px;}
 <div class="header">
   <div class="header-top">
     <div><h1>Glow <em>&</em> Grow</h1><div class="header-sub" id="hDate"></div></div>
-    <div><div class="phase-badge">⚡ Phase 1</div><div class="sync-dot" id="syncDot">● Saved</div></div>
+    <div class="header-right">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="phase-badge">PHASE 1</div>
+        <button class="gear-btn" onclick="document.getElementById('settingsModal').classList.add('open')" title="Settings & Data">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="sync-dot" id="syncDot" onclick="pullFromCloud()">● Saved</div>
+    </div>
   </div>
 </div>
 
 <div class="page active" id="page-dashboard">
+  <!-- ROW 1: Gym + Fascia — wide cards -->
+  <div class="pg-grid-2">
+    <div class="pg-card" style="--accent:var(--sage);">
+      <div class="pg-arc-wrap">
+        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5" stroke-linecap="round"/>
+          <path id="arcGym" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--sage)" stroke-width="5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
+        </svg>
+        <div class="pg-val" id="tdGym">—</div>
+      </div>
+      <div class="pg-label">Gym</div>
+    </div>
+    <div class="pg-card" style="--accent:var(--gold);">
+      <div class="pg-arc-wrap">
+        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none">
+          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5" stroke-linecap="round"/>
+          <path id="arcFascia" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--gold)" stroke-width="5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
+        </svg>
+        <div class="pg-val" id="tdFascia">—</div>
+      </div>
+      <div class="pg-label">Beauty Fascia</div>
+    </div>
+  </div>
+  <!-- ROW 2: Supps + Skin + Habits — compact -->
+  <div class="pg-grid-3">
+    <div class="pg-card">
+      <div class="pg-arc-wrap" style="height:44px;">
+        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none" style="height:44px;">
+          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5.5" stroke-linecap="round"/>
+          <path id="arcSupps" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--blush)" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
+        </svg>
+        <div class="pg-val-sm" id="tdSupps" style="font-size:13px;">0<span style="font-size:7px;display:block;line-height:1;" id="tdSuppsOf">of 13</span></div>
+      </div>
+      <div class="pg-label">Supps</div>
+    </div>
+    <div class="pg-card">
+      <div class="pg-arc-wrap" style="height:44px;">
+        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none" style="height:44px;">
+          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5.5" stroke-linecap="round"/>
+          <path id="arcSkin" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--rose)" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
+        </svg>
+        <div class="pg-val-sm" id="tdSkin" style="font-size:13px;">0<span style="font-size:7px;display:block;line-height:1;">of 13</span></div>
+      </div>
+      <div class="pg-label">Skin</div>
+    </div>
+    <div class="pg-card">
+      <div class="pg-arc-wrap" style="height:44px;">
+        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none" style="height:44px;">
+          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5.5" stroke-linecap="round"/>
+          <path id="arcHabits" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--mauve)" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
+        </svg>
+        <div class="pg-val-sm" id="tdHabits" style="font-size:13px;">0<span style="font-size:7px;display:block;line-height:1;">of 6</span></div>
+      </div>
+      <div class="pg-label">Habits</div>
+    </div>
+  </div>
+  <!-- Insight -->
+  <div class="insight-box"><div class="insight-label">✦ Today's Insight</div><p id="insight">Loading...</p></div>
+  <!-- Metrics -->
   <div class="metrics-grid">
     <div class="metric-tile"><div class="metric-val" id="dw">55.9<span class="metric-unit">kg</span></div><div class="metric-label">Weight</div><div class="metric-delta dp" id="dwd">↓ 5.9kg from peak</div></div>
-    <div class="metric-tile"><div class="metric-val" id="dbf">27.9<span class="metric-unit">%</span></div><div class="metric-label">Body Fat</div><div class="metric-delta dp">↓ from 31.5% · Goal 20%</div></div>
-    <div class="metric-tile"><div class="metric-val" id="dm">67.7<span class="metric-unit">%</span></div><div class="metric-label">Muscle Mass</div><div class="metric-delta dp">↑ Best ever ✨</div></div>
+    <div class="metric-tile"><div class="metric-val" id="dbf">27.9<span class="metric-unit">%</span></div><div class="metric-label">Body Fat</div><div class="metric-delta dp">Goal: 20–22%</div></div>
+    <div class="metric-tile"><div class="metric-val" id="dm">67.7<span class="metric-unit">%</span></div><div class="metric-label">Muscle Mass</div><div class="metric-delta dp">↑ Best ever</div></div>
     <div class="metric-tile"><div class="metric-val" id="dwst">71<span class="metric-unit">cm</span></div><div class="metric-label">Waist</div><div class="metric-delta dp">↓ 8cm since Jun '25</div></div>
   </div>
-  <div class="insight-box"><div class="insight-label">✦ Today's Insight</div><p id="insight">Loading...</p></div>
+</div>
+<div class="page" id="page-gym">
+  <p class="sec-lbl">Log Session</p>
+  <div class="form-group"><label class="form-label">Date</label><input type="date" id="gymD"></div>
+  <div class="day-tabs">
+    <div class="day-tab active" data-day="1" onclick="switchDay(1)">Day 1 · Glute</div>
+    <div class="day-tab" data-day="2" onclick="switchDay(2)">Day 2 · Upper</div>
+    <div class="day-tab" data-day="3" onclick="switchDay(3)">Day 3 · Quad</div>
+    <div class="day-tab" data-day="4" onclick="switchDay(4)">Day 4 · Upper+</div>
+    <div class="day-tab" data-day="5" onclick="switchDay(5)">Day 5 · Recovery</div>
+  </div>
+  <div id="exList" class="ex-log"></div>
+  <div class="form-group" style="margin-top:12px;"><label class="form-label">Notes</label><textarea id="gymNotes" placeholder="How did it feel?"></textarea></div>
+  <button class="btn btn-rose" onclick="saveGym()">Save Session</button>
+  <div class="card" style="margin-top:16px;"><div class="card-title">Recent Sessions</div><div id="gymHist"></div></div>
+</div>
+
+<div class="page" id="page-body">
   <div class="card">
     <div class="card-title">Progress <span id="rngLbl">All time</span></div>
     <div class="range-pills">
@@ -172,26 +316,6 @@ textarea{resize:none;height:72px;}
     <div id="cFn" style="font-size:10px;color:var(--text-dim);text-align:center;margin-top:6px;"></div>
     <div class="kd-legend" id="kdL"></div>
   </div>
-  <div class="card"><div class="card-title">Today's Supplements</div><div id="suppQ"></div></div>
-</div>
-
-<div class="page" id="page-gym">
-  <p class="sec-lbl">Log Session</p>
-  <div class="form-group"><label class="form-label">Date</label><input type="date" id="gymD"></div>
-  <div class="day-tabs">
-    <div class="day-tab active" data-day="1" onclick="switchDay(1)">Day 1 · Glute</div>
-    <div class="day-tab" data-day="2" onclick="switchDay(2)">Day 2 · Upper</div>
-    <div class="day-tab" data-day="3" onclick="switchDay(3)">Day 3 · Quad</div>
-    <div class="day-tab" data-day="4" onclick="switchDay(4)">Day 4 · Upper+</div>
-    <div class="day-tab" data-day="5" onclick="switchDay(5)">Day 5 · Recovery</div>
-  </div>
-  <div id="exList" class="ex-log"></div>
-  <div class="form-group" style="margin-top:12px;"><label class="form-label">Notes</label><textarea id="gymNotes" placeholder="How did it feel?"></textarea></div>
-  <button class="btn btn-rose" onclick="saveGym()">Save Session</button>
-  <div class="card" style="margin-top:16px;"><div class="card-title">Recent Sessions</div><div id="gymHist"></div></div>
-</div>
-
-<div class="page" id="page-body">
   <p class="sec-lbl">Log Body Scan</p>
   <div class="card">
     <div class="form-group"><label class="form-label">Date</label><input type="date" id="bDate"></div>
@@ -214,9 +338,9 @@ textarea{resize:none;height:72px;}
     <div class="form-group"><label class="form-label">Life note (optional)</label><input type="text" id="bNote" placeholder="e.g. After Thailand trip"></div>
     <button class="btn btn-rose" onclick="saveBody()">Save Measurement</button>
   </div>
-  <div class="card"><div class="card-title">History</div><div id="bodyHist"></div></div>
+  <div class="card"><div class="card-title">Recent History</div><div id="bodyHist"></div></div>
   <div class="card">
-    <div class="card-title">Progress Photos <span>tap to add</span></div>
+    <div class="card-title">Progress Photos <span>tap to add · max 6</span></div>
     <div class="photo-grid" id="photoG">
       <div class="photo-tile" onclick="addPhoto()">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="opacity:0.4;stroke-width:1.5;margin-bottom:4px;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -225,29 +349,20 @@ textarea{resize:none;height:72px;}
     </div>
     <input type="file" id="photoI" accept="image/*" style="display:none" onchange="handlePhoto(event)">
   </div>
-  <div class="card">
-    <div class="card-title">Data</div>
-    <button class="btn btn-outline" onclick="document.getElementById('impModal').classList.add('open')" style="font-size:12px;padding:10px;margin-bottom:8px;">⬆ Import saved data (JSON)</button>
-    <p style="font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">Always export before receiving app updates.</p>
-    <div class="export-row">
-      <button class="btn btn-outline" onclick="expJSON()" style="font-size:12px;padding:10px;">⬇ JSON (full)</button>
-      <button class="btn btn-sage" onclick="expCSV()" style="font-size:12px;padding:10px;">⬇ CSV body</button>
-    </div>
-    <button class="btn btn-outline" onclick="expGymCSV()" style="margin-top:8px;font-size:12px;padding:10px;">⬇ CSV gym</button>
-    <button class="btn btn-outline" onclick="expSuppCSV()" style="margin-top:8px;font-size:12px;padding:10px;">⬇ CSV supplements</button>
-  </div>
 </div>
 
 <div class="page" id="page-supps">
   <p class="sec-lbl">Today — <span id="suppDateLbl"></span></p>
-  <div class="supp-grid" id="suppG"></div>
-  <div class="card" style="margin-top:12px;"><div class="card-title">Stack Overview</div><div id="suppDetail"></div></div>
-  <div style="margin-top:12px;"><button class="btn btn-outline" onclick="resetSupps()">Reset Today's Checklist</button></div>
+  <div id="suppBlocks"></div>
+  <div style="margin-top:4px;margin-bottom:12px;"><button class="btn btn-outline" onclick="resetSupps()" style="font-size:12px;padding:10px;">Reset Today</button></div>
 </div>
 
 <div class="page" id="page-skin">
   <p class="sec-lbl">Skincare — <span id="skinDateLbl"></span></p>
-
+  <div class="congrats-banner" id="congratsBanner">
+    <h3>✨ Skin Goals Done!</h3>
+    <p>Full routine complete today. Your future self thanks you.</p>
+  </div>
   <div class="card">
     <div class="card-title">☀️ Morning Routine</div>
     <div id="skinAM"></div>
@@ -272,9 +387,46 @@ textarea{resize:none;height:72px;}
     <div id="skinStats"></div>
   </div>
 
+  <div class="card" style="margin-top:0;">
+    <div class="card-title">💆 Beauty Fascia Program <span id="bfProgTitle"></span></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:10px;background:var(--cream2);border-radius:8px;">
+      <div style="font-size:12px;color:var(--text-mid);flex:1;">Did you do your fascia session today?</div>
+      <div id="bfDailyCheck" onclick="toggleBFDaily()" style="width:30px;height:30px;border-radius:50%;border:2px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s;"></div>
+    </div>
+    <p style="font-size:11px;color:var(--text-dim);line-height:1.6;margin-bottom:12px;">Work through one day at a time — tick when done. You can skip days. Complete all 16 + 2 extras to finish the program.</p>
+    <div id="bfList"></div>
+    <div class="congrats-banner" id="bfCongratsB" style="margin-top:12px;">
+      <h3>🌟 Program Complete!</h3>
+      <p>You finished all 18 Beauty Fascia sessions. You are glowing.</p>
+    </div>
+  </div>
+
   <div style="margin-top:12px;display:flex;gap:8px;">
-    <button class="btn btn-outline" onclick="resetSkin()" style="font-size:12px;padding:10px;">Reset Today</button>
+    <button class="btn btn-outline" onclick="resetSkin()" style="font-size:12px;padding:10px;">Reset Routine</button>
     <button class="btn btn-outline" onclick="expSkinCSV()" style="font-size:12px;padding:10px;">⬇ CSV</button>
+  </div>
+</div>
+
+<div class="page" id="page-habits">
+  <p class="sec-lbl">Habits — <span id="habitsDateLbl"></span></p>
+  <div class="insight-box" style="margin-bottom:12px;">
+    <div class="insight-label">✦ Today's Quote</div>
+    <p id="dailyQuote">Loading...</p>
+  </div>
+  <div class="card">
+    <div class="card-title">☀️ Morning</div>
+    <div id="habitsAM"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🌞 During the Day</div>
+    <div id="habitsMid"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">🌙 Evening</div>
+    <div id="habitsPM"></div>
+  </div>
+  <div style="margin-top:4px;margin-bottom:12px;">
+    <button class="btn btn-outline" onclick="resetHabits()" style="font-size:12px;padding:10px;">Reset Today</button>
   </div>
 </div>
 
@@ -293,13 +445,54 @@ textarea{resize:none;height:72px;}
   </button>
   <button class="nav-item" onclick="showPage('supps',this)">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-    <span class="nav-label">Supplements</span>
+    <span class="nav-label">Supps</span>
   </button>
   <button class="nav-item" onclick="showPage('skin',this)">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-    <span class="nav-label">Skincare</span>
+    <span class="nav-label">Skin</span>
+  </button>
+  <button class="nav-item" onclick="showPage('habits',this)">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+    <span class="nav-label">Habits</span>
   </button>
 </nav>
+
+<div class="supp-info-modal" id="suppInfoModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="supp-info-box">
+    <button class="modal-close" onclick="document.getElementById('suppInfoModal').classList.remove('open')">✕</button>
+    <div class="supp-info-title" id="suppInfoName"></div>
+    <div id="suppInfoBadges"></div>
+    <div class="supp-info-text" id="suppInfoText"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="skinInfoModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('skinInfoModal').classList.remove('open')">✕</button>
+    <div class="modal-title" id="skinInfoName">Product Info</div>
+    <p style="font-size:11px;color:var(--rose);font-family:'DM Mono',monospace;margin-bottom:12px;" id="skinInfoProduct"></p>
+    <p style="font-size:13px;color:var(--text-mid);line-height:1.7;" id="skinInfoText"></p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="settingsModal"  onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('settingsModal').classList.remove('open')">✕</button>
+    <div class="modal-title">Settings & Data</div>
+    <div class="settings-row">
+      <p style="font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:4px;">Cloud sync status: <span id="syncStatus">checking...</span></p>
+      <button class="btn btn-dark" onclick="pullFromCloud();document.getElementById('settingsModal').classList.remove('open')" style="font-size:12px;padding:10px;">⬇ Pull from Cloud</button>
+      <button class="btn btn-outline" onclick="pushToCloud();document.getElementById('settingsModal').classList.remove('open')" style="font-size:12px;padding:10px;">⬆ Push to Cloud</button>
+      <div style="height:1px;background:var(--border);margin:8px 0;"></div>
+      <button class="btn btn-outline" onclick="document.getElementById('settingsModal').classList.remove('open');document.getElementById('impModal').classList.add('open')" style="font-size:12px;padding:10px;">⬆ Import JSON</button>
+      <button class="btn btn-outline" onclick="expJSON()" style="font-size:12px;padding:10px;">⬇ Export JSON (full backup)</button>
+      <button class="btn btn-outline" onclick="expCSV()" style="font-size:12px;padding:10px;">⬇ CSV — Body</button>
+      <button class="btn btn-outline" onclick="expGymCSV()" style="font-size:12px;padding:10px;">⬇ CSV — Gym</button>
+      <button class="btn btn-outline" onclick="expSuppCSV()" style="font-size:12px;padding:10px;">⬇ CSV — Supplements</button>
+      <button class="btn btn-outline" onclick="expSkinCSV()" style="font-size:12px;padding:10px;">⬇ CSV — Skincare</button>
+    </div>
+  </div>
+</div>
 
 <div class="modal-overlay" id="impModal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal">
@@ -340,15 +533,17 @@ function seed(){return{
     {date:'2022-12-21',weight:56.7,bf:28.4,muscle:67.2,hydration:48.0,bone:4.3,tdee:1836,waist:null,hip:null,note:''},
     {date:'2022-12-28',weight:56.7,bf:28.4,muscle:67.2,hydration:48.0,bone:4.3,tdee:1836,waist:null,hip:null,note:''},
     {date:'2023-01-05',weight:57.5,bf:28.9,muscle:66.7,hydration:47.8,bone:4.3,tdee:1847,waist:null,hip:null,note:''},
+    {date:'2023-02-27',weight:57.9,bf:null,muscle:null,hydration:null,bone:null,tdee:null,waist:null,hip:null,note:'Joined Arup'},
     {date:'2023-05-22',weight:58.7,bf:29.8,muscle:65.9,hydration:47.4,bone:4.2,tdee:1861,waist:null,hip:null,note:''},
     {date:'2023-05-29',weight:58.7,bf:29.8,muscle:65.9,hydration:47.4,bone:4.2,tdee:1861,waist:null,hip:null,note:''},
     {date:'2023-09-23',weight:59.5,bf:30.5,muscle:65.5,hydration:47.3,bone:4.2,tdee:1873,waist:null,hip:null,note:''},
     {date:'2023-11-08',weight:58.9,bf:29.9,muscle:65.8,hydration:47.5,bone:4.2,tdee:1865,waist:null,hip:null,note:''},
     {date:'2024-04-04',weight:59.2,bf:30.1,muscle:65.6,hydration:47.3,bone:4.2,tdee:1861,waist:null,hip:null,note:''},
+    {date:'2024-07-24',weight:59.9,bf:null,muscle:null,hydration:null,bone:null,tdee:null,waist:null,hip:null,note:'Joined Remedy gym'},
     {date:'2024-08-14',weight:60.9,bf:31.0,muscle:64.7,hydration:47.0,bone:4.2,tdee:1882,waist:null,hip:null,note:''},
     {date:'2025-01-28',weight:61.0,bf:31.1,muscle:64.6,hydration:46.9,bone:4.2,tdee:1889,waist:null,hip:null,note:''},
-    {date:'2025-02-11',weight:60.5,bf:30.7,muscle:65.0,hydration:47.0,bone:4.2,tdee:1877,waist:null,hip:null,note:'Joined Arup'},
-    {date:'2025-02-17',weight:61.1,bf:31.1,muscle:64.6,hydration:47.0,bone:4.2,tdee:1886,waist:null,hip:null,note:'Joined Remedy gym'},
+    {date:'2025-02-11',weight:60.5,bf:30.7,muscle:65.0,hydration:47.0,bone:4.2,tdee:1877,waist:null,hip:null,note:''},
+    {date:'2025-02-17',weight:61.1,bf:31.1,muscle:64.6,hydration:47.0,bone:4.2,tdee:1886,waist:null,hip:null,note:''},
     {date:'2025-04-03',weight:61.3,bf:31.1,muscle:64.6,hydration:46.9,bone:4.2,tdee:1889,waist:null,hip:null,note:'2nd trip Colombia'},
     {date:'2025-05-14',weight:61.8,bf:31.5,muscle:64.3,hydration:46.7,bone:4.1,tdee:1894,waist:null,hip:null,note:'2nd trip Thailand (peak)'},
     {date:'2025-06-05',weight:60.9,bf:31.0,muscle:64.7,hydration:47.0,bone:4.2,tdee:1884,waist:79,hip:101,note:'Started nutritionist'},
@@ -376,19 +571,37 @@ function seed(){return{
     {date:'2026-03-30',weight:55.9,bf:27.9,muscle:67.7,hydration:48.2,bone:4.3,tdee:1819,waist:71,hip:null,note:''},
   ],
   gymSessions:SEED_SESSIONS,
-  suppChecks:{},photos:[]
+  suppChecks:{},photos:[],bfChecks:{},habitChecks:{}
 };}
 
 let D=load();
 if(D.gymSessions.length===0){D.gymSessions=[...SEED_SESSIONS];save(D);}
 
-const KD={
-  '2022-08-04':'Arrived in Australia','2023-01-11':'1st Colombia trip',
-  '2023-02-27':'Joined Arup','2024-07-24':'Joined Remedy gym',
-  '2025-02-11':'Joined Arup','2025-02-17':'Joined Remedy gym',
-  '2025-05-14':'2nd Thailand trip','2025-06-05':'Started nutritionist',
-  '2025-06-15':'Surgery','2025-08-10':'Resumed gym','2025-07-30':'After holidays + wedding',
+// KD categories: trip, nutrition, arup, medical, gym, other
+const KD_CAT={
+  '2022-08-04':{label:'Arrived in Australia — 04-08-22',      cat:'other'},
+  '2023-02-27':{label:'Joined Arup — 27-02-23',               cat:'arup'},
+  '2024-07-24':{label:'Joined Remedy gym — 24-07-24',         cat:'gym'},
+  '2025-04-03':{label:'Colombia trip — 03-04-25',             cat:'trip'},
+  '2025-05-14':{label:'Thailand trip — 14-05-25',             cat:'trip'},
+  '2025-06-05':{label:'Started nutritionist — 05-06-25',      cat:'nutrition'},
+  '2025-06-15':{label:'Surgery — 15-06-25',                   cat:'medical'},
+  '2025-07-09':{label:'Vietnam trip — 09-07-25',              cat:'trip'},
+  '2025-07-30':{label:'Holidays + wedding — 30-07-25',        cat:'other'},
+  '2025-08-10':{label:'Resumed gym — 10-08-25',               cat:'gym'},
 };
+// Colours per category — only 6 needed
+const KD_CAT_COLORS={
+  trip:     '#C4922A',
+  nutrition:'#4A7C59',
+  arup:     '#2C6E8A',
+  gym:      '#C0415A',
+  medical:  '#7C5C9A',
+  other:    '#8C7456',
+};
+// Legacy KD object for tooltip compatibility
+const KD={};
+Object.keys(KD_CAT).forEach(function(k){KD[k]=KD_CAT[k].label;});
 
 const VIDS={
   'Hip Thrust + Abduction banda':'https://www.instagram.com/reel/DEYOV64P6Tg/?igsh=Zm83ZDF4ZjY2cnhp',
@@ -400,6 +613,7 @@ const VIDS={
   'Shoulder Press Machine':'https://www.instagram.com/reel/DOPFXlEiDnt/?igsh=dXdtenFxMGFuaHc1',
   'Rear Delt Machine':'https://www.instagram.com/reel/DJW8nZ6JUvT/?igsh=ODRmOThjc2dja2Q=',
   'Vuelos Laterales':'https://www.instagram.com/reel/DIUEmRyqm4r/?igsh=MXE5NDk3NGExejc4cQ==',
+  'Lateral Raises':'https://www.instagram.com/reel/DIUEmRyqm4r/?igsh=MXE5NDk3NGExejc4cQ==',
   'Face Pull':'https://www.instagram.com/reel/DIEVrt-uHc5/?igsh=MXE5MXRhejlybWl5cQ==',
   'Inclined Leg Press':'https://www.instagram.com/reel/C5l-n3HJPjW/?igsh=MWJ5MXhjOXJiOGd5dw==',
   'Prensa Inclinada':'https://www.instagram.com/reel/C5l-n3HJPjW/?igsh=MWJ5MXhjOXJiOGd5dw==',
@@ -432,9 +646,9 @@ const WARMUP={
 
 const FINISHERS={
   1:[{name:'Inclined Treadmill',sub:'20 min moderate pace'}],
-  2:[{name:'Hanging Knee Raises',sub:'2×10'},{name:'Vacuum Hold',sub:'3×20 sec'}],
+  2:[],
   3:[{name:'Inclined Treadmill',sub:'20 min'}],
-  4:[{name:'Dead Bug',sub:'3×10 · checkbox only',checkbox:true},{name:'Plank Variations',sub:'3×40 sec · checkbox only',checkbox:true}],
+  4:[],
   5:[{name:'Walk (fasted or post-session)',sub:'30–40 min'},{name:'Sauna',sub:'Optional — 15 min'}]
 };
 
@@ -451,7 +665,7 @@ const DAYS={
     {name:'Dumbbell Row',sets:'3',reps:'10-8-8',n:3},
     {name:'Shoulder Press Machine',sets:'3',reps:'10-10-8',n:3},
     {name:'Rear Delt Machine',sets:'3',reps:'12-12-10',n:3},
-    {name:'Vuelos Laterales',sets:'3',reps:'12',n:3},
+    {name:'Lateral Raises',sets:'3',reps:'12',n:3},
     {name:'Face Pull',sets:'2',reps:'15',n:2},
     {name:'Plank',sets:'2',reps:'40 sec',checkbox:true},
     {name:'Dead Bug',sets:'2',reps:'10',checkbox:true},
@@ -472,37 +686,32 @@ const DAYS={
     {name:'Face Pull',sets:'3',reps:'15',n:3},
     {name:'Frog Pumps / Hip Thrust',sets:'3',reps:'15',n:3},
     {name:'Hanging Knee Raises',sets:'2',reps:'10',checkbox:true},
-    {name:'Dead Bug',sets:'3',reps:'10',checkbox:true},
-    {name:'Plank Variations',sets:'3',reps:'40 sec',checkbox:true},
+    {name:'Vacuum Hold',sets:'3',reps:'20 sec',checkbox:true},
   ]},
   5:{name:'Active Recovery — Glute Pump',exercises:[
     {name:'Hip Thrust ~70%',sets:'3',reps:'15-15-12',n:3},
     {name:'Cable Abduction',sets:'3',reps:'15 c/u',n:3},
     {name:'Sumo Squat Goblet',sets:'3',reps:'15',n:3},
-    {name:'Nordic Curl',sets:'3',reps:'10',n:3},
-    {name:'Dead Bug',sets:'3',reps:'10',n:3},
-    {name:'Plank Variations',sets:'3',reps:'40 sec',n:3},
+    {name:'Nordic Curl',sets:'3',reps:'10',checkbox:true},
+    {name:'Dead Bug',sets:'3',reps:'10',checkbox:true},
+    {name:'Plank Variations',sets:'3',reps:'40 sec',checkbox:true},
   ]},
 };
 
 const SUPPS=[
-  {id:'collagen',name:'Collagen + Vit C',detail:'True Collagen 10–15g',time:'🌅 Morning with breakfast',p:'high'},
-  {id:'creatine',name:'Creatine',detail:'ATP Creapure 5g',time:'🌅 Morning — every day',p:'high'},
-  {id:'vitd',name:'Vitamin D3 + K2',detail:'Opti Active 1 capsule',time:'🌅 Morning with food',p:'high'},
-  {id:'bcomplex',name:'B Complex',detail:'Thorne Basic B 1 capsule',time:'🌅 Morning with food',p:'high'},
-  {id:'matcha',name:'Matcha',detail:'Ceremonial grade 1 tsp',time:'🌅 Morning drink',p:'high'},
-  {id:'spearmint_am',name:'Spearmint Tea AM',detail:'1 cup brewed',time:'🌅 With breakfast',p:'high'},
-  {id:'relyte',name:'Electrolytes',detail:'RE-LYTE 1 scoop',time:'🏋️ Training days only',p:'med'},
-  {id:'protein',name:'Protein WPI 90',detail:'True WPI 90 30g',time:'🏋️ Post-training 30–60 min',p:'med'},
-  {id:'spearmint_pm',name:'Spearmint Tea PM',detail:'1 cup brewed',time:'☕ Afternoon 2:30pm',p:'med'},
-  {id:'lionsmane',name:"Lion's Mane",detail:'500–1,000mg (Month 2)',time:'☕ Afternoon with drink',p:'med'},
-  {id:'omega3',name:'Omega-3',detail:'Nordic Naturals 2–3g EPA+DHA',time:'🍽️ Dinner with food',p:'high'},
-  {id:'zinc',name:'Zinc',detail:'Zinc Citrate BioPractica 1 cap',time:'🍽️ Dinner with food',p:'high'},
-  {id:'turmeric',name:'Turmeric KURK',detail:'Liquid — dose on bottle',time:'🍽️ Dinner with food',p:'high'},
-  {id:'ashwagandha',name:'Ashwagandha KSM-66',detail:'300mg (Month 2)',time:'🍽️ Dinner or after',p:'med'},
-  {id:'berberine',name:'Berberine',detail:'Thorne 500mg (Month 3)',time:'🍽️ With carb-containing meal',p:'low'},
-  {id:'magnesium',name:'Magnesium',detail:'BIOptimizers 2 capsules',time:'🌙 Before bed 9:30pm',p:'high'},
-  {id:'reishi',name:'Reishi',detail:'500–1,000mg (Month 2)',time:'🌙 Before bed',p:'med'},
+  {id:'vitd',      name:'Vitamin D3 + K2',    detail:'Opti Active 1 capsule',        time:'🌅 Morning with food',            mandatory:true,  weekdays:false, info:'Essential for immune function, bone health, muscle function and mood. Most Australians are deficient. The K2 directs calcium to bones, not arteries. Non-negotiable year-round.'},
+  {id:'collagen',  name:'Collagen + Vit C',   detail:'True Collagen 10–15g',         time:'🌅 Morning — stir into drink',    mandatory:false, weekdays:true,  info:'Collagen peptides support skin elasticity, joint health and hair strength. Vitamin C is essential for collagen synthesis — always take together. Weekdays only.'},
+  {id:'bcomplex',  name:'B Complex',           detail:'Thorne Basic B 1 capsule',     time:'🌅 Morning with food',            mandatory:false, weekdays:true,  info:'B vitamins support energy metabolism, nervous system health, and skin. Particularly useful for stress support and hormone balance. Weekdays only.'},
+  {id:'matcha',    name:'Matcha / Green Tea',  detail:'1 cup — pick your mood',       time:'🌅 Morning drink',                mandatory:false, weekdays:false, info:'Rich in L-theanine + caffeine for calm, focused energy. High in antioxidants (EGCG) that support skin, metabolism and longevity. Matcha or any green tea — pick what you feel like today.'},
+  {id:'spearmint_am',name:'Spearmint Tea',     detail:'1–2 cups daily',               time:'🌅 Morning + ☕ Afternoon',        mandatory:false, weekdays:false, info:'Mild anti-androgenic effect supporting hormonal balance and skin clarity. Cumulative benefit — drink 1–2 cups daily for best results. Cheap, easy, effective.'},
+  {id:'relyte',    name:'Electrolytes',        detail:'RE-LYTE 1 scoop',              time:'🏋️ Training days — pre/during',  mandatory:false, weekdays:false, info:'Replenishes sodium, potassium and magnesium lost through sweat. Supports hydration, performance and prevents cramping. Only on training days.'},
+  {id:'protein',   name:'Protein WPI 90',      detail:'True WPI 90 30g',              time:'🏋️ Post-training within 60 min', mandatory:false, weekdays:false, info:'Whey protein isolate to hit your 135g/day target. Critical for muscle synthesis and recomposition. Take within 60 min post-training for best uptake.'},
+  {id:'omega3',    name:'Omega-3',             detail:'Nordic Naturals 2–3g EPA+DHA', time:'🍽️ Dinner with food',             mandatory:true,  weekdays:false, info:'EPA+DHA reduce systemic inflammation, support brain function, heart health, skin quality and are critical for scalp psoriasis management. Always take with food for absorption.'},
+  {id:'zinc',      name:'Zinc',                detail:'Zinc Citrate 1 capsule',       time:'🍽️ Dinner with food',             mandatory:false, weekdays:true,  info:'Supports immune function, skin healing, hormone production and hair growth. Important for psoriasis management. Never take on empty stomach. Weekdays only.'},
+  {id:'turmeric',  name:'Turmeric KURK',       detail:'Liquid — dose on bottle',      time:'🍽️ Dinner with food',             mandatory:false, weekdays:true,  info:'Curcumin is a powerful anti-inflammatory and antioxidant. Liquid form has much higher bioavailability than capsules. Supports skin, joints and longevity. Weekdays only.'},
+  {id:'ashwagandha',name:'Ashwagandha KSM-66', detail:'KSM-66 300mg',                time:'🍽️ Dinner or after',              mandatory:false, weekdays:true,  info:'The most clinically studied ashwagandha extract. Reduces cortisol, supports sleep quality, hormone balance, energy and stress resilience. Takes 4–8 weeks for full effect. Weekdays only.'},
+  {id:'magnesium', name:'Magnesium',           detail:'BIOptimizers 2 capsules',      time:'🌙 Before bed',                   mandatory:true,  weekdays:false, info:'Magnesium Breakthrough contains 7 forms for maximum absorption. Supports deep sleep, muscle recovery, cortisol reduction and over 300 enzymatic processes. Non-negotiable nightly.'},
+  {id:'creatine',  name:'Creatine',            detail:'ATP Creapure 5g — every day',  time:'🌙 Before bed',                   mandatory:true,  weekdays:false, info:'Creapure is the purest creatine monohydrate. Builds ATP (cellular energy), supports muscle growth, strength and cognitive function. Works cumulatively — missing days resets saturation. Daily without exception.'},
 ];
 
 const INSIGHTS=[
@@ -551,40 +760,80 @@ const CC={w:'rgb(212,168,186)',bf:'rgb(200,148,128)',mu:'rgb(140,185,140)',bmi:'
 
 function renderChart(){
   const sc=filteredScans();
-  const lbl=sc.map(s=>s.date.slice(5));
+  // X-axis labels: one per scan point, formatted as mm-yyyy
+  const lbl=sc.map(function(s){
+    var parts=s.date.split('-');
+    return parts[1]+'-'+parts[0];// mm-yyyy e.g. "02-2023"
+  });
   document.getElementById('cFn').textContent='';
-  const kdInRange=sc.filter(s=>KD[s.date]||s.note);
+  // Key date point colors — by category
+  const ptR=2;
+  const ptBgKD=function(c){return sc.map(function(s){
+    if(KD_CAT[s.date])return KD_CAT_COLORS[KD_CAT[s.date].cat]||'#8C7456';
+    if(s.note)return KD_CAT_COLORS.other;
+    return c;
+  });};
+  const ptBg=ptBgKD;
+  const ptRKD=function(){return sc.map(function(s){return(KD[s.date]||s.note)?ptR+1.5:ptR;});};
+  const ptBorderKD=function(){return sc.map(function(s){return 0;});};
+  const kdInRange=sc.filter(s=>KD_CAT[s.date]||s.note);
   const kdEl=document.getElementById('kdL');
   if(kdEl){
     if(kdInRange.length>0){
-      kdEl.innerHTML='<div style="font-size:9px;color:var(--text-dim);width:100%;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px;font-weight:600;">Key dates</div>'+
-        kdInRange.slice(0,8).map(s=>'<div class="kd-item"><div class="kd-dot"></div>'+s.date.slice(5)+' '+(KD[s.date]||s.note)+'</div>').join('');
+      var catLabels={trip:'Trip',nutrition:'Nutrition',arup:'Arup',gym:'Gym',medical:'Medical',other:'Milestone'};
+      var html='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">';
+      Object.keys(catLabels).forEach(function(cat){
+        var hasAny=kdInRange.some(function(s){return KD_CAT[s.date]&&KD_CAT[s.date].cat===cat;});
+        if(hasAny){
+          html+='<div style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text-mid);font-weight:500;">'
+            +'<div style="width:8px;height:8px;border-radius:50%;background:'+KD_CAT_COLORS[cat]+';flex-shrink:0;"></div>'
+            +catLabels[cat]+'</div>';
+        }
+      });
+      html+='</div>';
+      kdEl.innerHTML=html;
     } else kdEl.innerHTML='';
   }
-  // Key dates: mauve color, same tiny size
-  const ptBg=function(c){return sc.map(function(s){return (KD[s.date]||s.note)?'rgb(178,154,204)':c;});};
-  const ptR=1.5;
   const baseOpts={responsive:true,maintainAspectRatio:false,
     plugins:{
       legend:{labels:{color:'#7A6A56',font:{size:10,family:'Jost'},boxWidth:10,padding:10}},
-      tooltip:{callbacks:{afterBody:function(items){const idx=items[0]?items[0].dataIndex:undefined;if(idx===undefined)return;const s=sc[idx];const kd=KD[s.date]||s.note;return kd?['','📍 '+kd]:[];}},
+      tooltip:{callbacks:{
+        title:function(items){
+          var idx=items[0]?items[0].dataIndex:undefined;if(idx===undefined)return '';
+          var s=sc[idx];var p=s.date.split('-');
+          return p[2]+'-'+p[1]+'-'+p[0].slice(2);// dd-mm-yy
+        },
+        afterBody:function(items){const idx=items[0]?items[0].dataIndex:undefined;if(idx===undefined)return;const s=sc[idx];const kd=KD[s.date]||s.note;return kd?['','— '+kd]:[];}},
         backgroundColor:'rgba(58,46,34,0.9)',titleColor:'#FAF7F2',bodyColor:'#DDD4C2',borderColor:'rgba(196,130,106,0.3)',borderWidth:1,cornerRadius:8,padding:10}
     },
     scales:{
-      x:{ticks:{color:'#A8977F',font:{size:9}},grid:{color:'rgba(58,46,34,0.04)'}},
+      x:{ticks:{color:'#A8977F',font:{size:9},maxRotation:45,minRotation:30,
+        callback:function(val,idx){
+          // Show label only if this scan is ~2+ months from the previous shown label
+          var shown=lbl[idx];if(!shown)return null;
+          // Only show if different from previous visible label
+          var prev=idx>0?lbl[idx-1]:null;
+          if(!prev)return shown;
+          // Parse mm-yyyy
+          var pm=parseInt(prev.split('-')[0]),py=parseInt(prev.split('-')[1]);
+          var cm=parseInt(shown.split('-')[0]),cy=parseInt(shown.split('-')[1]);
+          var monthsDiff=(cy-py)*12+(cm-pm);
+          return monthsDiff>=2?shown:null;
+        }
+      },grid:{color:'rgba(58,46,34,0.04)'}},
       y:{ticks:{color:'#A8977F',font:{size:9}},grid:{color:'rgba(58,46,34,0.04)'}}
     }
   };
   let ds=[];
   if(cType==='weight'){
-    ds=[{label:'Weight (kg)',data:sc.map(function(s){return s.weight;}),borderColor:CC.w,backgroundColor:'rgba(212,168,186,0.08)',tension:0.4,fill:true,pointRadius:ptR,borderWidth:1.5,pointBackgroundColor:ptBg(CC.w),pointBorderWidth:0}];
+    ds=[{label:'Weight (kg)',data:sc.map(function(s){return s.weight;}),borderColor:CC.w,backgroundColor:'rgba(212,168,186,0.08)',tension:0.4,fill:true,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg(CC.w),pointBorderWidth:ptBorderKD()}];
   } else if(cType==='recomp'){
     ds=[
-      {label:'Body Fat %',data:sc.map(function(s){return s.bf;}),borderColor:CC.bf,backgroundColor:'transparent',tension:0.4,pointRadius:ptR,borderWidth:1.5,pointBackgroundColor:ptBg(CC.bf),pointBorderWidth:0},
-      {label:'Muscle %',data:sc.map(function(s){return s.muscle;}),borderColor:CC.mu,backgroundColor:'transparent',tension:0.4,pointRadius:ptR,borderWidth:1.5,pointBackgroundColor:ptBg(CC.mu),pointBorderWidth:0}
+      {label:'Body Fat %',data:sc.map(function(s){return s.bf;}),borderColor:CC.bf,backgroundColor:'transparent',tension:0.4,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg(CC.bf),pointBorderWidth:ptBorderKD()},
+      {label:'Muscle %',data:sc.map(function(s){return s.muscle;}),borderColor:CC.mu,backgroundColor:'transparent',tension:0.4,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg(CC.mu),pointBorderWidth:ptBorderKD()}
     ];
   } else if(cType==='bmi'){
-    ds=[{label:'BMI',data:sc.map(function(s){return s.weight?+(s.weight/(HM*HM)).toFixed(1):null;}),borderColor:CC.bmi,backgroundColor:'rgba(148,178,210,0.08)',tension:0.4,fill:true,pointRadius:ptR,borderWidth:1.5,pointBackgroundColor:ptBg(CC.bmi),pointBorderWidth:0}];
+    ds=[{label:'BMI',data:sc.map(function(s){return s.weight?+(s.weight/(HM*HM)).toFixed(1):null;}),borderColor:CC.bmi,backgroundColor:'rgba(148,178,210,0.08)',tension:0.4,fill:true,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg(CC.bmi),pointBorderWidth:ptBorderKD()}];
     document.getElementById('cFn').textContent='Healthy BMI: 18.5–24.9 · Height: 1.65m';
   } else if(cType==='norm'){
     document.getElementById('cFn').textContent='All metrics normalised 0–1 for direct comparison';
@@ -609,6 +858,21 @@ function updateDash(){
   if(lat.bf)document.getElementById('dbf').innerHTML=lat.bf+'<span class="metric-unit">%</span>';
   if(lat.muscle)document.getElementById('dm').innerHTML=lat.muscle+'<span class="metric-unit">%</span>';
   var ws=s.filter(function(x){return x.waist;});if(ws.length)document.getElementById('dwst').innerHTML=ws[ws.length-1].waist+'<span class="metric-unit">cm</span>';
+  // today gym ring
+  var t=today();
+  var todayGym=D.gymSessions.filter(function(x){return x.date===t;}).length>0;
+  var tg=document.getElementById('tdGym');if(tg)tg.textContent=todayGym?'✓':'—';
+  updateRing('ringGym',todayGym?1:0,1);
+}
+
+function updateRing(id,done,total){
+  // map old ring IDs to new arc IDs
+  var arcMap={ringGym:'arcGym',ringFascia:'arcFascia',ringSupps:'arcSupps',ringSkin:'arcSkin',ringHabits:'arcHabits'};
+  var arcId=arcMap[id]||id;
+  var el=document.getElementById(arcId);if(!el)return;
+  var circ=151;// arc length for our semicircle r=48
+  var pct=total>0?done/total:0;
+  el.style.strokeDashoffset=circ*(1-pct);
 }
 
 var curDay=1;
@@ -769,7 +1033,7 @@ function pf(id){return parseFloat(document.getElementById(id).value)||null;}
 
 function renderBodyHist(){
   var el=document.getElementById('bodyHist');if(!el)return;
-  var sc=[...D.bodyScans].filter(function(s){return s.weight;}).reverse().slice(0,10);
+  var sc=[...D.bodyScans].filter(function(s){return s.weight;}).reverse().slice(0,5);
   if(!sc.length){el.innerHTML='<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:14px;">Log measurements above</div>';return;}
   el.innerHTML=sc.map(function(s,i){
     var prev=sc[i+1];var delta=prev&&prev.weight&&s.weight?(s.weight-prev.weight).toFixed(1):null;
@@ -793,21 +1057,21 @@ function renderPhotos(){
 
 // ── SKINCARE ────────────────────────────────────────────────
 const SKIN_AM=[
-  {id:'sam1',name:'Cleanse',product:'Senka Perfect Whip Medicated Beauty Foam'},
-  {id:'sam2',name:'Vitamin C Serum',product:'Sephora GLOW 7% Vitamin C + Vitamin E'},
-  {id:'sam3',name:'Niacinamide',product:'The Ordinary Niacinamide 10% + Zinc (2–3 drops max)'},
-  {id:'sam4',name:'Moisturiser',product:'Cetaphil Moisturising Lotion'},
-  {id:'sam5',name:'SPF Face',product:'La Roche-Posay Anthelios SPF50+ Invisible Fluid'},
-  {id:'sam6',name:'SPF Lips',product:'MooGoo Natural SPF15 Lip Balm'},
+  {id:'sam1',name:'Cleanse',product:'Senka Perfect Whip Medicated Beauty Foam',info:'Gentle medicated cleanser that removes impurities without stripping the skin barrier. The medicated formula helps with breakout prevention. Always cleanse before actives.'},
+  {id:'sam_ha',name:'HA + B5',product:'The Ordinary Hyaluronic Acid 2% + B5',info:'Hyaluronic acid draws moisture into the skin from the environment. B5 (panthenol) reinforces the skin barrier. Apply on slightly damp skin immediately after cleansing for best absorption. Wait 60–90 sec before next layer.'},
+  {id:'sam2',name:'Vitamin C Serum',product:'Sephora GLOW 7% Vitamin C + Vitamin E',info:'Vitamin C is the gold-standard brightening antioxidant — fades pigmentation, boosts collagen, protects against UV damage. Vitamin E enhances its stability. Apply after HA, wait 60–90 sec. Use every morning for cumulative glow.'},
+  {id:'sam3',name:'Niacinamide',product:'The Ordinary Niacinamide 10% + Zinc (2–3 drops max)',info:'Niacinamide reduces redness, minimises pores, regulates oil and strengthens the skin barrier. Zinc supports breakout control. 2–3 drops maximum — more causes pilling. Pat, do not rub. Wait 60–90 sec.'},
+  {id:'sam4',name:'Moisturiser',product:'Cetaphil Moisturising Lotion',info:'Lightweight, fragrance-free moisturiser that locks in the serum layers and supports the skin barrier before SPF. Non-comedogenic — safe daily. Apply and wait 60–90 sec before SPF.'},
+  {id:'sam5',name:'SPF Face',product:'La Roche-Posay Anthelios SPF50+ Invisible Fluid',info:'Broad-spectrum SPF50+ is non-negotiable for anti-ageing and hyperpigmentation prevention — UV is the #1 cause of premature skin ageing. Apply in smooth strokes ONE direction only — do not rub back and forth. Reapply every 2 hours in sun.'},
+  {id:'sam6',name:'SPF Lips',product:'MooGoo Natural SPF15 Lip Balm',info:'Lips have no melanin and burn easily. SPF lip protection prevents darkening, dryness and long-term sun damage. Clean, non-toxic formula. Reapply every 2 hours in direct sun.'},
 ];
 const SKIN_PM=[
-  {id:'spm1',name:'First Cleanse',product:'Banila Co Clean It Zero'},
-  {id:'spm2',name:'Second Cleanse',product:'Senka Perfect Whip'},
-  {id:'spm3',name:'Facial Massage',product:'Anastasia Beauty Fascia method — on clean bare skin'},
-  {id:'spm4',name:'Differin (adapalene)',product:'Building to nightly — add 1 extra night every 2–3 weeks'},
-  {id:'spm5',name:'Barrier Moisturiser',product:'La Roche-Posay Cicaplast Baume B5+ — over Differin'},
-  {id:'spm6',name:'Lip Moisture',product:"Burt's Bees Advanced Relief Unscented"},
-  {id:'spm7',name:'Lip Seal',product:'Lanolips 101 Ointment — over Burt\'s Bees'},
+  {id:'spm1',name:'First Cleanse',product:'Banila Co Clean It Zero',info:'Oil-based cleansing balm that dissolves SPF, makeup and pollution without stripping the skin. First step of double cleanse — the most important step of your PM routine. Massage gently for 60 sec, emulsify with water, rinse.'},
+  {id:'spm2',name:'Second Cleanse',product:'Senka Perfect Whip',info:'Water-based second cleanse removes any residue left by the oil cleanse. Ensures actives applied after penetrate clean skin rather than sitting on top of SPF residue.'},
+  {id:'spm4',name:'Differin (adapalene)',product:'Building to nightly — add 1 extra night every 2–3 weeks',info:'Adapalene is a 3rd-generation retinoid that accelerates cell turnover, unclogs pores, fades pigmentation and stimulates collagen. Building slowly prevents irritation. STOP 5 days before microneedling, resume 7 days after. Apply after cleansing, before moisturiser.'},
+  {id:'spm5',name:'Barrier Moisturiser',product:'La Roche-Posay Cicaplast Baume B5+ — over Differin',info:'Applied over Differin to buffer any irritation during the adaptation phase. Cicaplast B5+ is a powerhouse barrier repair cream with madecassoside, niacinamide and panthenol. Locks in Differin and prevents transepidermal water loss overnight.'},
+  {id:'spm6',name:'Lip Moisture',product:"Burt\'s Bees Advanced Relief Unscented",info:'Fragrance-free lip moisturiser as the first overnight lip layer. Free of parabens and SLS. Apply before the final occlusive seal.'},
+  {id:'spm7',name:'Lip Seal',product:'Lanolips 101 Ointment — over Burt\'s Bees',info:'Lanolin-based occlusive ointment that seals moisture in overnight. Apply generously over Burt\'s Bees as the final step. Prevents lip dehydration and accelerates repair while you sleep.'},
 ];
 const SKIN_ADDONS=[
   {id:'sadd1',name:'🔴 Red Light Mask',product:'Omnilux mask — on bare clean skin, 10–20 min (3–4×/week)'},
@@ -820,41 +1084,65 @@ function renderSkin(){
   if(!D.skinChecks[t])D.skinChecks[t]={};
   var ch=D.skinChecks[t];
   document.getElementById('skinDateLbl').textContent=new Date().toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'short'});
-
-  function makeRow(s){
+  function makeRow(s,i){
     var done=ch[s.id]||false;
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">'
-      +'<div style="flex:1;min-width:0;">'
-      +'<div style="font-size:12px;font-weight:500;color:'+(done?'var(--text-dim)':'var(--text)')+';text-decoration:'+(done?'line-through':'none')+'">'+s.name+'</div>'
-      +'<div style="font-size:10px;color:var(--text-dim);margin-top:2px;line-height:1.4;">'+s.product+'</div>'
+    var infoBtn=s.info?'<div class="supp-i-btn" onclick="showSkinInfo(\''+s.id+'\')" style="margin-right:8px;flex-shrink:0;">i</div>':'<div style="width:20px;margin-right:8px;flex-shrink:0;"></div>';
+    return '<div class="skin-row">'
+      +'<div class="skin-step-num">'+(i+1)+'</div>'
+      +infoBtn
+      +'<div class="skin-row-info">'
+      +'<div class="skin-row-name'+(done?' done-txt':'')+'">'+s.name+'</div>'
+      +'<div class="skin-row-product">'+s.product+'</div>'
       +'</div>'
-      +'<div style="width:26px;height:26px;border-radius:50%;border:1.5px solid '+(done?'var(--sage)':'var(--border2)')+';background:'+(done?'var(--sage)':'transparent')+';display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;margin-left:10px;" onclick="toggleSkin(\''+s.id+'\')">'
-      +(done?'<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M2 5l2 2 4-4"/></svg>':'')+'</div>'
-      +'</div>';
+      +'<div class="skin-check'+(done?' ticked':'')+'" onclick="toggleSkin(\''+s.id+'\')">'
+      +(done?'<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M2 5l2 2 4-4"/></svg>':'')
+      +'</div></div>';
   }
-
+  function makeAddonRow(s){
+    var done=ch[s.id]||false;
+    return '<div class="skin-row">'
+      +'<div class="skin-step-num">+</div>'
+      +'<div class="skin-row-info">'
+      +'<div class="skin-row-name'+(done?' done-txt':'')+'">'+s.name+'</div>'
+      +'<div class="skin-row-product">'+s.product+'</div>'
+      +'</div>'
+      +'<div class="skin-check'+(done?' ticked':'')+'" onclick="toggleSkin(\''+s.id+'\')">'
+      +(done?'<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M2 5l2 2 4-4"/></svg>':'')
+      +'</div></div>';
+  }
   document.getElementById('skinAM').innerHTML=SKIN_AM.map(makeRow).join('');
   document.getElementById('skinPM').innerHTML=SKIN_PM.map(makeRow).join('');
-  document.getElementById('skinAddons').innerHTML=SKIN_ADDONS.map(makeRow).join('');
-
-  // streak & stats
-  var allItems=SKIN_AM.concat(SKIN_PM).concat(SKIN_ADDONS);
-  var tot=SKIN_AM.length+SKIN_PM.length;// addons optional
-  var done=Object.values(ch).filter(Boolean).length;
-  var streak=0;
-  var d=new Date();
+  document.getElementById('skinAddons').innerHTML=SKIN_ADDONS.map(makeAddonRow).join('');
+  var tot=SKIN_AM.length+SKIN_PM.length;
+  var coreDone=SKIN_AM.concat(SKIN_PM).filter(function(s){return ch[s.id];}).length;
+  var streak=0;var d=new Date();
   for(var i=0;i<60;i++){
     var dk=d.toISOString().slice(0,10);
     if(!D.skinChecks[dk])break;
     var dc=D.skinChecks[dk];
-    var coreDone=SKIN_AM.concat(SKIN_PM).filter(function(s){return dc[s.id];}).length;
-    if(coreDone>=Math.floor(tot*0.8))streak++;
-    else break;
+    var cd=SKIN_AM.concat(SKIN_PM).filter(function(s){return dc[s.id];}).length;
+    if(cd>=Math.floor(tot*0.8))streak++;else break;
     d.setDate(d.getDate()-1);
   }
-  document.getElementById('skinStreak').textContent=streak>0?'🔥 '+streak+' day'+(streak>1?'s':''):'';
-  document.getElementById('skinStats').innerHTML='<div style="font-size:12px;color:var(--text-mid);margin-bottom:6px;">'+done+' of '+(tot+SKIN_ADDONS.length)+' steps completed today</div>'
-    +'<div style="height:4px;background:var(--cream3);border-radius:4px;overflow:hidden;"><div style="height:100%;width:'+(done/(tot+SKIN_ADDONS.length)*100)+'%;background:var(--blush);border-radius:4px;transition:width 0.4s;"></div></div>';
+  var sk=document.getElementById('skinStreak');if(sk)sk.textContent=streak>0?'🔥 '+streak+' day'+(streak>1?'s':''):'';
+  var ss=document.getElementById('skinStats');
+  if(ss)ss.innerHTML='<div style="font-size:12px;color:var(--text-mid);margin-bottom:6px;">'+coreDone+' of '+tot+' core steps done today</div>'
+    +'<div style="height:4px;background:var(--cream3);border-radius:4px;overflow:hidden;"><div style="height:100%;width:'+(tot?coreDone/tot*100:0)+'%;background:var(--blush);border-radius:4px;transition:width 0.4s;"></div></div>';
+  var banner=document.getElementById('congratsBanner');
+  if(banner)banner.classList.toggle('show',coreDone===tot&&tot>0);
+  var tsk=document.getElementById('tdSkin');
+  if(tsk)tsk.innerHTML=coreDone+'<span style="font-size:7px;display:block;line-height:1;">of '+tot+'</span>';
+  updateRing('ringSkin',coreDone,tot);
+}
+
+function showSkinInfo(id){
+  var allItems=SKIN_AM.concat(SKIN_PM).concat(SKIN_ADDONS);
+  var s=allItems.find(function(x){return x.id===id;});
+  if(!s||!s.info)return;
+  document.getElementById('skinInfoName').textContent=s.name;
+  document.getElementById('skinInfoProduct').textContent=s.product;
+  document.getElementById('skinInfoText').textContent=s.info;
+  document.getElementById('skinInfoModal').classList.add('open');
 }
 
 function toggleSkin(id){
@@ -919,6 +1207,8 @@ async function pullFromCloud(){
       if(cloud.gymSessions&&cloud.gymSessions.length>(D.gymSessions||[]).length)D.gymSessions=cloud.gymSessions;
       if(cloud.suppChecks){if(!D.suppChecks)D.suppChecks={};Object.keys(cloud.suppChecks).forEach(function(k){if(!D.suppChecks[k])D.suppChecks[k]=cloud.suppChecks[k];});}
       if(cloud.skinChecks){if(!D.skinChecks)D.skinChecks={};Object.keys(cloud.skinChecks).forEach(function(k){if(!D.skinChecks[k])D.skinChecks[k]=cloud.skinChecks[k];});}
+      if(cloud.bfChecks){if(!D.bfChecks)D.bfChecks={};Object.assign(D.bfChecks,cloud.bfChecks);}
+      if(cloud.habitChecks){if(!D.habitChecks)D.habitChecks={};Object.keys(cloud.habitChecks).forEach(function(k){if(!D.habitChecks[k])D.habitChecks[k]=cloud.habitChecks[k];});}
       if(cloud.photos&&cloud.photos.length>(D.photos||[]).length)D.photos=cloud.photos;
       localStorage.setItem(SK,JSON.stringify(D));
       renderAll();
@@ -937,29 +1227,283 @@ async function pullFromCloud(){
 
 // Override save to also push to cloud — defined above as single function
 
-function renderSupps(){
-  var t=today();if(!D.suppChecks[t])D.suppChecks[t]={};var ch=D.suppChecks[t];
-  var q=document.getElementById('suppQ');
-  if(q)q.innerHTML=SUPPS.filter(function(s){return s.p==='high';}).map(function(s){
-    var d=ch[s.id];
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);">'
-      +'<div><div style="font-size:12px;font-weight:500;color:'+(d?'var(--text-dim)':'var(--text)')+';text-decoration:'+(d?'line-through':'none')+'">'+s.name+' <span style="color:var(--text-dim);font-weight:400">'+s.detail+'</span></div>'
-      +'<div style="font-size:10px;color:var(--rose);font-family:\'DM Mono\',monospace;margin-top:2px;">'+s.time+'</div></div>'
-      +'<div style="width:22px;height:22px;border-radius:50%;border:1.5px solid '+(d?'var(--sage)':'var(--border2)')+';background:'+(d?'var(--sage)':'transparent')+';display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;" onclick="toggleSupp(\''+s.id+'\')">'
-      +(d?'<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M2 5l2 2 4-4"/></svg>':'')+'</div></div>';
-  }).join('');
-  var g=document.getElementById('suppG');
-  if(g)g.innerHTML=SUPPS.map(function(s){return '<div class="supp-item '+(ch[s.id]?'done':'')+'" onclick="toggleSupp(\''+s.id+'\')"><div class="s-name">'+s.name+'</div><div class="s-detail">'+s.detail+'</div><div class="s-time">'+s.time+'</div></div>';}).join('');
-  var dl=document.getElementById('suppDetail');
-  if(dl){
-    var tot=SUPPS.length,dn=Object.values(ch).filter(Boolean).length;
-    dl.innerHTML='<div style="font-size:12px;color:var(--text-mid);margin-bottom:6px;">'+dn+' of '+tot+' taken today</div>'
-      +'<div style="height:4px;background:var(--cream3);border-radius:4px;overflow:hidden;margin-bottom:12px;"><div style="height:100%;width:'+(dn/tot*100)+'%;background:var(--sage);border-radius:4px;transition:width 0.4s;"></div></div>'
-      +'<div style="font-size:11px;color:var(--text-mid);line-height:1.9;">🌅 <strong style="color:var(--text)">Morning:</strong> Collagen · Creatine · D3+K2 · B Complex · Matcha · Spearmint<br>🍽️ <strong style="color:var(--text)">Dinner:</strong> Omega-3 · Zinc · Turmeric<br>🌙 <strong style="color:var(--text)">Bed:</strong> Magnesium — non-negotiable<br>🏋️ <strong style="color:var(--text)">Training days:</strong> RE-LYTE + Protein post-workout</div>';
+const SUPP_BLOCKS=[
+  {label:'☀️ Morning',items:['vitd','collagen','bcomplex','matcha','spearmint_am']},
+  {label:'🏋️ Training Days Only',items:['relyte','protein']},
+  {label:'🍽️ Dinner',items:['omega3','zinc','turmeric','ashwagandha']},
+  {label:'🌙 Bedtime',items:['magnesium','creatine']},
+];
+
+function showSuppInfo(id){
+  var suppMap={};SUPPS.forEach(function(s){suppMap[s.id]=s;});
+  var s=suppMap[id];if(!s)return;
+  document.getElementById('suppInfoName').textContent=s.name;
+  var badges='';
+  if(s.mandatory)badges+='<span class="supp-info-badge badge-mandatory">★ Daily Essential</span>';
+  if(s.weekdays)badges+='<span class="supp-info-badge badge-weekdays">Weekdays Only</span>';
+  document.getElementById('suppInfoBadges').innerHTML=badges;
+  document.getElementById('suppInfoText').textContent=s.info||'No info available.';
+  document.getElementById('suppInfoModal').classList.add('open');
+}
+
+function checkMidnightReset(){
+  var t=today();
+  var lastReset=localStorage.getItem('gg_last_reset');
+  if(lastReset!==t){
+    // New day — reset daily checks but preserve data
+    if(!D.suppChecks)D.suppChecks={};
+    if(!D.skinChecks)D.skinChecks={};
+    if(!D.habitChecks)D.habitChecks={};
+    // Data from yesterday is already saved under yesterday's date key — just ensure today exists
+    if(!D.suppChecks[t])D.suppChecks[t]={};
+    if(!D.skinChecks[t])D.skinChecks[t]={};
+    if(!D.habitChecks[t])D.habitChecks[t]={};
+    // bfChecks: cumulative program keys stay, daily key resets
+    if(!D.bfChecks)D.bfChecks={};
+    // daily fascia key is date-stamped so naturally resets each day
+    localStorage.setItem('gg_last_reset',t);
+    localStorage.setItem(SK,JSON.stringify(D));
   }
 }
 
-function renderAll(){updateDash();renderChart();renderSupps();renderEx();renderGymHist();renderBodyHist();renderPhotos();renderSkin();}
+function renderSupps(){
+  checkMidnightReset();
+  var t=today();
+  if(!D.suppChecks)D.suppChecks={};
+  if(!D.suppChecks[t])D.suppChecks[t]={};
+  var ch=D.suppChecks[t];
+  document.getElementById('suppDateLbl').textContent=new Date().toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'short'});
+  var suppMap={};SUPPS.forEach(function(s){suppMap[s.id]=s;});
+  var html='';
+  SUPP_BLOCKS.forEach(function(block){
+    var bs=block.items.map(function(id){return suppMap[id];}).filter(Boolean);
+    var dn=bs.filter(function(s){return ch[s.id];}).length;
+    var tot=bs.length;
+    var pct=tot?Math.round(dn/tot*100):0;
+    html+='<div class="supp-block">'
+      +'<div class="supp-block-header">'
+      +'<div class="supp-block-title">'+block.label+'</div>'
+      +'<div class="supp-block-prog"><div class="supp-block-fill" style="width:'+pct+'%"></div></div>'
+      +'<div style="font-size:10px;color:var(--text-dim);font-family:\'DM Mono\',monospace;margin-left:6px;">'+dn+'/'+tot+'</div>'
+      +'</div>';
+    bs.forEach(function(s){
+      var d=ch[s.id]||false;
+      var isMandatory=s.mandatory||false;
+      html+='<div class="supp-row'+(isMandatory?' supp-mandatory':'')+'">'
+        +'<div class="supp-i-btn" onclick="showSuppInfo(\''+s.id+'\')" title="About this supplement">i</div>'
+        +'<div class="supp-row-info">'
+        +'<div class="supp-row-name'+(d?' done-txt':'')+'">'+s.name+(isMandatory?' ★':s.weekdays?' ·':'')+' </div>'
+        +'<div class="supp-row-detail">'+s.detail+(s.weekdays?' · <em>Weekdays</em>':'')+'</div>'
+        +'</div>'
+        +'<div class="supp-check'+(d?' ticked':'')+'" onclick="toggleSupp(\''+s.id+'\')">'
+        +(d?'<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M2 5l2 2 4-4"/></svg>':'')
+        +'</div></div>';
+    });
+    html+='</div>';
+  });
+  var el=document.getElementById('suppBlocks');if(el)el.innerHTML=html;
+  var totAll=SUPPS.length,dnAll=Object.values(ch).filter(Boolean).length;
+  var ts=document.getElementById('tdSupps');
+  if(ts)ts.innerHTML=dnAll+'<span style="font-size:7px;display:block;line-height:1;">of '+totAll+'</span>';
+  updateRing('ringSupps',dnAll,totAll);
+  var q=document.getElementById('suppQ');if(q)q.innerHTML='';
+}
+
+// ── BEAUTY FASCIA PROGRAM ───────────────────────────────────
+const BF_DAYS=[
+  {id:'bf1', label:'Day 1', desc:'2.1 + 2.2 — Groundwork & Jawline'},
+  {id:'bf2', label:'Day 2', desc:'6.1 + 6.2 — Jawline & Masseter'},
+  {id:'bf3', label:'Day 3', desc:'9.1 + 8.2 — Chest, Eyes, Forehead & Scalp'},
+  {id:'bf4', label:'Day 4', desc:'10.1 + 10.2 — Whole Face'},
+  {id:'bf5', label:'Day 5', desc:'11.1 + 11.2 — Jawline, Lips & Nose'},
+  {id:'bf6', label:'Day 6', desc:'12.1 + 12.2 — Whole Face (oil massage)'},
+  {id:'bf7', label:'Day 7', desc:'14.1 + 14.2 — Upper Body and Jaw'},
+  {id:'bf8', label:'Day 8', desc:'15.1 + 15.2 — Eyes & Forehead (band & suction cups)'},
+  {id:'bf9', label:'Day 9', desc:'20.1 + 20.2 + 20.3 — Facelift (spine, scalp, hair)'},
+  {id:'bf10',label:'Day 10',desc:'21.1 + 21.2 — Neck & Jawline with Cups'},
+  {id:'bf11',label:'Day 11',desc:'23.1 + 23.2 + 23.3 — Advanced Neck'},
+  {id:'bf12',label:'Day 12',desc:'18.1 + 18.2 + 18.3 — Eyes & Eyebrows'},
+  {id:'bf13',label:'Day 13',desc:'17.1 + 17.2 — Facelift (ball & oil)'},
+  {id:'bf14',label:'Day 14',desc:'24.1 + 24.2 — Mouth, Lips & Depressor'},
+  {id:'bf15',label:'Day 15',desc:'27.1 + 27.2 + 27.3 — Facelift & Nasolabial Folds'},
+  {id:'bf16',label:'Day 16',desc:'28.1 + 28.2 — Eyes & Brows'},
+  {id:'bfx1',label:'Extra 1',desc:'Consistency 1'},
+  {id:'bfx2',label:'Extra 2',desc:'Consistency 2'},
+];
+
+function renderBF(){
+  if(!D.bfChecks)D.bfChecks={};
+  var ch=D.bfChecks;
+  var done=BF_DAYS.filter(function(d){return ch[d.id];}).length;
+  var tot=BF_DAYS.length;
+  var pt=document.getElementById('bfProgTitle');
+  if(pt)pt.textContent=done+' / '+tot+' completed';
+  var el=document.getElementById('bfList');
+  if(!el)return;
+  el.innerHTML=BF_DAYS.map(function(d){
+    var isDone=ch[d.id]||false;
+    return '<div class="skin-row">'
+      +'<div class="skin-step-num" style="width:38px;font-size:9px;font-weight:700;color:'+(isDone?'var(--sage)':'var(--text-dim)')+'">'+d.label+'</div>'
+      +'<div class="skin-row-info">'
+      +'<div class="skin-row-name'+(isDone?' done-txt':'')+'">'+d.desc+'</div>'
+      +'</div>'
+      +'<div class="skin-check'+(isDone?' ticked':'')+'" onclick="toggleBF(\''+d.id+'\')">'
+      +(isDone?'<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M2 5l2 2 4-4"/></svg>':'')
+      +'</div></div>';
+  }).join('');
+  var cb=document.getElementById('bfCongratsB');
+  if(cb)cb.classList.toggle('show',done===tot);
+  // Arc: daily — did I log ANY fascia today?
+  var t=today();
+  var todayFascia=D.bfChecks['fascia_daily_'+t]||false;
+  var tf=document.getElementById('tdFascia');
+  if(tf)tf.textContent=todayFascia?'✓':'—';
+  updateRing('ringFascia',todayFascia?1:0,1);
+  // Sync the daily button visual
+  var btn=document.getElementById('bfDailyCheck');
+  if(btn){
+    btn.style.background=todayFascia?'var(--gold)':'transparent';
+    btn.style.borderColor=todayFascia?'var(--gold)':'var(--border2)';
+    btn.innerHTML=todayFascia?'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M2 6l3 3 5-5"/></svg>':'';
+  }
+}
+
+function toggleBF(id){
+  if(!D.bfChecks)D.bfChecks={};
+  D.bfChecks[id]=!D.bfChecks[id];
+  save(D);renderBF();
+  toast(D.bfChecks[id]?'✓ Day done!':'Unmarked');
+}
+
+function toggleBFDaily(){
+  if(!D.bfChecks)D.bfChecks={};
+  var t=today();
+  var key='fascia_daily_'+t;
+  D.bfChecks[key]=!D.bfChecks[key];
+  save(D);renderBF();
+  // Update the daily check button
+  var btn=document.getElementById('bfDailyCheck');
+  if(btn){
+    var done=D.bfChecks[key]||false;
+    btn.style.background=done?'var(--gold)':'transparent';
+    btn.style.borderColor=done?'var(--gold)':'var(--border2)';
+    btn.innerHTML=done?'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M2 6l3 3 5-5"/></svg>':'';
+  }
+  toast(D.bfChecks[key]?'✓ Fascia done today!':'Unmarked');
+}
+
+// ── HABITS ───────────────────────────────────────────────────
+const HABITS={
+  am:[
+    {id:'h_nophone_am',name:'No phone first 30 min',sub:'Start the day on your terms, not the algorithm\'s'},
+    {id:'h_slowmorning',name:'Slow morning',sub:'Breakfast without rushing — no screen at the table'},
+  ],
+  mid:[
+    {id:'h_steps',name:'5,000 steps',sub:'Move through the day — stairs, walk at lunch, after dinner'},
+  ],
+  pm:[
+    {id:'h_nophone_pm',name:'Phone out of bedroom',sub:'Charge in another room overnight — no exceptions'},
+    {id:'h_journal',name:'8 min journalling',sub:'Wind-down block — pen and paper only'},
+    {id:'h_read',name:'Read 10+ pages',sub:'Real book, not a screen — this is your sleep ritual'},
+    {id:'h_lights',name:'Lights out by 10:30pm',sub:'Non-negotiable for recovery and cortisol reset'},
+  ]
+};
+
+const QUOTES=[
+  'The woman who does not require validation from anyone is the most feared individual on the planet. — Mohadesa Najumi',
+  'She remembered who she was and the game changed. — Lalah Delia',
+  'You are not a drop in the ocean. You are the entire ocean in a drop. — Rumi',
+  'Be so good they cannot ignore you. — Steve Martin',
+  'What you do every day matters more than what you do every once in a while. — Gretchen Rubin',
+  'The secret of getting ahead is getting started. — Mark Twain',
+  'Your body is your most priceless possession. Take care of it. — Jack LaLanne',
+  'The only bad workout is the one that didn\'t happen.',
+  'Invest in yourself. It pays the best interest. — Benjamin Franklin',
+  'A year from now you will wish you had started today. — Karen Lamb',
+  'Life is not measured by the number of breaths we take, but by the moments that take our breath away. — Maya Angelou',
+  'Small daily improvements are the key to staggering long-term results. — Robin Sharma',
+  'You don\'t have to be extreme, just consistent.',
+  'The groundwork of all happiness is health. — Leigh Hunt',
+  'Strong women don\'t have attitudes. They have standards. — Unknown',
+  'Take care of your body. It\'s the only place you have to live. — Jim Rohn',
+  'Discipline is choosing between what you want now and what you want most. — Augusta F. Kantra',
+  'Progress, not perfection. — Unknown',
+  'Your life is the sum of a remainder of an unbalanced equation inherent to the programming of the universe. — Unknown',
+  'The comeback is always stronger than the setback. — Unknown',
+  'Be the energy you want to attract. — Unknown',
+  'You are allowed to be both a masterpiece and a work in progress simultaneously. — Sophia Bush',
+  'What lies behind us and what lies before us are tiny matters compared to what lies within us. — Ralph Waldo Emerson',
+  'Success is not final, failure is not fatal: it is the courage to continue that counts. — Winston Churchill',
+  'Happiness is not something ready-made. It comes from your own actions. — Dalai Lama',
+  'The best time to plant a tree was 20 years ago. The second best time is now. — Chinese Proverb',
+  'Your only limit is your mind. — Unknown',
+  'Believe you can and you\'re halfway there. — Theodore Roosevelt',
+  'Do something today that your future self will thank you for. — Unknown',
+  'Strive not to be a success, but rather to be of value. — Albert Einstein',
+  'Everything you\'ve ever wanted is on the other side of fear. — George Addair',
+];
+
+function renderHabits(){
+  var t=today();
+  if(!D.habitChecks)D.habitChecks={};
+  if(!D.habitChecks[t])D.habitChecks[t]={};
+  var ch=D.habitChecks[t];
+  document.getElementById('habitsDateLbl').textContent=new Date().toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'short'});
+  var doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+  var q=document.getElementById('dailyQuote');
+  if(q)q.innerHTML=QUOTES[doy%QUOTES.length];
+  function makeHabitRow(h){
+    var done=ch[h.id]||false;
+    return '<div class="skin-row">'
+      +'<div class="skin-row-info" style="margin-left:0;">'
+      +'<div class="skin-row-name'+(done?' done-txt':'')+'">'+h.name+'</div>'
+      +'<div class="skin-row-product">'+h.sub+'</div>'
+      +'</div>'
+      +'<div class="skin-check'+(done?' ticked':'')+'" onclick="toggleHabit(\''+h.id+'\')">'
+      +(done?'<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M2 5l2 2 4-4"/></svg>':'')
+      +'</div></div>';
+  }
+  checkMidnightReset();
+  var am=document.getElementById('habitsAM');if(am)am.innerHTML=HABITS.am.map(makeHabitRow).join('');
+  var mid=document.getElementById('habitsMid');if(mid)mid.innerHTML=HABITS.mid.map(makeHabitRow).join('');
+  var pm=document.getElementById('habitsPM');if(pm)pm.innerHTML=HABITS.pm.map(makeHabitRow).join('');
+  // ring
+  var allH=HABITS.am.concat(HABITS.mid).concat(HABITS.pm);
+  var tot=allH.length;
+  var done=allH.filter(function(h){return ch[h.id];}).length;
+  var th=document.getElementById('tdHabits');
+  if(th)th.innerHTML=done+'<span style="font-size:7px;display:block;line-height:1;">of '+tot+'</span>';
+  updateRing('ringHabits',done,tot);
+}
+
+function toggleHabit(id){
+  var t=today();
+  if(!D.habitChecks)D.habitChecks={};
+  if(!D.habitChecks[t])D.habitChecks[t]={};
+  D.habitChecks[t][id]=!D.habitChecks[t][id];
+  save(D);renderHabits();
+  toast(D.habitChecks[t][id]?'✓ Done!':'Unmarked');
+}
+
+function resetHabits(){
+  if(!D.habitChecks)D.habitChecks={};
+  D.habitChecks[today()]={};
+  save(D);renderHabits();toast('Reset for today');
+}
+
+function renderAll(){updateDash();renderChart();renderSupps();renderEx();renderGymHist();renderBodyHist();renderPhotos();renderSkin();renderBF();renderHabits();}
+
+function scheduleMidnightReset(){
+  var now=new Date();
+  var midnight=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,0,5);
+  var ms=midnight-now;
+  setTimeout(function(){
+    // Data from previous day is already saved under its date key — no action needed
+    // Just re-render so today's checklists start fresh
+    renderAll();
+    scheduleMidnightReset();
+  },ms);
+}
 
 function init(){
   var now=new Date();
@@ -971,9 +1515,11 @@ function init(){
   var doy=Math.floor((now-new Date(now.getFullYear(),0,0))/86400000);
   document.getElementById('insight').innerHTML=INSIGHTS[doy%INSIGHTS.length];
   if(!D.skinChecks)D.skinChecks={};
+  if(!D.bfChecks)D.bfChecks={};
+  if(!D.habitChecks)D.habitChecks={};
   renderAll();
-  // pull from cloud on load
   setTimeout(pullFromCloud,1000);
+  scheduleMidnightReset();
 }
 
 function toggleSupp(id){
