@@ -785,17 +785,6 @@ function renderChart(){
     } else kdEl.innerHTML='';
   }
 
-  // ── X-AXIS: fixed monthly labels, equally spaced, decoupled from scan points ──
-  // Use date strings as labels so Chart.js time axis can space them evenly
-  const lbl=sc.map(function(s){return s.date;});// ISO dates e.g. "2023-01-05"
-  var _lastYM=-999;
-  const lblVisible=lbl.map(function(l){
-    var p=l.split('-');
-    var mm=parseInt(p[1]),yy=parseInt(p[0]);
-    var ym=yy*12+mm;
-    if(_lastYM===-999||(ym-_lastYM)>=3){_lastYM=ym;return p[1]+'-'+p[0].slice(2);}
-    return null;
-  });
 
   const baseOpts={responsive:true,maintainAspectRatio:false,
     plugins:{
