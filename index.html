@@ -78,7 +78,7 @@ body{font-family:'Figtree',sans-serif;background:var(--cream);color:var(--text);
 .badge-weekdays{background:var(--cream3);color:var(--text-mid);}
 .supp-info-text{font-size:13px;color:var(--text-mid);line-height:1.7;}
 .supp-i-btn{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:9px;font-weight:700;color:var(--text-dim);font-family:'DM Mono',monospace;margin-right:8px;transition:all 0.15s;}
-.supp-mandatory .supp-row-name{font-weight:700;color:var(--brown);}
+.supp-mandatory .supp-row-name{font-weight:700;color:#2596be;}
 .range-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .range-pill{padding:5px 13px;border-radius:3px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--text-mid);transition:all 0.15s;font-family:'Figtree',sans-serif;letter-spacing:0.2px;}
 .range-pill.active{background:var(--brown);color:var(--cream);border-color:var(--brown);}
@@ -142,7 +142,7 @@ textarea{resize:none;height:72px;}
 /* SUPPLEMENTS — time block style */
 .supp-block{margin-bottom:16px;}
 .supp-block-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--text);}
-.supp-block-title{font-family:'DM Serif Display',serif;font-size:15px;color:var(--brown);}
+.supp-block-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--brown);letter-spacing:-0.2px;}
 .supp-block-prog{flex:1;height:3px;background:var(--cream3);border-radius:3px;overflow:hidden;}
 .supp-block-fill{height:100%;background:var(--sage);border-radius:3px;transition:width 0.4s;}
 .supp-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--cream3);}
@@ -481,15 +481,15 @@ textarea{resize:none;height:72px;}
     <div class="modal-title">Settings & Data</div>
     <div class="settings-row">
       <p style="font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:4px;">Cloud sync status: <span id="syncStatus">checking...</span></p>
-      <button class="btn btn-dark" onclick="pullFromCloud();document.getElementById('settingsModal').classList.remove('open')" style="font-size:12px;padding:10px;">⬇ Pull from Cloud</button>
-      <button class="btn btn-outline" onclick="pushToCloud();document.getElementById('settingsModal').classList.remove('open')" style="font-size:12px;padding:10px;">⬆ Push to Cloud</button>
+      <button class="btn btn-dark" onclick="pullFromCloud();document.getElementById('settingsModal').classList.remove('open')" style="font-size:12px;padding:10px;">↓ Pull from Cloud</button>
+      <button class="btn btn-outline" onclick="pushToCloud();document.getElementById('settingsModal').classList.remove('open')" style="font-size:12px;padding:10px;">↑ Push to Cloud</button>
       <div style="height:1px;background:var(--border);margin:8px 0;"></div>
-      <button class="btn btn-outline" onclick="document.getElementById('settingsModal').classList.remove('open');document.getElementById('impModal').classList.add('open')" style="font-size:12px;padding:10px;">⬆ Import JSON</button>
-      <button class="btn btn-outline" onclick="expJSON()" style="font-size:12px;padding:10px;">⬇ Export JSON (full backup)</button>
-      <button class="btn btn-outline" onclick="expCSV()" style="font-size:12px;padding:10px;">⬇ CSV — Body</button>
-      <button class="btn btn-outline" onclick="expGymCSV()" style="font-size:12px;padding:10px;">⬇ CSV — Gym</button>
-      <button class="btn btn-outline" onclick="expSuppCSV()" style="font-size:12px;padding:10px;">⬇ CSV — Supplements</button>
-      <button class="btn btn-outline" onclick="expSkinCSV()" style="font-size:12px;padding:10px;">⬇ CSV — Skincare</button>
+      <button class="btn btn-outline" onclick="document.getElementById('settingsModal').classList.remove('open');document.getElementById('impModal').classList.add('open')" style="font-size:12px;padding:10px;">↑ Import JSON</button>
+      <button class="btn btn-outline" onclick="expJSON()" style="font-size:12px;padding:10px;">↓ Export JSON (full backup)</button>
+      <button class="btn btn-outline" onclick="expCSV()" style="font-size:12px;padding:10px;">↓ CSV — Body</button>
+      <button class="btn btn-outline" onclick="expGymCSV()" style="font-size:12px;padding:10px;">↓ CSV — Gym</button>
+      <button class="btn btn-outline" onclick="expSuppCSV()" style="font-size:12px;padding:10px;">↓ CSV — Supplements</button>
+      <button class="btn btn-outline" onclick="expSkinCSV()" style="font-size:12px;padding:10px;">↓ CSV — Skincare</button>
     </div>
   </div>
 </div>
@@ -533,13 +533,11 @@ function seed(){return{
     {date:'2022-12-21',weight:56.7,bf:28.4,muscle:67.2,hydration:48.0,bone:4.3,tdee:1836,waist:null,hip:null,note:''},
     {date:'2022-12-28',weight:56.7,bf:28.4,muscle:67.2,hydration:48.0,bone:4.3,tdee:1836,waist:null,hip:null,note:''},
     {date:'2023-01-05',weight:57.5,bf:28.9,muscle:66.7,hydration:47.8,bone:4.3,tdee:1847,waist:null,hip:null,note:''},
-    {date:'2023-02-27',weight:57.9,bf:null,muscle:null,hydration:null,bone:null,tdee:null,waist:null,hip:null,note:'Joined Arup'},
     {date:'2023-05-22',weight:58.7,bf:29.8,muscle:65.9,hydration:47.4,bone:4.2,tdee:1861,waist:null,hip:null,note:''},
     {date:'2023-05-29',weight:58.7,bf:29.8,muscle:65.9,hydration:47.4,bone:4.2,tdee:1861,waist:null,hip:null,note:''},
     {date:'2023-09-23',weight:59.5,bf:30.5,muscle:65.5,hydration:47.3,bone:4.2,tdee:1873,waist:null,hip:null,note:''},
     {date:'2023-11-08',weight:58.9,bf:29.9,muscle:65.8,hydration:47.5,bone:4.2,tdee:1865,waist:null,hip:null,note:''},
     {date:'2024-04-04',weight:59.2,bf:30.1,muscle:65.6,hydration:47.3,bone:4.2,tdee:1861,waist:null,hip:null,note:''},
-    {date:'2024-07-24',weight:59.9,bf:null,muscle:null,hydration:null,bone:null,tdee:null,waist:null,hip:null,note:'Joined Remedy gym'},
     {date:'2024-08-14',weight:60.9,bf:31.0,muscle:64.7,hydration:47.0,bone:4.2,tdee:1882,waist:null,hip:null,note:''},
     {date:'2025-01-28',weight:61.0,bf:31.1,muscle:64.6,hydration:46.9,bone:4.2,tdee:1889,waist:null,hip:null,note:''},
     {date:'2025-02-11',weight:60.5,bf:30.7,muscle:65.0,hydration:47.0,bone:4.2,tdee:1877,waist:null,hip:null,note:''},
@@ -579,18 +577,15 @@ if(D.gymSessions.length===0){D.gymSessions=[...SEED_SESSIONS];save(D);}
 
 // KD categories: trip, nutrition, arup, medical, gym, other
 const KD_CAT={
-  '2022-08-04':{label:'Arrived in Australia — 04-08-22',      cat:'other'},
-  '2023-02-27':{label:'Joined Arup — 27-02-23',               cat:'arup'},
-  '2024-07-24':{label:'Joined Remedy gym — 24-07-24',         cat:'gym'},
-  '2025-04-03':{label:'Colombia trip — 03-04-25',             cat:'trip'},
-  '2025-05-14':{label:'Thailand trip — 14-05-25',             cat:'trip'},
-  '2025-06-05':{label:'Started nutritionist — 05-06-25',      cat:'nutrition'},
-  '2025-06-15':{label:'Surgery — 15-06-25',                   cat:'medical'},
-  '2025-07-09':{label:'Vietnam trip — 09-07-25',              cat:'trip'},
-  '2025-07-30':{label:'Holidays + wedding — 30-07-25',        cat:'other'},
-  '2025-08-10':{label:'Resumed gym — 10-08-25',               cat:'gym'},
+  '2022-10-27':{label:'Arrived in Australia',    cat:'other'},
+  '2023-01-05':{label:'1st Colombia trip',        cat:'trip'},
+  '2024-08-14':{label:'Joined Remedy gym',        cat:'gym'},
+  '2025-04-03':{label:'2nd Colombia trip',        cat:'trip'},
+  '2025-05-14':{label:'2nd Thailand trip',        cat:'trip'},
+  '2025-06-05':{label:'Started nutritionist',     cat:'nutrition'},
+  '2025-06-15':{label:'Surgery',                  cat:'medical'},
+  '2025-08-10':{label:'Resumed gym',              cat:'gym'},
 };
-// Colours per category — only 6 needed
 const KD_CAT_COLORS={
   trip:     '#C4922A',
   nutrition:'#4A7C59',
@@ -599,7 +594,6 @@ const KD_CAT_COLORS={
   medical:  '#7C5C9A',
   other:    '#8C7456',
 };
-// Legacy KD object for tooltip compatibility
 const KD={};
 Object.keys(KD_CAT).forEach(function(k){KD[k]=KD_CAT[k].label;});
 
@@ -760,22 +754,22 @@ const CC={w:'rgb(212,168,186)',bf:'rgb(200,148,128)',mu:'rgb(140,185,140)',bmi:'
 
 function renderChart(){
   const sc=filteredScans();
-  // X-axis labels: one per scan point, formatted as mm-yyyy
-  const lbl=sc.map(function(s){
-    var parts=s.date.split('-');
-    return parts[1]+'-'+parts[0];// mm-yyyy e.g. "02-2023"
-  });
+  window._shownQ={};// reset quarterly label tracker
   document.getElementById('cFn').textContent='';
-  // Key date point colors — by category
+
+  // Key date colours — defined first
+  const KD_CAT_C=KD_CAT_COLORS;
   const ptR=2;
   const ptBgKD=function(c){return sc.map(function(s){
-    if(KD_CAT[s.date])return KD_CAT_COLORS[KD_CAT[s.date].cat]||'#8C7456';
-    if(s.note)return KD_CAT_COLORS.other;
+    if(KD_CAT[s.date])return KD_CAT_C[KD_CAT[s.date].cat]||'#8C7456';
+    if(s.note)return KD_CAT_C.other;
     return c;
   });};
   const ptBg=ptBgKD;
-  const ptRKD=function(){return sc.map(function(s){return(KD[s.date]||s.note)?ptR+1.5:ptR;});};
+  const ptRKD=function(){return sc.map(function(s){return(KD_CAT[s.date]||s.note)?ptR+1.5:ptR;});};
   const ptBorderKD=function(){return sc.map(function(s){return 0;});};
+
+  // Build legend
   const kdInRange=sc.filter(s=>KD_CAT[s.date]||s.note);
   const kdEl=document.getElementById('kdL');
   if(kdEl){
@@ -784,41 +778,62 @@ function renderChart(){
       var html='<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">';
       Object.keys(catLabels).forEach(function(cat){
         var hasAny=kdInRange.some(function(s){return KD_CAT[s.date]&&KD_CAT[s.date].cat===cat;});
-        if(hasAny){
-          html+='<div style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text-mid);font-weight:500;">'
-            +'<div style="width:8px;height:8px;border-radius:50%;background:'+KD_CAT_COLORS[cat]+';flex-shrink:0;"></div>'
-            +catLabels[cat]+'</div>';
-        }
+        if(hasAny) html+='<div style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text-mid);font-weight:500;"><div style="width:8px;height:8px;border-radius:50%;background:'+KD_CAT_C[cat]+';flex-shrink:0;"></div>'+catLabels[cat]+'</div>';
       });
       html+='</div>';
       kdEl.innerHTML=html;
     } else kdEl.innerHTML='';
   }
+
+  // ── X-AXIS: fixed monthly labels, equally spaced, decoupled from scan points ──
+  // Use date strings as labels so Chart.js time axis can space them evenly
+  const lbl=sc.map(function(s){return s.date;});// ISO dates e.g. "2023-01-05"
+  var _lastYM=-999;
+  const lblVisible=lbl.map(function(l){
+    var p=l.split('-');
+    var mm=parseInt(p[1]),yy=parseInt(p[0]);
+    var ym=yy*12+mm;
+    if(_lastYM===-999||(ym-_lastYM)>=3){_lastYM=ym;return p[1]+'-'+p[0].slice(2);}
+    return null;
+  });
+
   const baseOpts={responsive:true,maintainAspectRatio:false,
     plugins:{
-      legend:{labels:{color:'#7A6A56',font:{size:10,family:'Jost'},boxWidth:10,padding:10}},
+      legend:{labels:{color:'#7A6A56',font:{size:10,family:'Figtree'},boxWidth:10,padding:10}},
       tooltip:{callbacks:{
         title:function(items){
           var idx=items[0]?items[0].dataIndex:undefined;if(idx===undefined)return '';
           var s=sc[idx];var p=s.date.split('-');
-          return p[2]+'-'+p[1]+'-'+p[0].slice(2);// dd-mm-yy
+          return p[2]+'-'+p[1]+'-'+p[0].slice(2);
         },
-        afterBody:function(items){const idx=items[0]?items[0].dataIndex:undefined;if(idx===undefined)return;const s=sc[idx];const kd=KD[s.date]||s.note;return kd?['','— '+kd]:[];}},
-        backgroundColor:'rgba(58,46,34,0.9)',titleColor:'#FAF7F2',bodyColor:'#DDD4C2',borderColor:'rgba(196,130,106,0.3)',borderWidth:1,cornerRadius:8,padding:10}
+        afterBody:function(items){
+          var idx=items[0]?items[0].dataIndex:undefined;if(idx===undefined)return;
+          var s=sc[idx];
+          var kd=KD_CAT[s.date]?KD_CAT[s.date].label:s.note;
+          return kd?['','— '+kd]:[];
+        }
+      },
+      backgroundColor:'rgba(28,20,16,0.92)',titleColor:'#FAF7F2',bodyColor:'#DDD4C2',borderColor:'rgba(196,130,106,0.3)',borderWidth:1,cornerRadius:8,padding:10}
     },
     scales:{
-      x:{ticks:{color:'#A8977F',font:{size:9},maxRotation:45,minRotation:30,
+      x:{ticks:{color:'#A8977F',font:{size:9},maxRotation:40,minRotation:20,
         callback:function(val,idx){
-          // Show label only if this scan is ~2+ months from the previous shown label
-          var shown=lbl[idx];if(!shown)return null;
-          // Only show if different from previous visible label
-          var prev=idx>0?lbl[idx-1]:null;
-          if(!prev)return shown;
-          // Parse mm-yyyy
-          var pm=parseInt(prev.split('-')[0]),py=parseInt(prev.split('-')[1]);
-          var cm=parseInt(shown.split('-')[0]),cy=parseInt(shown.split('-')[1]);
-          var monthsDiff=(cy-py)*12+(cm-pm);
-          return monthsDiff>=2?shown:null;
+          // Generate evenly-spaced quarterly labels regardless of scan density
+          var label=lbl[idx];if(!label)return null;
+          var p=label.split('-');
+          var mm=parseInt(p[1]),yy=parseInt(p[0]);
+          // Show only Jan, Apr, Jul, Oct (quarterly) 
+          if(mm===1||mm===4||mm===7||mm===10){
+            // Check if we already showed this quarter
+            var qKey=yy+'-'+mm;
+            if(!window._shownQ)window._shownQ={};
+            if(window._shownQ[qKey])return null;
+            window._shownQ[qKey]=true;
+            return (mm<10?'0'+mm:mm)+'-'+String(yy).slice(2);
+          }
+          // Always show first point
+          if(idx===0){return (mm<10?'0'+mm:mm)+'-'+String(yy).slice(2);}
+          return null;
         }
       },grid:{color:'rgba(58,46,34,0.04)'}},
       y:{ticks:{color:'#A8977F',font:{size:9}},grid:{color:'rgba(58,46,34,0.04)'}}
@@ -1196,7 +1211,7 @@ async function pushToCloud(){
 }
 
 async function pullFromCloud(){
-  setSS('⬇️ Checking cloud...');
+  setSS('Checking cloud...');
   try{
     var resp=await fetch(SYNC_URL+'?key='+SYNC_KEY+'&cb='+Date.now());
     if(!resp.ok)throw new Error('bad response');
@@ -1228,10 +1243,10 @@ async function pullFromCloud(){
 // Override save to also push to cloud — defined above as single function
 
 const SUPP_BLOCKS=[
-  {label:'☀️ Morning',items:['vitd','collagen','bcomplex','matcha','spearmint_am']},
-  {label:'🏋️ Training Days Only',items:['relyte','protein']},
-  {label:'🍽️ Dinner',items:['omega3','zinc','turmeric','ashwagandha']},
-  {label:'🌙 Bedtime',items:['magnesium','creatine']},
+  {label:'Morning',items:['vitd','collagen','bcomplex','matcha','spearmint_am']},
+  {label:'Training Days Only',items:['relyte','protein']},
+  {label:'Dinner',items:['omega3','zinc','turmeric','ashwagandha']},
+  {label:'Bedtime',items:['magnesium','creatine']},
 ];
 
 function showSuppInfo(id){
@@ -1292,7 +1307,7 @@ function renderSupps(){
       html+='<div class="supp-row'+(isMandatory?' supp-mandatory':'')+'">'
         +'<div class="supp-i-btn" onclick="showSuppInfo(\''+s.id+'\')" title="About this supplement">i</div>'
         +'<div class="supp-row-info">'
-        +'<div class="supp-row-name'+(d?' done-txt':'')+'">'+s.name+(isMandatory?' ★':s.weekdays?' ·':'')+' </div>'
+        +'<div class="supp-row-name'+(d?' done-txt':'')+'">'+s.name+(s.weekdays?' ·':'')+' </div>'
         +'<div class="supp-row-detail">'+s.detail+(s.weekdays?' · <em>Weekdays</em>':'')+'</div>'
         +'</div>'
         +'<div class="supp-check'+(d?' ticked':'')+'" onclick="toggleSupp(\''+s.id+'\')">'
