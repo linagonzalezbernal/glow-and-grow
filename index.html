@@ -8,58 +8,66 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Figtree:wght@300;400;500;600;700&family=DM+Mono:wght@300;400&display=swap');
 :root{
-  --cream:#F5F0E8;--cream2:#EDE6D8;--cream3:#E2D8C4;--cream4:#D4C9B0;
-  --border:#C8BAA0;--border2:#B5A486;
-  --text:#1C1410;--text-mid:#5C4A32;--text-dim:#8C7456;
-  --rose:#B85C3C;--rose-l:#D4906E;--rose-bg:#F5EAE4;
-  --sage:#4A7C59;--sage-l:#7AAD8A;--sage-bg:#E8F2EC;
-  --blush:#C0415A;--blush-bg:#FAE8ED;--blush-l:#E8A0B0;
-  --mauve:#7C5C9A;--brown:#2C1A0E;--gold:#C4922A;
-  --radius:14px;--shadow:0 4px 20px rgba(28,20,16,0.10);--shadowS:0 2px 8px rgba(28,20,16,0.07);
+  --cream:#FAF8F5;--cream2:#F3EDE4;--cream3:#E8DFD2;--cream4:#D9CDB8;
+  --border:rgba(180,155,125,0.18);--border2:rgba(155,120,90,0.28);
+  --text:#1A1008;--text-mid:#5A4228;--text-dim:#9A8060;
+  --rose:#8B3A28;--rose-l:#C47A60;--rose-bg:#F8EDE8;
+  --sage:#2D6B45;--sage-l:#5A9E78;--sage-bg:#EAF4EE;
+  --emerald:#1A7A4A;
+  --blush:#8B2040;--blush-bg:#F8E8ED;--blush-l:#D8909C;
+  --burgundy:#6B1530;
+  --mauve:#5C3A7A;--brown:#1C0E06;--gold:#B8841E;
+  --radius:22px;--radiusSm:16px;
+  --shadow:0 2px 20px rgba(28,14,6,0.07),0 1px 4px rgba(28,14,6,0.04);
+  --shadowS:0 2px 12px rgba(28,14,6,0.05);
+  --glass:rgba(250,248,245,0.85);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Figtree',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;padding-bottom:88px;max-width:430px;margin:0 auto;overflow-x:hidden;}
-.header{padding:48px 20px 14px;background:var(--cream);position:sticky;top:0;z-index:100;border-bottom:2px solid var(--text);backdrop-filter:blur(12px);}
+body{font-family:'Figtree',sans-serif;background:linear-gradient(165deg,#FAF8F5 0%,#F5ECE2 50%,#F0E8EE 100%);background-attachment:fixed;color:var(--text);min-height:100vh;padding-bottom:90px;max-width:430px;margin:0 auto;overflow-x:hidden;}
+/* Header — glassy, no harsh border */
+.header{padding:52px 20px 10px;background:transparent;position:sticky;top:0;z-index:100;border-bottom:none;transition:background 0.2s,border-color 0.2s;}.header.home-mode{position:relative;background:transparent !important;border-bottom:none !important;backdrop-filter:none !important;}
 .header-top{display:flex;justify-content:space-between;align-items:flex-start;}
-.header h1{font-family:'DM Serif Display',serif;font-size:30px;font-weight:400;color:var(--brown);letter-spacing:-0.5px;line-height:1;}
-.header h1 em{font-style:italic;color:var(--blush);}
-.header-sub{font-size:11px;color:var(--text-dim);margin-top:4px;font-weight:400;letter-spacing:0.2px;}
-.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.phase-badge{background:var(--brown);color:var(--cream);padding:4px 11px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
-.sync-dot{font-size:9px;color:var(--text-dim);text-align:right;cursor:pointer;}
-.gear-btn{background:none;border:none;cursor:pointer;color:var(--text-dim);padding:2px;display:flex;align-items:center;}
-.gear-btn svg{width:16px;height:16px;stroke-width:1.8;}
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--cream);border-top:2px solid var(--text);display:flex;z-index:200;padding:6px 0 18px;}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px;cursor:pointer;border:none;background:none;color:var(--text-dim);transition:all 0.18s;font-family:'Figtree',sans-serif;}
+.header-logo{font-family:'DM Serif Display',serif;font-size:13px;font-weight:400;color:var(--text-dim);letter-spacing:0.2px;line-height:1;opacity:0.7;}
+.header-logo em{font-style:italic;color:var(--blush);}
+.header-greeting{font-family:'DM Serif Display',serif;font-size:24px;color:var(--brown);margin-top:6px;letter-spacing:-0.5px;line-height:1.15;font-weight:400;}
+.header-sub{font-size:12px;color:var(--text-dim);margin-top:4px;font-weight:400;letter-spacing:0.1px;}
+.header-date{font-size:10px;color:var(--text-dim);text-align:center;margin-top:10px;letter-spacing:0.3px;}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.sync-dot{font-size:9px;color:var(--text-dim);text-align:right;cursor:pointer;letter-spacing:0.1px;}
+.gear-btn{background:none;border:none;cursor:pointer;color:var(--text-dim);padding:3px;display:flex;align-items:center;}
+.gear-btn svg{width:17px;height:17px;stroke-width:1.6;}
+/* Nav — frosted glass */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);display:flex;z-index:200;padding:8px 0 22px;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 2px;cursor:pointer;border:none;background:none;color:var(--text-dim);transition:all 0.2s;font-family:'Figtree',sans-serif;}
 .nav-item.active{color:var(--blush);}
 .nav-item.active .nav-label{font-weight:700;}
-.nav-item svg{width:18px;height:18px;stroke-width:1.6;flex-shrink:0;}
-.nav-label{font-size:7.5px;font-weight:500;letter-spacing:0.3px;text-transform:uppercase;white-space:nowrap;}
-.nav-item svg{width:18px;height:18px;stroke-width:1.6;}
-.nav-label{font-size:7.5px;font-weight:500;letter-spacing:0.3px;text-transform:uppercase;white-space:nowrap;}
-.page{display:none;padding:16px 16px 0;animation:fadeUp 0.2s ease;}
+.nav-item svg{width:19px;height:19px;stroke-width:1.5;flex-shrink:0;}
+.nav-label{font-size:8px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;white-space:nowrap;}
+.page{display:none;padding:20px 18px 0;animation:fadeUp 0.22s ease;}
 .page.active{display:block;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-.card{background:white;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadowS);}
-.card-title{font-family:'DM Serif Display',serif;font-size:17px;font-weight:400;color:var(--brown);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;letter-spacing:-0.2px;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+/* Cards — clean white, soft shadow, no border */
+.card{background:rgba(255,255,255,0.92);border:none;border-radius:var(--radius);padding:20px;margin-bottom:14px;box-shadow:var(--shadow);backdrop-filter:blur(8px);}
+.card-title{font-family:'DM Serif Display',serif;font-size:17px;font-weight:400;color:var(--brown);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;letter-spacing:-0.3px;}
 .card-title span{font-size:10px;color:var(--text-dim);font-family:'Figtree',sans-serif;font-weight:400;}
-.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.metric-tile{background:white;border:1.5px solid var(--border);border-radius:12px;padding:15px 14px;box-shadow:var(--shadowS);position:relative;overflow:hidden;}
-.metric-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--blush);border-radius:12px 12px 0 0;}
-.metric-val{font-family:'DM Serif Display',serif;font-size:32px;font-weight:400;color:var(--text);line-height:1;}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.metric-tile{background:rgba(255,255,255,0.92);border:none;border-radius:20px;padding:18px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden;backdrop-filter:blur(8px);}
+.metric-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blush-l),var(--blush));opacity:0.8;}
+.metric-val{font-family:'DM Serif Display',serif;font-size:34px;font-weight:400;color:var(--text);line-height:1;}
 .metric-unit{font-size:14px;color:var(--text-dim);}
-.metric-label{font-size:9px;color:var(--text-dim);margin-top:6px;text-transform:uppercase;letter-spacing:1.2px;font-weight:600;}
+.metric-label{font-size:9px;color:var(--text-dim);margin-top:7px;text-transform:uppercase;letter-spacing:1.3px;font-weight:600;}
 .metric-delta{font-size:10px;margin-top:4px;font-weight:500;}
-.dp{color:var(--sage);}.dn{color:var(--rose);}
-.insight-box{background:linear-gradient(135deg,rgba(44,26,14,0.95) 0%,rgba(61,37,24,0.88) 50%,rgba(42,31,48,0.92) 100%);border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;backdrop-filter:blur(10px);}
-.insight-label{font-size:9px;color:var(--rose-l);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;font-weight:700;}
-.insight-box p{font-size:12px;color:rgba(245,240,232,0.85);line-height:1.65;}
-.insight-box p strong{color:white;font-weight:700;}
+.dp{color:var(--emerald);}.dn{color:var(--rose);}
+.insight-box{background:linear-gradient(145deg,#1C0A04 0%,#2C1428 60%,#1A0C1E 100%);border-radius:22px;padding:20px 20px;margin-bottom:16px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 8px 40px rgba(107,21,48,0.25),0 0 0 1px rgba(255,255,255,0.06),inset 0 1px 0 rgba(255,255,255,0.08);position:relative;overflow:hidden;}
+.insight-box::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:radial-gradient(circle,rgba(192,65,90,0.2) 0%,transparent 70%);pointer-events:none;}
+.insight-label{font-size:9px;color:rgba(212,144,110,0.9);text-transform:uppercase;letter-spacing:1.8px;margin-bottom:8px;font-weight:700;}
+.insight-box p{font-size:13px;color:rgba(250,247,243,0.82);line-height:1.7;}
+.insight-box p strong{color:white;font-weight:600;}
 .today-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:12px;}
 /* Progress tracker cards — editorial arc style */
 .pg-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
 .pg-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
-.pg-card{border-radius:14px;padding:14px 12px 11px;position:relative;overflow:hidden;background:white;border:1.5px solid var(--border);box-shadow:var(--shadowS);display:flex;flex-direction:column;gap:6px;}
+.pg-card{border-radius:20px;padding:16px 12px 12px;position:relative;overflow:hidden;background:white;border:none;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;}
 .pg-arc-wrap{width:100%;height:52px;position:relative;}
 .pg-arc-svg{width:100%;height:52px;}
 .pg-val{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);line-height:1;white-space:nowrap;}
@@ -68,7 +76,9 @@ body{font-family:'Figtree',sans-serif;background:var(--cream);color:var(--text);
 .pg-sub{font-size:8px;color:var(--text-dim);text-align:center;font-family:'DM Mono',monospace;}
 .pg-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 12px 12px;}
 /* keep ring- names for JS compat */
-.ring-tile,.ring-wrap,.ring-svg,.ring-bg,.ring-fg,.ring-label-inner,.ring-name{display:none;}
+.ring-tile,.ring-wrap,.ring-svg,.ring-bg,.ring-fg,.ring-label-inner{display:unset;}
+.ring-tile{display:flex!important;flex-direction:column!important;align-items:center!important;gap:5px!important;}
+.ring-name{display:block;font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);font-weight:700;text-align:center;margin-top:2px;}
 .supp-info-modal{display:none;position:fixed;inset:0;background:rgba(28,20,16,0.5);z-index:600;align-items:flex-end;}
 .supp-info-modal.open{display:flex;}
 .supp-info-box{background:var(--cream);border-radius:20px 20px 0 0;padding:22px 18px 38px;width:100%;max-width:430px;margin:0 auto;animation:slideUp 0.3s ease;max-height:60vh;overflow-y:auto;}
@@ -80,16 +90,16 @@ body{font-family:'Figtree',sans-serif;background:var(--cream);color:var(--text);
 .supp-i-btn{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:9px;font-weight:700;color:var(--text-dim);font-family:'DM Mono',monospace;margin-right:8px;transition:all 0.15s;}
 .supp-mandatory .supp-row-name{font-weight:700;color:#2596be;}
 .range-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.range-pill{padding:5px 13px;border-radius:3px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--text-mid);transition:all 0.15s;font-family:'Figtree',sans-serif;letter-spacing:0.2px;}
-.range-pill.active{background:var(--brown);color:var(--cream);border-color:var(--brown);}
+.range-pill{padding:6px 14px;border-radius:50px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:white;color:var(--text-mid);transition:all 0.18s;font-family:'Figtree',sans-serif;box-shadow:var(--shadowS);}
+.range-pill.active{background:var(--brown);color:var(--cream);box-shadow:var(--shadow);}
 .custom-range{display:flex;gap:6px;margin-bottom:10px;align-items:center;}
 .custom-range input{flex:1;background:var(--cream2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Figtree',sans-serif;font-size:12px;padding:7px 10px;outline:none;-webkit-appearance:none;}
 .custom-range input:focus{border-color:var(--blush);}
 .custom-range span{font-size:11px;color:var(--text-dim);flex-shrink:0;}
 .chart-tabs{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;scrollbar-width:none;}
 .chart-tabs::-webkit-scrollbar{display:none;}
-.chart-tab{flex-shrink:0;padding:4px 13px;border-radius:3px;font-size:10px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--text-dim);transition:all 0.15s;font-family:'Figtree',sans-serif;letter-spacing:0.3px;}
-.chart-tab.active{background:var(--brown);color:var(--cream);border-color:var(--brown);}
+.chart-tab{flex-shrink:0;padding:5px 14px;border-radius:50px;font-size:10px;font-weight:600;cursor:pointer;border:none;background:white;color:var(--text-dim);transition:all 0.18s;font-family:'Figtree',sans-serif;box-shadow:var(--shadowS);}
+.chart-tab.active{background:var(--brown);color:var(--cream);}
 .chart-wrap{position:relative;height:180px;}
 .kd-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
 .kd-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--text-dim);}
@@ -97,12 +107,12 @@ body{font-family:'Figtree',sans-serif;background:var(--cream);color:var(--text);
 .form-group{margin-bottom:12px;}
 .form-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:block;font-weight:700;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-input[type="number"],input[type="text"],input[type="date"],textarea{width:100%;background:var(--cream2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Figtree',sans-serif;font-size:14px;padding:10px 13px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
-input:focus,textarea:focus{border-color:var(--blush);background:white;}
+input[type="number"],input[type="text"],input[type="date"],textarea{width:100%;background:var(--cream2);border:none;border-radius:12px;color:var(--text);font-family:'Figtree',sans-serif;font-size:14px;padding:12px 14px;outline:none;transition:all 0.2s;-webkit-appearance:none;box-shadow:inset 0 2px 6px rgba(28,14,6,0.06);}
+input:focus,textarea:focus{background:white;box-shadow:inset 0 2px 6px rgba(28,14,6,0.04),0 0 0 3px rgba(139,32,64,0.12);}
 textarea{resize:none;height:72px;}
-.btn{width:100%;padding:13px;border-radius:6px;font-family:'Figtree',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all 0.18s;letter-spacing:0.3px;}
+.btn{width:100%;padding:14px;border-radius:14px;font-family:'Figtree',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;letter-spacing:0.2px;}
 .btn-rose{background:var(--blush);color:white;}.btn-rose:active{opacity:0.85;}
-.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-mid);}
+.btn-outline{background:white;border:none;color:var(--text-mid);box-shadow:var(--shadowS);}
 .btn-sage{background:var(--sage);color:white;}
 .btn-dark{background:var(--brown);color:var(--cream);}
 .vbtn{display:inline-flex;align-items:center;gap:4px;padding:4px 11px;border-radius:3px;font-size:10px;font-weight:600;background:var(--rose-bg);border:1.5px solid var(--rose-l);color:var(--rose);cursor:pointer;text-decoration:none;flex-shrink:0;transition:all 0.15s;font-family:'Figtree',sans-serif;letter-spacing:0.2px;}
@@ -111,17 +121,17 @@ textarea{resize:none;height:72px;}
 .hbtn{font-size:10px;color:var(--sage);cursor:pointer;background:none;border:none;font-family:'Figtree',sans-serif;padding:0;text-decoration:underline;margin-top:6px;display:inline-block;font-weight:600;}
 .day-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none;}
 .day-tabs::-webkit-scrollbar{display:none;}
-.day-tab{flex-shrink:0;padding:6px 14px;border-radius:3px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--text-mid);transition:all 0.18s;white-space:nowrap;font-family:'Figtree',sans-serif;letter-spacing:0.2px;}
-.day-tab.active{background:var(--brown);color:var(--cream);border-color:var(--brown);}
+.day-tab{flex-shrink:0;padding:7px 16px;border-radius:50px;font-size:11px;font-weight:600;cursor:pointer;border:none;background:white;color:var(--text-mid);transition:all 0.18s;white-space:nowrap;font-family:'Figtree',sans-serif;box-shadow:var(--shadowS);}
+.day-tab.active{background:var(--brown);color:var(--cream);box-shadow:var(--shadow);}
 .ex-log{display:flex;flex-direction:column;gap:8px;}
-.ex-item{background:white;border:1.5px solid var(--border);border-left:4px solid var(--blush);border-radius:12px;padding:13px;box-shadow:var(--shadowS);}
+.ex-item{background:white;border:none;border-left:3px solid var(--blush);border-radius:16px;padding:16px;box-shadow:var(--shadow);}
 .ex-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;gap:8px;}
 .ex-name{font-size:13px;font-weight:600;color:var(--text);flex:1;}
 .ex-target{font-size:10px;color:var(--text-dim);margin-bottom:8px;font-family:'DM Mono',monospace;}
 .w-inputs{display:flex;gap:5px;}
 .w-set{flex:1;}
-.w-field{width:100%;background:var(--cream2);border:1.5px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;padding:8px 3px;text-align:center;font-family:'DM Mono',monospace;outline:none;}
-.w-field:focus{border-color:var(--blush);background:white;}
+.w-field{width:100%;background:var(--cream2);border:none;border-radius:10px;color:var(--text);font-size:13px;font-weight:600;padding:10px 3px;text-align:center;font-family:'DM Mono',monospace;outline:none;box-shadow:inset 0 2px 4px rgba(28,14,6,0.05);}
+.w-field:focus{background:white;box-shadow:inset 0 1px 3px rgba(28,14,6,0.03),0 0 0 2px rgba(139,32,64,0.15);}
 .w-lbl{font-size:9px;color:var(--text-dim);text-align:center;margin-top:2px;}
 .prev-row{margin-top:6px;padding-top:6px;border-top:1px solid var(--border);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
 .prev-lbl{font-size:9px;color:var(--text-dim);font-family:'DM Mono',monospace;}
@@ -132,8 +142,8 @@ textarea{resize:none;height:72px;}
 .ex-hist-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);font-family:'DM Mono',monospace;padding:2px 0;border-bottom:1px solid var(--cream2);}
 .ex-hist-row:last-child{border-bottom:none;}
 .ex-hist-row span:last-child{color:var(--text);}
-.done-item{background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px;box-shadow:var(--shadowS);display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.done-item.done-active{border-color:var(--sage-l);background:var(--sage-bg);}
+.done-item{background:white;border:none;border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;}
+.done-item.done-active{background:linear-gradient(135deg,rgba(45,107,69,0.08),rgba(45,107,69,0.04));}
 .done-label{font-size:13px;font-weight:600;color:var(--text);}
 .done-sub{font-size:10px;color:var(--text-dim);margin-top:2px;font-family:'DM Mono',monospace;}
 .done-toggle{width:34px;height:34px;border-radius:50%;border:2px solid var(--border2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all 0.2s;}
@@ -141,7 +151,7 @@ textarea{resize:none;height:72px;}
 .done-section-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin:14px 0 6px;font-weight:700;padding-left:2px;}
 /* SUPPLEMENTS — time block style */
 .supp-block{margin-bottom:16px;}
-.supp-block-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:6px;border-bottom:2px solid var(--text);}
+.supp-block-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
 .supp-block-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--brown);letter-spacing:-0.2px;}
 .supp-block-prog{flex:1;height:3px;background:var(--cream3);border-radius:3px;overflow:hidden;}
 .supp-block-fill{height:100%;background:var(--sage);border-radius:3px;transition:width 0.4s;}
@@ -195,86 +205,138 @@ textarea{resize:none;height:72px;}
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="header-top">
-    <div><h1>Glow <em>&</em> Grow</h1><div class="header-sub" id="hDate"></div></div>
-    <div class="header-right">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div class="phase-badge">PHASE 1</div>
-        <button class="gear-btn" onclick="document.getElementById('settingsModal').classList.add('open')" title="Settings & Data">
+<div class="header" id="mainHeader">
+  <!-- HOME header (shown on dashboard only) -->
+  <div id="hdrHome" style="display:flex;align-items:flex-start;gap:12px;">
+    <div style="flex:1;min-width:0;">
+      <div style="font-family:'DM Serif Display',serif;font-size:13px;font-weight:400;color:var(--text-dim);letter-spacing:0.2px;line-height:1;margin-bottom:8px;opacity:0.6;">Glow <em style="font-style:italic;color:var(--blush);">&</em> Grow</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--brown);letter-spacing:-0.6px;line-height:1.15;" id="hGreeting">Good morning, Lina ✦</div>
+
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;">
+      <div style="position:relative;width:76px;height:76px;cursor:pointer;" onclick="showPage('dashboard',document.querySelector('.nav-item'))">
+        <svg viewBox="0 0 76 76" style="width:76px;height:76px;transform:rotate(-90deg);">
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#F2C4C4"/>
+              <stop offset="100%" style="stop-color:#6B1530"/>
+            </linearGradient>
+          </defs>
+          <circle cx="38" cy="38" r="32" fill="none" stroke="rgba(180,155,125,0.15)" stroke-width="5.5"/>
+          <circle id="ringOverall" cx="38" cy="38" r="32" fill="none" stroke="url(#ringGrad)" stroke-width="5.5" stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round" style="transition:stroke-dashoffset 0.8s ease;"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:14px;color:var(--brown);" id="hPct">0%</div>
+      </div>
+    </div>
+  </div>
+  <!-- OTHER TABS header (hidden on dashboard) -->
+  <div id="hdrOther" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:var(--brown);letter-spacing:-0.3px;line-height:1;">Glow <em style="font-style:italic;color:var(--blush);">&</em> Grow</div>
+        <div id="hDate" style="font-size:10px;color:var(--text-dim);margin-top:4px;letter-spacing:0.3px;"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div class="sync-dot" id="syncDot" onclick="pullFromCloud()" style="font-size:8px;color:var(--text-dim);cursor:pointer;">Saved</div>
+        <button class="gear-btn" onclick="document.getElementById('settingsModal').classList.add('open')" title="Settings">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
       </div>
-      <div class="sync-dot" id="syncDot" onclick="pullFromCloud()">● Saved</div>
     </div>
   </div>
 </div>
 
 <div class="page active" id="page-dashboard">
-  <!-- ROW 1: Gym + Fascia — wide cards -->
-  <div class="pg-grid-2">
-    <div class="pg-card" style="--accent:var(--sage);">
-      <div class="pg-arc-wrap">
-        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5" stroke-linecap="round"/>
-          <path id="arcGym" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--sage)" stroke-width="5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
+  <!-- 4 rings: Gym · Supps · Skin(+Fascia outer) · Habits -->
+  <div style="background:rgba(255,255,255,0.88);border-radius:24px;padding:20px 16px 16px;margin-bottom:16px;box-shadow:0 2px 20px rgba(28,14,6,0.07);backdrop-filter:blur(12px);">
+  <div style="font-size:11px;font-weight:700;color:var(--text-mid);letter-spacing:0.4px;margin-bottom:14px;">Today's Progress</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+
+    <!-- GYM -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+      <div style="position:relative;width:68px;height:68px;">
+        <svg viewBox="0 0 68 68" style="width:68px;height:68px;transform:rotate(-90deg);">
+          <circle cx="34" cy="34" r="29" fill="none" stroke="rgba(232,223,210,0.8)" stroke-width="5"/>
+          <circle id="arcGym" cx="34" cy="34" r="29" fill="none" stroke="#6B1530" stroke-width="5" stroke-dasharray="182" stroke-dashoffset="182" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
         </svg>
-        <div class="pg-val" id="tdGym">—</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;" id="tdGym">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1008" stroke-width="2" stroke-linecap="round"><path d="M4.5 12h15m-7.5-7.5v15M3 8.25V6a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 019 6v2.25m6 0V6a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 0121 6v2.25M3 15.75V18a2.25 2.25 0 002.25 2.25h1.5A2.25 2.25 0 009 18v-2.25m6 0V18a2.25 2.25 0 002.25 2.25h1.5A2.25 2.25 0 0021 18v-2.25"/></svg>
+        </div>
       </div>
-      <div class="pg-label">Gym</div>
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:600;">Gym</div>
     </div>
-    <div class="pg-card" style="--accent:var(--gold);">
-      <div class="pg-arc-wrap">
-        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none">
-          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5" stroke-linecap="round"/>
-          <path id="arcFascia" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--gold)" stroke-width="5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
+
+    <!-- SUPPS -->
+    <div class="ring-tile">
+      <div style="position:relative;width:68px;height:68px;">
+        <svg viewBox="0 0 68 68" style="width:68px;height:68px;transform:rotate(-90deg);">
+          <circle cx="34" cy="34" r="29" fill="none" stroke="rgba(232,223,210,0.8)" stroke-width="5"/>
+          <circle id="arcSupps" cx="34" cy="34" r="29" fill="none" stroke="#6B1530" stroke-width="5" stroke-dasharray="182" stroke-dashoffset="182" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
         </svg>
-        <div class="pg-val" id="tdFascia">—</div>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;">
+          <div id="tdSupps" style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);line-height:1;text-align:center;">0</div>
+          <div id="tdSuppsOf" style="font-size:7px;color:var(--text-dim);line-height:1;">of 13</div>
+        </div>
       </div>
-      <div class="pg-label">Beauty Fascia</div>
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:600;">Supps</div>
     </div>
+
+    <!-- SKIN + FASCIA outer ring (gold) -->
+    <div class="ring-tile">
+      <div style="position:relative;width:68px;height:68px;">
+        <svg viewBox="0 0 68 68" style="width:68px;height:68px;transform:rotate(-90deg);">
+          <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(232,223,210,0.6)" stroke-width="3"/>
+          <circle id="arcFascia" cx="34" cy="34" r="32" fill="none" stroke="#B8841E" stroke-width="3" stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
+          <circle cx="34" cy="34" r="26" fill="none" stroke="rgba(232,223,210,0.8)" stroke-width="5"/>
+          <circle id="arcSkin" cx="34" cy="34" r="26" fill="none" stroke="#6B1530" stroke-width="5" stroke-dasharray="163" stroke-dashoffset="163" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;">
+          <div id="tdSkin" style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);line-height:1;text-align:center;">0</div>
+          <div style="font-size:7px;color:var(--text-dim);line-height:1;">of 13</div>
+        </div>
+      </div>
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:600;">Skin</div>
+    </div>
+
+    <!-- HABITS -->
+    <div class="ring-tile">
+      <div style="position:relative;width:68px;height:68px;">
+        <svg viewBox="0 0 68 68" style="width:68px;height:68px;transform:rotate(-90deg);">
+          <circle cx="34" cy="34" r="29" fill="none" stroke="rgba(232,223,210,0.8)" stroke-width="5"/>
+          <circle id="arcHabits" cx="34" cy="34" r="29" fill="none" stroke="#6B1530" stroke-width="5" stroke-dasharray="182" stroke-dashoffset="182" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;">
+          <div id="tdHabits" style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);line-height:1;text-align:center;">0</div>
+          <div style="font-size:7px;color:var(--text-dim);line-height:1;">of 6</div>
+        </div>
+      </div>
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:600;">Habits</div>
+    </div>
+
+  </div></div>
+
+  <!-- Insight card — dark glassmorphism -->
+  <div class="insight-box">
+    <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(139,32,64,0.3) 0%,transparent 70%);pointer-events:none;border-radius:50%;"></div>
+    <div class="insight-label">Today's Insight</div>
+    <p id="insight" style="position:relative;z-index:1;">Loading...</p>
   </div>
-  <!-- ROW 2: Supps + Skin + Habits — compact -->
-  <div class="pg-grid-3">
-    <div class="pg-card">
-      <div class="pg-arc-wrap" style="height:44px;">
-        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none" style="height:44px;">
-          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5.5" stroke-linecap="round"/>
-          <path id="arcSupps" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--blush)" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
-        </svg>
-        <div class="pg-val-sm" id="tdSupps" style="font-size:13px;">0<span style="font-size:7px;display:block;line-height:1;" id="tdSuppsOf">of 13</span></div>
-      </div>
-      <div class="pg-label">Supps</div>
-    </div>
-    <div class="pg-card">
-      <div class="pg-arc-wrap" style="height:44px;">
-        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none" style="height:44px;">
-          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5.5" stroke-linecap="round"/>
-          <path id="arcSkin" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--rose)" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
-        </svg>
-        <div class="pg-val-sm" id="tdSkin" style="font-size:13px;">0<span style="font-size:7px;display:block;line-height:1;">of 13</span></div>
-      </div>
-      <div class="pg-label">Skin</div>
-    </div>
-    <div class="pg-card">
-      <div class="pg-arc-wrap" style="height:44px;">
-        <svg class="pg-arc-svg" viewBox="0 0 100 56" fill="none" style="height:44px;">
-          <path d="M5 53 A48 48 0 0 1 95 53" stroke="var(--cream3)" stroke-width="5.5" stroke-linecap="round"/>
-          <path id="arcHabits" d="M5 53 A48 48 0 0 1 95 53" stroke="var(--mauve)" stroke-width="5.5" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151" style="transition:stroke-dashoffset 0.7s ease;"/>
-        </svg>
-        <div class="pg-val-sm" id="tdHabits" style="font-size:13px;">0<span style="font-size:7px;display:block;line-height:1;">of 6</span></div>
-      </div>
-      <div class="pg-label">Habits</div>
-    </div>
-  </div>
-  <!-- Insight -->
-  <div class="insight-box"><div class="insight-label">✦ Today's Insight</div><p id="insight">Loading...</p></div>
-  <!-- Metrics -->
+
+  <!-- Body metrics -->
   <div class="metrics-grid">
     <div class="metric-tile"><div class="metric-val" id="dw">55.9<span class="metric-unit">kg</span></div><div class="metric-label">Weight</div><div class="metric-delta dp" id="dwd">↓ 5.9kg from peak</div></div>
     <div class="metric-tile"><div class="metric-val" id="dbf">27.9<span class="metric-unit">%</span></div><div class="metric-label">Body Fat</div><div class="metric-delta dp">Goal: 20–22%</div></div>
     <div class="metric-tile"><div class="metric-val" id="dm">67.7<span class="metric-unit">%</span></div><div class="metric-label">Muscle Mass</div><div class="metric-delta dp">↑ Best ever</div></div>
     <div class="metric-tile"><div class="metric-val" id="dwst">71<span class="metric-unit">cm</span></div><div class="metric-label">Waist</div><div class="metric-delta dp">↓ 8cm since Jun '25</div></div>
+  </div>
+  <!-- Date + sync + settings at bottom of home -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 0 4px;margin-top:4px;">
+    <div id="hDateHome" style="font-size:10px;color:var(--text-dim);letter-spacing:0.3px;text-align:center;"></div>
+    <div style="width:1px;height:10px;background:var(--border);"></div>
+    <div class="sync-dot" onclick="pullFromCloud()" style="font-size:9px;color:var(--text-dim);cursor:pointer;" id="syncDotHome">Saved</div>
+    <button class="gear-btn" onclick="document.getElementById('settingsModal').classList.add('open')" title="Settings" style="padding:2px;">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:15px;height:15px;"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+    </button>
   </div>
 </div>
 <div class="page" id="page-gym">
@@ -432,7 +494,7 @@ textarea{resize:none;height:72px;}
 
 <nav class="nav">
   <button class="nav-item active" onclick="showPage('dashboard',this)">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955a1.5 1.5 0 012.092 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
     <span class="nav-label">Home</span>
   </button>
   <button class="nav-item" onclick="showPage('gym',this)">
@@ -512,14 +574,17 @@ textarea{resize:none;height:72px;}
 const SEED_SESSIONS=[{"date":"2025-07-01","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40"]},{"name":"Leg Extension","weights":["32"]}],"notes":""},{"date":"2025-07-02","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["60","60","54"]},{"name":"Dumbbell Row","weights":["9","10","12.5"]},{"name":"Rear Delt Machine","weights":["18","18","18.2"]},{"name":"Vuelos Laterales","weights":["3","7","7"]}],"notes":""},{"date":"2025-07-04","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["80","80","100"]},{"name":"RDL","weights":["25","25","30","30"]},{"name":"Bulgarian Split Squat","weights":["23","23","23"]},{"name":"Leg Curl","weights":["19","19","26"]},{"name":"Cable Kickback","weights":["9"]}],"notes":""},{"date":"2025-07-05","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["5","5","5"]},{"name":"Leg Curl","weights":["4","4","5"]}],"notes":""},{"date":"2025-07-06","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["80","80","100","110"]},{"name":"RDL","weights":["25","25","30","30"]},{"name":"Cable Kickback","weights":["9","9","14","14"]}],"notes":""},{"date":"2025-07-08","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40"]},{"name":"Leg Extension","weights":["36"]}],"notes":""},{"date":"2025-07-09","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["60"]},{"name":"Dumbbell Row","weights":["10","10","12.5"]},{"name":"Rear Delt Machine","weights":["18","18","18.2"]},{"name":"Vuelos Laterales","weights":["5","5","5"]}],"notes":""},{"date":"2025-07-10","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["40","40","60"]},{"name":"RDL","weights":["30","30","35","35"]},{"name":"Bulgarian Split Squat","weights":["22.5","22.5","22.5"]},{"name":"Leg Curl","weights":["8 unilateral"]}],"notes":""},{"date":"2025-07-11","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["5","5","6","6"]},{"name":"Leg Curl","weights":["5","6","6"]}],"notes":""},{"date":"2025-07-14","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","40","60"]},{"name":"Leg Extension","weights":["41"]}],"notes":""},{"date":"2025-07-15","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["60","60","60","54"]},{"name":"Dumbbell Row","weights":["10","10","12.5"]}],"notes":""},{"date":"2025-07-16","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","120","120"]},{"name":"RDL","weights":["35"]},{"name":"Leg Curl","weights":["26","26","33"]}],"notes":""},{"date":"2025-07-17","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["6","6","6","7"]}],"notes":""},{"date":"2025-07-18","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","120","120"]},{"name":"RDL","weights":["25","25","30","30"]},{"name":"Cable Kickback","weights":["9","14","14","14"]},{"name":"Sumo Squat Goblet","weights":["15","15","17.5","16.5"]}],"notes":""},{"date":"2025-08-08","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["6","6","6","6"]},{"name":"Leg Curl","weights":["5","5","5"]}],"notes":""},{"date":"2025-08-10","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["80","80","100","100"]},{"name":"RDL","weights":["25","25","30","30"]},{"name":"Cable Kickback","weights":["14"]},{"name":"Sumo Squat Goblet","weights":["15","15","17.5","17.5"]}],"notes":""},{"date":"2025-08-11","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","40","40"]},{"name":"Leg Extension","weights":["43"]}],"notes":""},{"date":"2025-08-12","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["60"]},{"name":"Dumbbell Row","weights":["10"]},{"name":"Rear Delt Machine","weights":["9","9","14"]},{"name":"Vuelos Laterales","weights":["5","5","5"]}],"notes":""},{"date":"2025-08-14","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["6","6","6","6"]}],"notes":""},{"date":"2025-08-16","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["80","80","100","100"]},{"name":"RDL","weights":["25","25","30","30"]},{"name":"Cable Kickback","weights":["14","14","14","18"]},{"name":"Sumo Squat Goblet","weights":["15","15","17.5","17.5"]}],"notes":""},{"date":"2025-08-18","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","40","40"]},{"name":"Leg Extension","weights":["43","43","47"]}],"notes":""},{"date":"2025-08-19","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["60"]},{"name":"Dumbbell Row","weights":["10","10","12.5"]},{"name":"Rear Delt Machine","weights":["18","18","23"]}],"notes":""},{"date":"2025-08-20","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["80","80","100","100"]},{"name":"RDL","weights":["30","30","35","35"]},{"name":"Bulgarian Split Squat","weights":["18.75"]},{"name":"Leg Curl","weights":["26","26","26"]},{"name":"Cable Kickback","weights":["9"]}],"notes":""},{"date":"2025-08-21","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["6","6","7","7"]},{"name":"Leg Curl","weights":["5","5","6"]}],"notes":""},{"date":"2025-08-23","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","100","120"]},{"name":"RDL","weights":["25","25","30","30"]},{"name":"Cable Kickback","weights":["14","14","18","18"]},{"name":"Sumo Squat Goblet","weights":["15","15","17.5","17.5"]}],"notes":""},{"date":"2025-08-25","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","40","40"]},{"name":"Leg Extension","weights":["47","47","50"]}],"notes":""},{"date":"2025-08-26","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["60","60","54","54"]},{"name":"Dumbbell Row","weights":["10","12.5","12.5"]},{"name":"Rear Delt Machine","weights":["18","18","23"]}],"notes":""},{"date":"2025-08-28","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","100","120"]},{"name":"RDL","weights":["30","30","35","35"]},{"name":"Bulgarian Split Squat","weights":["18","18","23"]},{"name":"Leg Curl","weights":["26","26","26"]},{"name":"Cable Kickback","weights":["9","9","9"]}],"notes":""},{"date":"2025-08-29","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["6","7","7","7"]},{"name":"Leg Curl","weights":["6","6","7"]}],"notes":""},{"date":"2025-08-31","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","100","120"]},{"name":"RDL","weights":["25","25","30","30"]},{"name":"Cable Kickback","weights":["14","18","18","18"]},{"name":"Sumo Squat Goblet","weights":["17.5","17.5","20","20"]}],"notes":""},{"date":"2025-09-02","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["64","73","73","78"]},{"name":"Leg Extension","weights":["50"]}],"notes":""},{"date":"2025-09-03","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["60","54","54","48"]},{"name":"Dumbbell Row","weights":["10","12.5","12.5"]},{"name":"Rear Delt Machine","weights":["18","23","23"]},{"name":"Vuelos Laterales","weights":["5","6","6"]}],"notes":""},{"date":"2025-09-04","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","120","120"]},{"name":"RDL","weights":["35","35","35","35"]},{"name":"Bulgarian Split Squat","weights":["18","23","23"]},{"name":"Leg Curl","weights":["26"]},{"name":"Cable Kickback","weights":["9","14","14"]}],"notes":""},{"date":"2025-09-05","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["6","7","7","7"]},{"name":"Leg Curl","weights":["6","7","7"]}],"notes":""},{"date":"2025-09-07","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","120","120"]},{"name":"RDL","weights":["25","30","30","30"]},{"name":"Cable Kickback","weights":["18","18","18","18"]},{"name":"Sumo Squat Goblet","weights":["17.5","20","20","20"]}],"notes":""},{"date":"2025-10-06","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40"]},{"name":"Leg Extension","weights":["50"]}],"notes":""},{"date":"2025-10-07","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["54","54","48","48"]},{"name":"Dumbbell Row","weights":["12.5","12.5","12.5"]},{"name":"Rear Delt Machine","weights":["23","23","25"]},{"name":"Vuelos Laterales","weights":["5","6","6"]}],"notes":""},{"date":"2025-10-08","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","120","120"]},{"name":"RDL","weights":["35"]},{"name":"Bulgarian Split Squat","weights":["20"]},{"name":"Leg Curl","weights":["26"]},{"name":"Cable Kickback","weights":["9","14","14"]}],"notes":""},{"date":"2025-10-09","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["6","6","7","7"]}],"notes":""},{"date":"2025-10-12","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","120","120","120"]},{"name":"RDL","weights":["30","30","35","35"]},{"name":"Cable Kickback","weights":["18","18","18","18"]},{"name":"Sumo Squat Goblet","weights":["17.5","20","20","20"]}],"notes":""},{"date":"2025-10-13","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","50","50"]},{"name":"Leg Extension","weights":["50","50"]}],"notes":""},{"date":"2025-10-14","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["54","48","48","48"]},{"name":"Rear Delt Machine","weights":["23","25","25"]}],"notes":""},{"date":"2025-10-15","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120","120","120","130"]},{"name":"Leg Curl","weights":["26","33","33"]},{"name":"Cable Kickback","weights":["14","14","14"]}],"notes":""},{"date":"2025-11-02","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["64","64","73","73"]},{"name":"Leg Extension","weights":["50"]}],"notes":""},{"date":"2025-11-03","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["Banda"]},{"name":"Vuelos Laterales","weights":["7"]}],"notes":""},{"date":"2025-11-04","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","120","120"]},{"name":"RDL","weights":["35"]},{"name":"Leg Curl","weights":["26","26","33"]},{"name":"Cable Kickback","weights":["14"]}],"notes":""},{"date":"2025-11-06","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","120","120","120"]},{"name":"RDL","weights":["30"]},{"name":"Cable Kickback","weights":["18","18","18","18"]},{"name":"Sumo Squat Goblet","weights":["20"]}],"notes":""},{"date":"2025-11-07","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["6","7","7","7"]},{"name":"Leg Curl","weights":["6","7","7"]}],"notes":""},{"date":"2025-11-09","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","40","50"]},{"name":"Leg Extension","weights":["52","52","54"]}],"notes":""},{"date":"2025-11-10","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["Banda"]}],"notes":""},{"date":"2025-11-11","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120","120","120","140"]},{"name":"Bulgarian Split Squat","weights":["20"]},{"name":"Leg Curl","weights":["26","33","33"]}],"notes":""},{"date":"2025-11-12","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Rear Delt Machine","weights":["2.5 unilateral"]},{"name":"Vuelos Laterales","weights":["6","7","7"]}],"notes":""},{"date":"2025-11-12","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["6","6","7","7"]},{"name":"Leg Curl","weights":["7"]}],"notes":""},{"date":"2025-11-13","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120"]},{"name":"RDL","weights":["35"]},{"name":"Cable Kickback","weights":["18","18","18","23"]},{"name":"Sumo Squat Goblet","weights":["17.5","20","20","20"]}],"notes":""},{"date":"2025-11-16","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["50"]},{"name":"Leg Extension","weights":["54"]}],"notes":""},{"date":"2025-11-17","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["Banda"]}],"notes":""},{"date":"2025-11-18","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120","120","120","140"]},{"name":"Bulgarian Split Squat","weights":["Tijeras 20"]}],"notes":""},{"date":"2025-11-19","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Rear Delt Machine","weights":["9","14","16"]},{"name":"Vuelos Laterales","weights":["7"]}],"notes":""},{"date":"2025-11-19","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["7"]},{"name":"Leg Curl","weights":["7","7","7"]}],"notes":""},{"date":"2025-11-20","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120","120","120","140"]},{"name":"RDL","weights":["35"]},{"name":"Cable Kickback","weights":["18","18","23","23"]},{"name":"Sumo Squat Goblet","weights":["22.5"]}],"notes":""},{"date":"2025-11-23","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["64","73","78","78"]},{"name":"Leg Extension","weights":["45"]}],"notes":""},{"date":"2025-11-24","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["48"]},{"name":"Dumbbell Row","weights":["12.5"]}],"notes":""},{"date":"2025-11-25","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120","120","140","140"]},{"name":"RDL","weights":["40"]},{"name":"Bulgarian Split Squat","weights":["Tijeras 25"]},{"name":"Leg Curl","weights":["26","33","33"]}],"notes":""},{"date":"2025-11-27","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Rear Delt Machine","weights":["14","16","18"]},{"name":"Vuelos Laterales","weights":["7"]}],"notes":""},{"date":"2025-11-27","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Shoulder Press Machine","weights":["7","8","8","8"]},{"name":"Leg Curl","weights":["7"]}],"notes":""},{"date":"2025-12-01","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["73","73","78","78"]},{"name":"Leg Extension","weights":["54"]}],"notes":""},{"date":"2025-12-02","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["48"]},{"name":"Dumbbell Row","weights":["12.5"]}],"notes":""},{"date":"2025-12-03","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120","120","140","140"]},{"name":"RDL","weights":["40"]},{"name":"Bulgarian Split Squat","weights":["Tijeras 20"]},{"name":"Leg Curl","weights":["26","33","33"]},{"name":"Cable Kickback","weights":["14"]}],"notes":""},{"date":"2025-12-06","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120","120","140","140"]},{"name":"RDL","weights":["40 barra"]},{"name":"Cable Kickback","weights":["18","23","23","23"]},{"name":"Sumo Squat Goblet","weights":["40 barra"]}],"notes":""},{"date":"2025-12-10","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["78","78","82","82"]},{"name":"Leg Extension","weights":["54"]}],"notes":""},{"date":"2025-12-11","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["48","48","42","42"]},{"name":"Dumbbell Row","weights":["12.5","12.5","15"]},{"name":"Rear Delt Machine","weights":["16","16","18"]}],"notes":""},{"date":"2025-12-13","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120","120","140","140"]},{"name":"RDL","weights":["40"]},{"name":"Bulgarian Split Squat","weights":["Tijeras 30"]},{"name":"Leg Curl","weights":["26","33","33"]},{"name":"Cable Kickback","weights":["14"]}],"notes":""},{"date":"2025-12-15","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["120","140","140","140"]},{"name":"RDL","weights":["40 barra"]},{"name":"Cable Kickback","weights":["23"]},{"name":"Sumo Squat Goblet","weights":["40","40","40","50 barra"]}],"notes":""},{"date":"2026-02-16","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["80","100","100","120"]},{"name":"RDL","weights":["20"]}],"notes":""},{"date":"2026-02-22","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","120","120"]},{"name":"RDL","weights":["35"]},{"name":"Bulgarian Split Squat","weights":["15"]},{"name":"Cable Kickback","weights":["18"]}],"notes":""},{"date":"2026-02-23","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["54","48","48","42"]},{"name":"Shoulder Press Machine","weights":["14"]},{"name":"Rear Delt Machine","weights":["16"]},{"name":"Vuelos Laterales","weights":["6"]}],"notes":""},{"date":"2026-02-25","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","40","50"]},{"name":"Reverse Lunges","weights":["20"]},{"name":"Leg Extension","weights":["50"]}],"notes":""},{"date":"2026-02-26","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Neutral Grip Lat Pulldown","weights":["14"]},{"name":"Close Grip Cable Row","weights":["11.25","13.75","13.75"]},{"name":"Face Pull","weights":["9","14","14"]}],"notes":""},{"date":"2026-03-08","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","100","120","120"]},{"name":"RDL","weights":["35"]},{"name":"Bulgarian Split Squat","weights":["17.5"]},{"name":"Cable Kickback","weights":["3.75","3.75","8.75"]}],"notes":""},{"date":"2026-03-09","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["Banda"]},{"name":"Shoulder Press Machine","weights":["Mancuernas 7"]},{"name":"Rear Delt Machine","weights":["Unilateral 2.5"]},{"name":"Vuelos Laterales","weights":["6"]}],"notes":""},{"date":"2026-03-10","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","40","50"]},{"name":"Reverse Lunges","weights":["20","20","25"]},{"name":"Leg Extension","weights":["54","54","59"]}],"notes":""},{"date":"2026-03-12","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Neutral Grip Lat Pulldown","weights":["12","12"]},{"name":"Close Grip Cable Row","weights":["23","27","32"]},{"name":"Face Pull","weights":["14","18","18"]}],"notes":""},{"date":"2026-03-15","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","120","120","120"]},{"name":"RDL","weights":["40"]},{"name":"Bulgarian Split Squat","weights":["20"]},{"name":"Cable Kickback","weights":["14","18","18"]}],"notes":""},{"date":"2026-03-16","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["48","48","48","42"]},{"name":"Shoulder Press Machine","weights":["14"]},{"name":"Rear Delt Machine","weights":["16"]},{"name":"Vuelos Laterales","weights":["6"]}],"notes":""},{"date":"2026-03-17","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","50","50"]},{"name":"Reverse Lunges","weights":["25"]},{"name":"Leg Extension","weights":["59"]}],"notes":""},{"date":"2026-03-18","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Neutral Grip Lat Pulldown","weights":["14","18","18"]},{"name":"Close Grip Cable Row","weights":["27","32","32"]},{"name":"Face Pull","weights":["18"]}],"notes":""},{"date":"2026-03-21","day":1,"dayName":"Lower Body \u2014 Glute Dominant","exercises":[{"name":"Hip Thrust + Abduction banda","weights":["100","120","120","140"]},{"name":"RDL","weights":["40"]},{"name":"Bulgarian Split Squat","weights":["20"]},{"name":"Cable Kickback","weights":["18"]}],"notes":""},{"date":"2026-03-21","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Sumo Deadlift","weights":["40"]}],"notes":""},{"date":"2026-03-23","day":2,"dayName":"Upper Body \u2014 Back + Shoulders","exercises":[{"name":"Pull Ups","weights":["Banda"]},{"name":"Shoulder Press Machine","weights":["Mancuernas 7"]},{"name":"Rear Delt Machine","weights":["Unilateral 2.5","2.5","5"]},{"name":"Vuelos Laterales","weights":["6"]}],"notes":""},{"date":"2026-03-24","day":3,"dayName":"Lower Body \u2014 Quad Dominant","exercises":[{"name":"Prensa Inclinada","weights":["40","40","50","50"]},{"name":"Reverse Lunges","weights":["25"]},{"name":"Leg Extension","weights":["59"]}],"notes":""},{"date":"2026-03-25","day":4,"dayName":"Upper + Glute Accessory","exercises":[{"name":"Neutral Grip Lat Pulldown","weights":["15","20","22.5","22.5"]},{"name":"Close Grip Cable Row","weights":["22"]},{"name":"Face Pull","weights":["10"]}],"notes":""},{"date":"2026-03-28","day":5,"dayName":"Active Recovery \u2014 Glute Pump","exercises":[{"name":"Hip Thrust ~70%","weights":["100"]},{"name":"Cable Abduction","weights":["9","14","14"]}],"notes":""}];
 const SK='glow_grow_v1';
 const HM=1.65;
-function load(){try{return JSON.parse(localStorage.getItem(SK))||seed();}catch{return seed();}}
+function load(){try{return JSON.parse(localStorage.getItem(SK))||seed();}catch(e){return seed();}}
 function save(d){
   localStorage.setItem(SK,JSON.stringify(d));
   setSS('● Saved');
   clearTimeout(save._timer);
   save._timer=setTimeout(pushToCloud,2000);
 }
-function setSS(m){const e=document.getElementById('syncDot');if(e)e.textContent=m;}
+function setSS(m){
+  var e=document.getElementById('syncDot');if(e)e.textContent=m;
+  var e2=document.getElementById('syncDotHome');if(e2)e2.textContent=m;
+}
 function today(){return new Date().toISOString().slice(0,10);}
 
 function seed(){return{
@@ -869,18 +934,50 @@ function updateDash(){
   // today gym ring
   var t=today();
   var todayGym=D.gymSessions.filter(function(x){return x.date===t;}).length>0;
-  var tg=document.getElementById('tdGym');if(tg)tg.textContent=todayGym?'✓':'—';
+  var tg=document.getElementById('tdGym');
+  if(tg){
+    tg.innerHTML=todayGym
+      ?'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="'+(todayGym?'#1A7A4A':'#2D6B45')+'" stroke-width="2.5" stroke-linecap="round"><path d="M3 10l5 5 9-9"/></svg>'
+      :'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D6B45" stroke-width="2" stroke-linecap="round"><path d="M4.5 12h15m-7.5-7.5v15M3 8.25V6a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 019 6v2.25m6 0V6a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 0121 6v2.25M3 15.75V18a2.25 2.25 0 002.25 2.25h1.5A2.25 2.25 0 009 18v-2.25m6 0V18a2.25 2.25 0 002.25 2.25h1.5A2.25 2.25 0 0021 18v-2.25"/></svg>';
+  }
   updateRing('ringGym',todayGym?1:0,1);
+  // Update greeting based on time of day
+  var hr=new Date().getHours();
+  var greet=hr<12?'Good morning, Lina':(hr<18?'Good afternoon, Lina':'Good evening, Lina');
+  var gEl=document.getElementById('hGreeting');if(gEl)gEl.innerHTML=greet+'<span style="color:var(--gold);margin-left:5px;font-size:20px;vertical-align:middle;">✦</span>';
 }
 
 function updateRing(id,done,total){
-  // map old ring IDs to new arc IDs
   var arcMap={ringGym:'arcGym',ringFascia:'arcFascia',ringSupps:'arcSupps',ringSkin:'arcSkin',ringHabits:'arcHabits'};
   var arcId=arcMap[id]||id;
   var el=document.getElementById(arcId);if(!el)return;
-  var circ=151;// arc length for our semicircle r=48
-  var pct=total>0?done/total:0;
+  // Updated circumferences for new ring sizes (2*PI*r)
+  var circMap={arcGym:182,arcSupps:182,arcHabits:182,arcSkin:163,arcFascia:201};
+  var circ=circMap[arcId]||182;
+  var pct=total>0?Math.min(done/total,1):0;
   el.style.strokeDashoffset=circ*(1-pct);
+  // Emerald when complete, brand colour in progress
+  var completeColour={arcGym:'#1A7A4A',arcSupps:'#1A7A4A',arcHabits:'#1A7A4A',arcSkin:'#1A7A4A',arcFascia:'#B8841E'};
+  var normalColour={arcGym:'#6B1530',arcSupps:'#6B1530',arcHabits:'#6B1530',arcSkin:'#6B1530',arcFascia:'#B8841E'};
+  el.style.stroke=pct>=1?completeColour[arcId]:normalColour[arcId];
+  updateOverallRing();
+}
+
+function updateOverallRing(){
+  var t=today();
+  var gymDone=D.gymSessions.filter(function(x){return x.date===t;}).length>0?1:0;
+  var fasciaDone=D.bfChecks&&D.bfChecks['fascia_daily_'+t]?1:0;
+  var suppTot=SUPPS.length,suppDone=D.suppChecks&&D.suppChecks[t]?Object.values(D.suppChecks[t]).filter(Boolean).length:0;
+  var skinTot=SKIN_AM.length+SKIN_PM.length,skinDone=D.skinChecks&&D.skinChecks[t]?SKIN_AM.concat(SKIN_PM).filter(function(s){return D.skinChecks[t][s.id];}).length:0;
+  var habitArr=Object.values(HABITS).reduce(function(a,b){return a.concat(b);},[]);
+  var habitTot=habitArr.length,habitDone=D.habitChecks&&D.habitChecks[t]?habitArr.filter(function(h){return D.habitChecks[t][h.id];}).length:0;
+  var total=1+1+suppTot+skinTot+habitTot;
+  var done=gymDone+fasciaDone+suppDone+skinDone+habitDone;
+  var pct=total>0?Math.round(done/total*100):0;
+  var pctEl=document.getElementById('hPct');if(pctEl)pctEl.textContent=pct+'%';
+  var subEl=document.getElementById('hAligned');if(subEl)subEl.textContent='You\'re '+pct+'% aligned today';
+  var overall=document.getElementById('ringOverall');
+  if(overall){overall.style.strokeDashoffset=201*(1-pct/100);}
 }
 
 var curDay=1;
@@ -962,19 +1059,11 @@ function renderEx(){
       return '<div class="w-set"><input class="w-field" type="text" id="ex-'+i+'-'+si+'" placeholder="'+(prevW||'—')+'" inputmode="decimal"><div class="w-lbl">S'+(si+1)+'</div></div>';
     }).join('');
 
-    var prevRows=lastN.slice().reverse().map(function(sess){
-      var sessEx=sess.exercises.find(function(e){return e.name===ex.name;});
-      var pw=sessEx&&sessEx.weights?sessEx.weights.filter(Boolean):[];
-      if(!pw.length)return '';
-      return '<div class="prev-row"><span class="prev-lbl">'+sess.date+':</span>'+pw.map(function(w){return '<span class="prev-pill">'+w+'kg</span>';}).join('')+'</div>';
-    }).filter(Boolean).join('');
-
     var h=exHistData(ex.name);
     return '<div class="ex-item">'
       +'<div class="ex-hdr"><div class="ex-name">'+ex.name+'</div>'+vb+'</div>'
       +'<div class="ex-target">'+ex.sets+' × '+ex.reps+'</div>'
       +'<div class="w-inputs">'+sets+'</div>'
-      +prevRows
       +'<button class="hbtn" onclick="toggleHist('+i+')">'+(h.length?'History ('+h.length+')':'History')+'</button>'
       +'<div class="ex-hist-panel" id="eh-'+i+'">'
       +'<div class="ex-hist-chart"><canvas id="ehc-'+i+'"></canvas></div>'
@@ -1499,7 +1588,27 @@ function resetHabits(){
   save(D);renderHabits();toast('Reset for today');
 }
 
-function renderAll(){updateDash();renderChart();renderSupps();renderEx();renderGymHist();renderBodyHist();renderPhotos();renderSkin();renderBF();renderHabits();}
+function renderAll(){updateDash();renderChart();renderSupps();renderEx();renderGymHist();renderBodyHist();renderPhotos();renderSkin();renderBF();renderHabits();updateOverallProgress();}
+
+function updateOverallProgress(){
+  var t=today();
+  var gymDone=D.gymSessions.filter(function(x){return x.date===t;}).length>0?1:0;
+  var fasciaKey='fascia_daily_'+t;
+  var fasciaDone=(D.bfChecks&&D.bfChecks[fasciaKey])?1:0;
+  var suppTotal=SUPPS.length,suppDone=D.suppChecks&&D.suppChecks[t]?Object.values(D.suppChecks[t]).filter(Boolean).length:0;
+  var skinTotal=SKIN_AM.length+SKIN_PM.length,skinDone=0;
+  if(D.skinChecks&&D.skinChecks[t])skinDone=SKIN_AM.concat(SKIN_PM).filter(function(s){return D.skinChecks[t][s.id];}).length;
+  var habTotal=Object.values(HABITS).reduce(function(a,b){return a+b.length;},0),habDone=0;
+  if(D.habitChecks&&D.habitChecks[t])habDone=Object.values(D.habitChecks[t]).filter(Boolean).length;
+  // Score: gym+fascia count as 1 each, rest as fraction
+  var score=(gymDone+fasciaDone+(suppTotal?suppDone/suppTotal:0)+(skinTotal?skinDone/skinTotal:0)+(habTotal?habDone/habTotal:0));
+  var maxScore=5;
+  var pct=Math.round(score/maxScore*100);
+  var pctEl=document.getElementById('hPct');if(pctEl)pctEl.textContent=pct+'%';
+  var alignEl=document.getElementById('hAligned');if(alignEl)alignEl.textContent='You\'re '+pct+'% aligned today';
+  var ring=document.getElementById('ringOverall');
+  if(ring){var circ=201;ring.style.strokeDashoffset=circ*(1-pct/100);}
+}
 
 function scheduleMidnightReset(){
   var now=new Date();
@@ -1515,7 +1624,12 @@ function scheduleMidnightReset(){
 
 function init(){
   var now=new Date();
-  document.getElementById('hDate').textContent=now.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  var hr=now.getHours();
+  var greet=hr<12?'Good morning, Lina':(hr<18?'Good afternoon, Lina':'Good evening, Lina');
+  var greetEl=document.getElementById('hGreeting');if(greetEl)greetEl.textContent=greet;
+  var _dStr=now.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('hDate').textContent=_dStr;
+  var _dHome=document.getElementById('hDateHome');if(_dHome)_dHome.textContent=_dStr;
   document.getElementById('suppDateLbl').textContent=now.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'short'});
   var t=today();
   document.getElementById('gymD').value=t;
@@ -1600,10 +1714,42 @@ function doImport(){
 function showPage(id,btn){
   document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('.nav-item').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('page-'+id).classList.add('active');btn.classList.add('active');window.scrollTo(0,0);
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+  window.scrollTo(0,0);
+  // Toggle header mode
+  var isHome=id==='dashboard';
+  var hHome=document.getElementById('hdrHome');
+  var hOther=document.getElementById('hdrOther');
+  if(hHome)hHome.style.display=isHome?'flex':'none';
+  if(hOther)hOther.style.display=isHome?'none':'block';
+  // Header: relative+transparent on home, sticky+frosted on others
+  var hdr=document.getElementById('mainHeader');
+  if(hdr){
+    if(isHome){
+      hdr.classList.add('home-mode');
+      hdr.style.position='relative';
+      hdr.style.background='transparent';
+      hdr.style.borderBottom='none';
+      hdr.style.backdropFilter='none';
+      hdr.style.webkitBackdropFilter='none';
+    } else {
+      hdr.classList.remove('home-mode');
+      hdr.style.position='sticky';
+      hdr.style.background='rgba(250,246,241,0.88)';
+      hdr.style.borderBottom='1px solid rgba(180,155,125,0.10)';
+      hdr.style.backdropFilter='blur(20px)';
+      hdr.style.webkitBackdropFilter='blur(20px)';
+    }
+  }
 }
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
 
 init();
+// Set initial header mode (home)
+(function(){
+  var hdr=document.getElementById('mainHeader');
+  if(hdr){hdr.classList.add('home-mode');hdr.style.position='relative';hdr.style.background='transparent';hdr.style.borderBottom='none';}
+})();
 </script>
 </body></html>
