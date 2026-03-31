@@ -1347,20 +1347,20 @@ function checkMidnightReset(){
   var t=today();
   var lastReset=localStorage.getItem('gg_last_reset');
   if(lastReset!==t){
-    // New day — reset daily checks but preserve data
+    // New day — force fresh empty keys for today
     if(!D.suppChecks)D.suppChecks={};
     if(!D.skinChecks)D.skinChecks={};
     if(!D.habitChecks)D.habitChecks={};
-    // Data from yesterday is already saved under yesterday's date key — just ensure today exists
-    if(!D.suppChecks[t])D.suppChecks[t]={};
-    if(!D.skinChecks[t])D.skinChecks[t]={};
-    if(!D.habitChecks[t])D.habitChecks[t]={};
-    // bfChecks: cumulative program keys stay, daily key resets
     if(!D.bfChecks)D.bfChecks={};
-    // daily fascia key is date-stamped so naturally resets each day
+    D.suppChecks[t]={};
+    D.skinChecks[t]={};
+    D.habitChecks[t]={};
+    // fascia daily key is date-stamped so resets naturally
     localStorage.setItem('gg_last_reset',t);
     localStorage.setItem(SK,JSON.stringify(D));
+    return true;
   }
+  return false;
 }
 
 function renderSupps(){
@@ -1639,6 +1639,7 @@ function init(){
   if(!D.skinChecks)D.skinChecks={};
   if(!D.bfChecks)D.bfChecks={};
   if(!D.habitChecks)D.habitChecks={};
+  checkMidnightReset();// always check on load — resets if new day
   renderAll();
   setTimeout(pullFromCloud,1000);
   scheduleMidnightReset();
