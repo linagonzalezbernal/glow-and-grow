@@ -248,7 +248,18 @@ textarea{resize:none;height:72px;}
 
 <div class="page active" id="page-dashboard">
   <!-- 4 rings: Gym · Supps · Skin(+Fascia outer) · Habits -->
-  <div style="background:rgba(255,255,255,0.88);border-radius:24px;padding:20px 16px 16px;margin-bottom:16px;box-shadow:0 2px 20px rgba(28,14,6,0.07);backdrop-filter:blur(12px);">
+  <div style="background:rgba(255,255,255,0.72);border-radius:24px;padding:20px 16px 16px;margin-bottom:16px;box-shadow:0 4px 32px rgba(28,14,6,0.08),inset 0 1px 0 rgba(255,255,255,0.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.6);">
+  <svg width="0" height="0" style="position:absolute;"><defs>
+    <linearGradient id="gradEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D9E62"/><stop offset="100%" stop-color="#0D5C35"/>
+    </linearGradient>
+    <linearGradient id="gradBurgundy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9B2545"/><stop offset="100%" stop-color="#4A0E1F"/>
+    </linearGradient>
+    <linearGradient id="gradGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4A43A"/><stop offset="100%" stop-color="#8C5E10"/>
+    </linearGradient>
+  </defs></svg>
   <div style="font-size:11px;font-weight:700;color:var(--text-mid);letter-spacing:0.4px;margin-bottom:14px;">Today's Progress</div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
 
@@ -257,7 +268,7 @@ textarea{resize:none;height:72px;}
       <div style="position:relative;width:68px;height:68px;">
         <svg viewBox="0 0 68 68" style="width:68px;height:68px;transform:rotate(-90deg);">
           <circle cx="34" cy="34" r="29" fill="none" stroke="rgba(232,223,210,0.8)" stroke-width="5"/>
-          <circle id="arcGym" cx="34" cy="34" r="29" fill="none" stroke="#6B1530" stroke-width="5" stroke-dasharray="182" stroke-dashoffset="182" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
+          <circle id="arcGym" cx="34" cy="34" r="29" fill="none" stroke="url(#gradBurgundy)" stroke-width="5" stroke-dasharray="182" stroke-dashoffset="182" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
         </svg>
         <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;" id="tdGym">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1008" stroke-width="2" stroke-linecap="round"><path d="M4.5 12h15m-7.5-7.5v15M3 8.25V6a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 019 6v2.25m6 0V6a2.25 2.25 0 012.25-2.25h1.5A2.25 2.25 0 0121 6v2.25M3 15.75V18a2.25 2.25 0 002.25 2.25h1.5A2.25 2.25 0 009 18v-2.25m6 0V18a2.25 2.25 0 002.25 2.25h1.5A2.25 2.25 0 0021 18v-2.25"/></svg>
@@ -271,7 +282,7 @@ textarea{resize:none;height:72px;}
       <div style="position:relative;width:68px;height:68px;">
         <svg viewBox="0 0 68 68" style="width:68px;height:68px;transform:rotate(-90deg);">
           <circle cx="34" cy="34" r="29" fill="none" stroke="rgba(232,223,210,0.8)" stroke-width="5"/>
-          <circle id="arcSupps" cx="34" cy="34" r="29" fill="none" stroke="#6B1530" stroke-width="5" stroke-dasharray="182" stroke-dashoffset="182" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
+          <circle id="arcSupps" cx="34" cy="34" r="29" fill="none" stroke="url(#gradBurgundy)" stroke-width="5" stroke-dasharray="182" stroke-dashoffset="182" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
         </svg>
         <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;">
           <div id="tdSupps" style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);line-height:1;text-align:center;">0</div>
@@ -286,9 +297,9 @@ textarea{resize:none;height:72px;}
       <div style="position:relative;width:68px;height:68px;">
         <svg viewBox="0 0 68 68" style="width:68px;height:68px;transform:rotate(-90deg);">
           <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(232,223,210,0.6)" stroke-width="3"/>
-          <circle id="arcFascia" cx="34" cy="34" r="32" fill="none" stroke="#B8841E" stroke-width="3" stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
+          <circle id="arcFascia" cx="34" cy="34" r="32" fill="none" stroke="url(#gradGold)" stroke-width="3" stroke-dasharray="201" stroke-dashoffset="201" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
           <circle cx="34" cy="34" r="26" fill="none" stroke="rgba(232,223,210,0.8)" stroke-width="5"/>
-          <circle id="arcSkin" cx="34" cy="34" r="26" fill="none" stroke="#6B1530" stroke-width="5" stroke-dasharray="163" stroke-dashoffset="163" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
+          <circle id="arcSkin" cx="34" cy="34" r="26" fill="none" stroke="url(#gradBurgundy)" stroke-width="5" stroke-dasharray="163" stroke-dashoffset="163" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
         </svg>
         <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;">
           <div id="tdSkin" style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);line-height:1;text-align:center;">0</div>
@@ -303,7 +314,7 @@ textarea{resize:none;height:72px;}
       <div style="position:relative;width:68px;height:68px;">
         <svg viewBox="0 0 68 68" style="width:68px;height:68px;transform:rotate(-90deg);">
           <circle cx="34" cy="34" r="29" fill="none" stroke="rgba(232,223,210,0.8)" stroke-width="5"/>
-          <circle id="arcHabits" cx="34" cy="34" r="29" fill="none" stroke="#6B1530" stroke-width="5" stroke-dasharray="182" stroke-dashoffset="182" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
+          <circle id="arcHabits" cx="34" cy="34" r="29" fill="none" stroke="url(#gradBurgundy)" stroke-width="5" stroke-dasharray="182" stroke-dashoffset="182" stroke-linecap="round" style="transition:stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1);"/>
         </svg>
         <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;">
           <div id="tdHabits" style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);line-height:1;text-align:center;">0</div>
@@ -957,8 +968,8 @@ function updateRing(id,done,total){
   var pct=total>0?Math.min(done/total,1):0;
   el.style.strokeDashoffset=circ*(1-pct);
   // Emerald when complete, brand colour in progress
-  var completeColour={arcGym:'#1A7A4A',arcSupps:'#1A7A4A',arcHabits:'#1A7A4A',arcSkin:'#1A7A4A',arcFascia:'#B8841E'};
-  var normalColour={arcGym:'#6B1530',arcSupps:'#6B1530',arcHabits:'#6B1530',arcSkin:'#6B1530',arcFascia:'#B8841E'};
+  var completeColour={arcGym:'url(#gradEmerald)',arcSupps:'url(#gradEmerald)',arcHabits:'url(#gradEmerald)',arcSkin:'url(#gradEmerald)',arcFascia:'url(#gradGold)'};
+  var normalColour={arcGym:'url(#gradBurgundy)',arcSupps:'url(#gradBurgundy)',arcHabits:'url(#gradBurgundy)',arcSkin:'url(#gradBurgundy)',arcFascia:'url(#gradGold)'};
   el.style.stroke=pct>=1?completeColour[arcId]:normalColour[arcId];
   updateOverallRing();
 }
@@ -1157,16 +1168,16 @@ const SKIN_AM=[
   {id:'sam1',name:'Cleanse',product:'Senka Perfect Whip Medicated Beauty Foam',info:'Gentle medicated cleanser that removes impurities without stripping the skin barrier. The medicated formula helps with breakout prevention. Always cleanse before actives.'},
   {id:'sam_ha',name:'HA + B5',product:'The Ordinary Hyaluronic Acid 2% + B5',info:'Hyaluronic acid draws moisture into the skin from the environment. B5 (panthenol) reinforces the skin barrier. Apply on slightly damp skin immediately after cleansing for best absorption. Wait 60–90 sec before next layer.'},
   {id:'sam2',name:'Vitamin C Serum',product:'Sephora GLOW 7% Vitamin C + Vitamin E',info:'Vitamin C is the gold-standard brightening antioxidant — fades pigmentation, boosts collagen, protects against UV damage. Vitamin E enhances its stability. Apply after HA, wait 60–90 sec. Use every morning for cumulative glow.'},
-  {id:'sam3',name:'Niacinamide',product:'The Ordinary Niacinamide 10% + Zinc (2–3 drops max)',info:'Niacinamide reduces redness, minimises pores, regulates oil and strengthens the skin barrier. Zinc supports breakout control. 2–3 drops maximum — more causes pilling. Pat, do not rub. Wait 60–90 sec.'},
-  {id:'sam4',name:'Moisturiser',product:'Cetaphil Moisturising Lotion',info:'Lightweight, fragrance-free moisturiser that locks in the serum layers and supports the skin barrier before SPF. Non-comedogenic — safe daily. Apply and wait 60–90 sec before SPF.'},
   {id:'sam5',name:'SPF Face',product:'La Roche-Posay Anthelios SPF50+ Invisible Fluid',info:'Broad-spectrum SPF50+ is non-negotiable for anti-ageing and hyperpigmentation prevention — UV is the #1 cause of premature skin ageing. Apply in smooth strokes ONE direction only — do not rub back and forth. Reapply every 2 hours in sun.'},
   {id:'sam6',name:'SPF Lips',product:'MooGoo Natural SPF15 Lip Balm',info:'Lips have no melanin and burn easily. SPF lip protection prevents darkening, dryness and long-term sun damage. Clean, non-toxic formula. Reapply every 2 hours in direct sun.'},
 ];
 const SKIN_PM=[
   {id:'spm1',name:'First Cleanse',product:'Banila Co Clean It Zero',info:'Oil-based cleansing balm that dissolves SPF, makeup and pollution without stripping the skin. First step of double cleanse — the most important step of your PM routine. Massage gently for 60 sec, emulsify with water, rinse.'},
   {id:'spm2',name:'Second Cleanse',product:'Senka Perfect Whip',info:'Water-based second cleanse removes any residue left by the oil cleanse. Ensures actives applied after penetrate clean skin rather than sitting on top of SPF residue.'},
-  {id:'spm4',name:'Differin (adapalene)',product:'Building to nightly — add 1 extra night every 2–3 weeks',info:'Adapalene is a 3rd-generation retinoid that accelerates cell turnover, unclogs pores, fades pigmentation and stimulates collagen. Building slowly prevents irritation. STOP 5 days before microneedling, resume 7 days after. Apply after cleansing, before moisturiser.'},
-  {id:'spm5',name:'Barrier Moisturiser',product:'La Roche-Posay Cicaplast Baume B5+ — over Differin',info:'Applied over Differin to buffer any irritation during the adaptation phase. Cicaplast B5+ is a powerhouse barrier repair cream with madecassoside, niacinamide and panthenol. Locks in Differin and prevents transepidermal water loss overnight.'},
+  {id:'spm_ha',name:'HA + B5',product:'The Ordinary Hyaluronic Acid 2% + B5',info:'Apply on clean skin after double cleanse. Hyaluronic acid plumps and hydrates — apply while skin is slightly damp for best absorption.'},
+  {id:'spm_nia',name:'Niacinamide',product:'The Ordinary Niacinamide 10% + Zinc (2–3 drops max)',info:'Niacinamide reduces redness, minimises pores and strengthens the barrier. 2–3 drops maximum to avoid pilling. Pat, do not rub. Wait 60 sec before next layer.'},
+  {id:'spm4',name:'Differin',product:'Adapalene cream — building to nightly use',info:'Adapalene accelerates cell turnover, fades pigmentation and stimulates collagen. STOP 5 days before microneedling, resume 7 days after. Apply after serums, before moisturiser.'},
+  {id:'spm5',name:'Barrier Moisturiser',product:'La Roche-Posay Cicaplast Baume B5+ — wait 30 min after Differin',info:'Wait 30 minutes after Differin before applying to reduce irritation and maximise efficacy. Cicaplast repairs the barrier with madecassoside, niacinamide and panthenol. Seals in Differin overnight.'},
   {id:'spm6',name:'Lip Moisture',product:"Burt\'s Bees Advanced Relief Unscented",info:'Fragrance-free lip moisturiser as the first overnight lip layer. Free of parabens and SLS. Apply before the final occlusive seal.'},
   {id:'spm7',name:'Lip Seal',product:'Lanolips 101 Ointment — over Burt\'s Bees',info:'Lanolin-based occlusive ointment that seals moisture in overnight. Apply generously over Burt\'s Bees as the final step. Prevents lip dehydration and accelerates repair while you sleep.'},
 ];
@@ -1497,6 +1508,7 @@ const HABITS={
   ],
   mid:[
     {id:'h_steps',name:'5,000 steps',sub:'Move through the day — stairs, walk at lunch, after dinner'},
+    {id:'h_water',name:'Drink 2.5–3L water',sub:'Hydration drives everything — skin, energy, metabolism'},
   ],
   pm:[
     {id:'h_nophone_pm',name:'Phone out of bedroom',sub:'Charge in another room overnight — no exceptions'},
