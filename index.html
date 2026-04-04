@@ -340,6 +340,30 @@ textarea{resize:none;height:72px;}
     <div class="metric-tile"><div class="metric-val" id="dm">67.7<span class="metric-unit">%</span></div><div class="metric-label">Muscle Mass</div><div class="metric-delta dp">↑ Best ever</div></div>
     <div class="metric-tile"><div class="metric-val" id="dwst">71<span class="metric-unit">cm</span></div><div class="metric-label">Waist</div><div class="metric-delta dp">↓ 8cm since Jun '25</div></div>
   </div>
+  <!-- Macros button -->
+  <button onclick="document.getElementById('macrosModal').classList.add('open')" style="width:100%;background:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.6);border-radius:18px;padding:14px 18px;margin-bottom:10px;box-shadow:0 2px 16px rgba(28,14,6,0.06);backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Figtree',sans-serif;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:32px;height:32px;background:linear-gradient(135deg,#F5E0D0,#E8C4B0);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;">🥗</div>
+      <div style="text-align:left;">
+        <div style="font-size:13px;font-weight:600;color:var(--brown);">Today's Targets</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:1px;">Calories · Protein · Carbs · Fats</div>
+      </div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <!-- Claude AI button -->
+  <button onclick="document.getElementById('claudeModal').classList.add('open')" style="width:100%;background:linear-gradient(135deg,rgba(28,14,6,0.88),rgba(44,20,40,0.88));border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:14px 18px;margin-bottom:10px;box-shadow:0 4px 20px rgba(28,14,6,0.15);backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Figtree',sans-serif;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:32px;height:32px;background:rgba(255,255,255,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l3 3"/><circle cx="18" cy="6" r="3" fill="rgba(255,255,255,0.6)" stroke="none"/></svg>
+      </div>
+      <div style="text-align:left;">
+        <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.95);">Ask Claude</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:1px;">Nutrition · Workout · Wellness</div>
+      </div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
   <!-- Date + sync + settings at bottom of home -->
   <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 0 4px;margin-top:4px;">
     <div id="hDateHome" style="font-size:10px;color:var(--text-dim);letter-spacing:0.3px;text-align:center;"></div>
@@ -596,7 +620,13 @@ function setSS(m){
   var e=document.getElementById('syncDot');if(e)e.textContent=m;
   var e2=document.getElementById('syncDotHome');if(e2)e2.textContent=m;
 }
-function today(){return new Date().toISOString().slice(0,10);}
+function today(){
+  var n=new Date();
+  var y=n.getFullYear();
+  var m=String(n.getMonth()+1).padStart(2,'0');
+  var d=String(n.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+d;// LOCAL date — not UTC
+}
 
 function seed(){return{
   bodyScans:[
@@ -1115,18 +1145,43 @@ function saveGym(){
   var date=document.getElementById('gymD').value;if(!date){toast('Please select a date');return;}
   var day=DAYS[curDay];
   var exercises=day.exercises.map(function(ex,i){
-    return {name:ex.name,weights:Array.from({length:ex.n},function(_,si){return document.getElementById('ex-'+i+'-'+si)?document.getElementById('ex-'+i+'-'+si).value||null:null;})};
+    return {name:ex.name,weights:Array.from({length:ex.n},function(_,si){
+      var el=document.getElementById('ex-'+i+'-'+si);
+      return el?el.value||null:null;
+    })};
   });
-  D.gymSessions.push({date:date,day:curDay,dayName:day.name,exercises:exercises,notes:document.getElementById('gymNotes').value,warmup:doneState.warmup});
-  save(D);renderEx();renderGymHist();document.getElementById('gymNotes').value='';
-  doneState={warmup:false,finishers:{}};
-  toast('✓ Session saved!');
+  var notes=document.getElementById('gymNotes').value;
+  // Find existing session for same date+day to merge into
+  var existing=D.gymSessions.find(function(s){return s.date===date&&s.day===curDay;});
+  if(existing){
+    // Merge: only overwrite a weight if the new value is non-empty
+    exercises.forEach(function(ex,i){
+      var prev=existing.exercises[i];
+      if(!prev){existing.exercises[i]=ex;return;}
+      ex.weights.forEach(function(w,si){
+        if(w!==null&&w!==''){prev.weights[si]=w;}
+      });
+    });
+    if(notes)existing.notes=notes;
+    existing.warmup=doneState.warmup||existing.warmup;
+    toast('✓ Session updated!');
+  } else {
+    D.gymSessions.push({date:date,day:curDay,dayName:day.name,exercises:exercises,notes:notes,warmup:doneState.warmup});
+    toast('✓ Session saved!');
+  }
+  save(D);renderEx();renderGymHist();
 }
 
 function renderGymHist(){
   var el=document.getElementById('gymHist');if(!el)return;
-  var r=[...D.gymSessions].reverse().slice(0,6);
-  el.innerHTML=r.length?r.map(function(s){return '<div class="hist-item"><div><div style="font-size:12px;font-weight:500;color:var(--text)">'+s.dayName+'</div><div class="hist-date">'+s.date+(s.notes?' · '+s.notes.slice(0,28):'')+'</div></div><div style="font-size:10px;color:var(--text-dim)">'+s.exercises.length+' ex</div></div>';}).join(''):'<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:14px;">No sessions logged yet</div>';
+  // Deduplicate by date — show only the latest entry per date
+  var seen={};
+  var deduped=[...D.gymSessions].reverse().filter(function(s){
+    var key=s.date;// dedupe by date only — show one entry per day
+    if(seen[key])return false;
+    seen[key]=true;return true;
+  }).slice(0,6);
+  el.innerHTML=deduped.length?deduped.map(function(s){return '<div class="hist-item"><div><div style="font-size:12px;font-weight:500;color:var(--text)">'+s.dayName+'</div><div class="hist-date">'+s.date+(s.notes?' · '+s.notes.slice(0,28):'')+'</div></div><div style="font-size:10px;color:var(--text-dim)">'+s.exercises.length+' ex</div></div>';}).join(''):'<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:14px;">No sessions logged yet</div>';
 }
 
 function saveBody(){
@@ -1318,6 +1373,18 @@ async function pullFromCloud(){
       if(cloud.bfChecks){if(!D.bfChecks)D.bfChecks={};Object.assign(D.bfChecks,cloud.bfChecks);}
       if(cloud.habitChecks){if(!D.habitChecks)D.habitChecks={};Object.keys(cloud.habitChecks).forEach(function(k){if(!D.habitChecks[k])D.habitChecks[k]={};Object.assign(D.habitChecks[k],cloud.habitChecks[k]);});}
       if(cloud.photos&&cloud.photos.length>(D.photos||[]).length)D.photos=cloud.photos;
+      // After cloud merge, enforce today's reset — cloud may have yesterday's ticked items
+      var _t=today();
+      var _lastReset=localStorage.getItem('gg_last_reset');
+      if(_lastReset!==_t){
+        if(!D.suppChecks)D.suppChecks={};
+        if(!D.skinChecks)D.skinChecks={};
+        if(!D.habitChecks)D.habitChecks={};
+        D.suppChecks[_t]={};
+        D.skinChecks[_t]={};
+        D.habitChecks[_t]={};
+        localStorage.setItem('gg_last_reset',_t);
+      }
       localStorage.setItem(SK,JSON.stringify(D));
       renderAll();
       setSS('☁️ Synced '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}));
@@ -1368,6 +1435,7 @@ function checkMidnightReset(){
     D.habitChecks[t]={};
     // fascia daily key is date-stamped so resets naturally
     localStorage.setItem('gg_last_reset',t);
+    D._lastReset=t;// also store in D so cloud merge can't undo date tracking
     localStorage.setItem(SK,JSON.stringify(D));
     return true;
   }
@@ -1758,6 +1826,39 @@ function showPage(id,btn){
 }
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
 
+async function askClaude(){
+  var input=document.getElementById('claudeInput');
+  var chat=document.getElementById('claudeChat');
+  var btn=document.getElementById('claudeBtn');
+  var q=input.value.trim();if(!q)return;
+  // Add user bubble
+  chat.innerHTML+='<div style="align-self:flex-end;background:var(--brown);color:var(--cream);padding:10px 14px;border-radius:16px 16px 4px 16px;font-size:13px;max-width:85%;">'+q+'</div>';
+  input.value='';btn.textContent='Thinking...';btn.disabled=true;
+  chat.scrollTop=chat.scrollHeight;
+  // Build context from app data
+  var t=today();
+  var lat=D.bodyScans&&D.bodyScans.length?D.bodyScans[D.bodyScans.length-1]:null;
+  var lastGym=D.gymSessions&&D.gymSessions.length?D.gymSessions[D.gymSessions.length-1]:null;
+  var context='You are a helpful wellness assistant embedded in Lina\'s personal health tracking app called Glow & Grow. Keep answers concise and practical (max 3-4 sentences unless asked for more). Here is her current data: ';
+  if(lat)context+='Latest body scan ('+lat.date+'): weight '+lat.weight+'kg, body fat '+lat.bf+'%, muscle mass '+lat.muscle+'%. ';
+  if(lastGym)context+='Last gym session ('+lastGym.date+'): '+lastGym.dayName+'. ';
+  context+='Her daily calorie targets: Mon-Thu 1600kcal, Fri 1900kcal, Sat 2000-2100kcal, Sun 1700-1800kcal. Protein always 135-140g. She is doing body recomposition (lose fat, gain muscle). Today is '+t+'.';
+  try{
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:context,messages:[{role:'user',content:q}]})
+    });
+    var data=await resp.json();
+    var reply=data.content&&data.content[0]?data.content[0].text:'Sorry, I couldn\'t get a response.';
+    chat.innerHTML+='<div style="align-self:flex-start;background:rgba(255,255,255,0.9);color:var(--text);padding:10px 14px;border-radius:16px 16px 16px 4px;font-size:13px;max-width:85%;line-height:1.5;box-shadow:var(--shadowS);">'+reply+'</div>';
+  }catch(e){
+    chat.innerHTML+='<div style="align-self:flex-start;background:rgba(255,255,255,0.9);color:var(--rose);padding:10px 14px;border-radius:16px 16px 16px 4px;font-size:13px;max-width:85%;">Connection error — make sure you\'re on Claude.ai to use this feature.</div>';
+  }
+  btn.textContent='Ask Claude';btn.disabled=false;
+  chat.scrollTop=chat.scrollHeight;
+}
+
 init();
 // Set initial header mode (home)
 (function(){
@@ -1765,4 +1866,68 @@ init();
   if(hdr){hdr.classList.add('home-mode');hdr.style.position='relative';hdr.style.background='transparent';hdr.style.borderBottom='none';}
 })();
 </script>
+<!-- MACROS MODAL -->
+<div class="modal-overlay" id="macrosModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" style="max-height:90vh;">
+    <button class="modal-close" onclick="document.getElementById('macrosModal').classList.remove('open')">✕</button>
+    <div class="modal-title">Daily Targets</div>
+    <div style="margin-bottom:16px;">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);font-weight:700;margin-bottom:10px;">By Day</div>
+      <div style="display:grid;grid-template-columns:1fr;gap:8px;">
+        <div style="background:var(--cream2);border-radius:14px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Mon–Thu <span style="font-weight:400;color:var(--text-dim);">training, strict</span></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,600</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">135–140g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">140–150g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">50–55g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+          </div>
+        </div>
+        <div style="background:var(--cream2);border-radius:14px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Friday <span style="font-weight:400;color:var(--text-dim);">training + dinner out</span></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,900</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">135–140g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">185–200g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">60–65g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+          </div>
+        </div>
+        <div style="background:var(--cream2);border-radius:14px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Saturday <span style="font-weight:400;color:var(--text-dim);">flex day</span></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">2,000–2,100</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">135–140g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">200–220g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">65–70g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+          </div>
+        </div>
+        <div style="background:var(--cream2);border-radius:14px;padding:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Sunday <span style="font-weight:400;color:var(--text-dim);">wind down</span></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,700–1,800</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">135–140g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">160–170g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">55–60g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,var(--brown),#3A1E2A);border-radius:14px;padding:14px;color:white;margin-top:4px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;margin-bottom:6px;opacity:0.8;">THE NON-NEGOTIABLE</div>
+      <div style="font-size:13px;line-height:1.6;">Protein stays at <strong>135–140g every single day</strong> including weekends — it never cycles down. Everything else flexes, protein doesn't.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLAUDE AI MODAL -->
+<div class="modal-overlay" id="claudeModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('claudeModal').classList.remove('open')">✕</button>
+    <div class="modal-title">Ask Claude</div>
+    <div id="claudeChat" style="max-height:300px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;"></div>
+    <textarea id="claudeInput" placeholder="Ask about your nutrition, workout, sleep, supplements..." style="height:80px;margin-bottom:8px;resize:none;"></textarea>
+    <button class="btn btn-dark" onclick="askClaude()" id="claudeBtn">Ask Claude</button>
+  </div>
+</div>
+
 </body></html>
