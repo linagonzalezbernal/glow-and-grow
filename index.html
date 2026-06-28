@@ -2001,7 +2001,9 @@ function init(){
   if(!D.habitChecks)D.habitChecks={};
   checkMidnightReset();// always check on load — resets if new day
   renderAll();
-  setTimeout(pullFromCloud,1000);
+  // Don't auto-pull from cloud on load — pull manually only.
+  // Auto-pull overwrites local data (like nutritionLog) if cloud is behind.
+  setSS('● Saved locally');
   scheduleMidnightReset();
 }
 
