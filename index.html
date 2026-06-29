@@ -727,11 +727,6 @@ function load(){
   try{
     var d=JSON.parse(localStorage.getItem(SK))||seed();
     if(!d.nutritionLog)d.nutritionLog=[];
-    // Merge from dedicated nutrition key — more durable on iOS Safari
-    try{
-      var nutr=JSON.parse(localStorage.getItem(SK_NUTR));
-      if(nutr&&nutr.length>d.nutritionLog.length)d.nutritionLog=nutr;
-    }catch(e){}
     return d;
   }catch(e){return seed();}
 }
@@ -2122,35 +2117,19 @@ function saveNutrition(){
   var pn=function(id){var v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;};
   var entry={date:date,cal:pn('nutrCal'),pro:pn('nutrPro'),carb:pn('nutrCarb'),fat:pn('nutrFat'),fib:pn('nutrFib'),sug:pn('nutrSug')};
   var idx=D.nutritionLog.findIndex(function(e){return e.date===date;});
-  if(idx>=0)D.nutritionLog[idx]=entry;
-  else D.nutritionLog.push(entry);
+  if(idx>=0)D.nutritionLog[idx]=entry;else D.nutritionLog.push(entry);
   D.nutritionLog.sort(function(a,b){return a.date.localeCompare(b.date);});
-  // Write to both localStorage keys
-  try{
-    localStorage.setItem(SK,JSON.stringify(D));
-    localStorage.setItem(SK_NUTR,JSON.stringify(D.nutritionLog));
-  }catch(e){console.error('LocalStorage save failed:',e);}
+  save(D);
   renderNutrHist();
-  setSS('Saving to cloud...');
   ['nutrCal','nutrPro','nutrCarb','nutrFat','nutrFib','nutrSug'].forEach(function(id){document.getElementById(id).value='';});
-  // Auto-push to Google Sheets immediately
-  pushToCloud(true).then(function(){
-    toast('✓ Week saved to cloud!');
-  }).catch(function(){
-    toast('✓ Saved locally — push manually to sync');
-    setSS('● Saved locally');
-  });
+  toast('✓ Week saved!');
 }
 
 function renderNutrHist(){
   var el=document.getElementById('nutrHist');if(!el)return;
-  // Read from dedicated nutrition key first (most reliable), fallback to D
-  try{
-    var stored=JSON.parse(localStorage.getItem(SK_NUTR));
-    if(stored&&stored.length){D.nutritionLog=stored;}
-  }catch(e){}
-  if(!D.nutritionLog||!D.nutritionLog.length){
-    el.innerHTML='<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:12px;">No entries yet — log your first Sunday.</div>';
+  var log=D.nutritionLog||[];
+  if(!log.length){
+    el.innerHTML='<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:12px;">No entries yet — log your first week.</div>';
     return;
   }
   var rows=[...D.nutritionLog].reverse().slice(0,8);
