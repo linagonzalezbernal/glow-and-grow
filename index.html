@@ -2114,18 +2114,28 @@ function saveNutrition(){
   if(!D.nutritionLog)D.nutritionLog=[];
   var pn=function(id){var v=parseFloat(document.getElementById(id).value);return isNaN(v)?null:v;};
   var entry={date:date,cal:pn('nutrCal'),pro:pn('nutrPro'),carb:pn('nutrCarb'),fat:pn('nutrFat'),fib:pn('nutrFib'),sug:pn('nutrSug')};
-  // Replace if same week date exists
   var idx=D.nutritionLog.findIndex(function(e){return e.date===date;});
   if(idx>=0)D.nutritionLog[idx]=entry;
   else D.nutritionLog.push(entry);
   D.nutritionLog.sort(function(a,b){return a.date.localeCompare(b.date);});
-  save(D);renderNutrHist();
+  // Write directly — belt and suspenders
+  try{localStorage.setItem(SK,JSON.stringify(D));}catch(e){console.error('Save failed:',e);}
+  console.log('Nutrition saved. Log length:',D.nutritionLog.length,'Entry:',entry);
+  renderNutrHist();
+  setSS('● Saved locally');
   ['nutrCal','nutrPro','nutrCarb','nutrFat','nutrFib','nutrSug'].forEach(function(id){document.getElementById(id).value='';});
   toast('✓ Week saved!');
 }
 
 function renderNutrHist(){
   var el=document.getElementById('nutrHist');if(!el)return;
+  // Always re-read from localStorage to catch any D reference issues
+  try{
+    var stored=JSON.parse(localStorage.getItem(SK));
+    if(stored&&stored.nutritionLog&&stored.nutritionLog.length>0&&(!D.nutritionLog||stored.nutritionLog.length>D.nutritionLog.length)){
+      D.nutritionLog=stored.nutritionLog;
+    }
+  }catch(e){}
   if(!D.nutritionLog||!D.nutritionLog.length){el.innerHTML='<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:12px;">No entries yet — log your first Sunday.</div>';return;}
   var rows=[...D.nutritionLog].reverse().slice(0,8);
   el.innerHTML=rows.map(function(e){
