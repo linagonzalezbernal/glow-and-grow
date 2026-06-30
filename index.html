@@ -341,7 +341,7 @@ textarea{resize:none;height:72px;}
     <div class="metric-tile"><div class="metric-val" id="dwst">71<span class="metric-unit">cm</span></div><div class="metric-label">Waist</div><div class="metric-delta dp">↓ 8cm since Jun '25</div></div>
   </div>
   <!-- Weekly Nutrition Tracker button -->
-  <button onclick="document.getElementById('nutritionModal').classList.add('open')" style="width:100%;background:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.6);border-radius:18px;padding:14px 18px;margin-bottom:10px;box-shadow:0 2px 16px rgba(28,14,6,0.06);backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Figtree',sans-serif;">
+  <button onclick="document.getElementById('nutritionModal').classList.add('open');renderNutrHist();" style="width:100%;background:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.6);border-radius:18px;padding:14px 18px;margin-bottom:10px;box-shadow:0 2px 16px rgba(28,14,6,0.06);backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Figtree',sans-serif;">
     <div style="display:flex;align-items:center;gap:10px;">
       <div style="width:32px;height:32px;background:linear-gradient(135deg,#E0F0E8,#C0DDD0);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;">📊</div>
       <div style="text-align:left;">
@@ -1626,23 +1626,48 @@ async function pushToCloud(force){
   setSS('⏫ Syncing...');
   var debugLines=[];
   try{
-    debugLines.push('1. Sending push to: '+SYNC_URL.slice(-20));
+    debugLines.push('1. Sending push via hidden form/iframe to: '+SYNC_URL.slice(-20));
     var payload=JSON.stringify({key:SYNC_KEY,data:JSON.stringify(D)});
     debugLines.push('2. Payload size: '+payload.length+' chars');
-    var postResp=await fetch(SYNC_URL,{
-      method:'POST',
-      body:payload,
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
+
+    // Use a hidden iframe + form POST — bypasses fetch/CORS issues with Apps Script redirects
+    await new Promise(function(resolve){
+      var iframeName='pushFrame_'+Date.now();
+      var iframe=document.createElement('iframe');
+      iframe.name=iframeName;
+      iframe.style.display='none';
+      document.body.appendChild(iframe);
+
+      var form=document.createElement('form');
+      form.method='POST';
+      form.action=SYNC_URL;
+      form.target=iframeName;
+
+      var keyInput=document.createElement('input');
+      keyInput.type='hidden';keyInput.name='key';keyInput.value=SYNC_KEY;
+      form.appendChild(keyInput);
+
+      var dataInput=document.createElement('input');
+      dataInput.type='hidden';dataInput.name='data';dataInput.value=JSON.stringify(D);
+      form.appendChild(dataInput);
+
+      document.body.appendChild(form);
+      form.submit();
+
+      setTimeout(function(){
+        document.body.removeChild(form);
+        document.body.removeChild(iframe);
+        resolve();
+      },2500);
     });
-    debugLines.push('3. POST HTTP status: '+postResp.status+' (redirected: '+postResp.redirected+')');
-    var postText=await postResp.text();
-    debugLines.push('4. POST raw response (first 300 chars): '+postText.slice(0,300));
-    await new Promise(function(r){setTimeout(r,1500);});
-    debugLines.push('5. Waited 1.5s, now verifying via GET...');
+    debugLines.push('3. Form submitted, iframe cleaned up after 2.5s');
+
+    await new Promise(function(r){setTimeout(r,800);});
+    debugLines.push('4. Now verifying via GET...');
     var verify=await fetch(SYNC_URL+'?key='+SYNC_KEY+'&cb='+Date.now());
-    debugLines.push('6. Verify HTTP status: '+verify.status);
+    debugLines.push('5. Verify HTTP status: '+verify.status);
     var verifyText=await verify.text();
-    debugLines.push('7. Raw response (first 300 chars): '+verifyText.slice(0,300));
+    debugLines.push('6. Raw response (first 300 chars): '+verifyText.slice(0,300));
     var verifyResult;
     try{verifyResult=JSON.parse(verifyText);}catch(pe){debugLines.push('7. JSON PARSE FAILED: '+pe.message);}
     if(verifyResult){
@@ -1669,8 +1694,6 @@ async function pushToCloud(force){
     setSS('⚠️ Push failed — see debug');
   }
   syncInProgress=false;
-  // Show full debug trace in an alert so it can be read/screenshotted
-  alert('SYNC DEBUG LOG:\n\n'+debugLines.join('\n'));
 }
 
 async function pullFromCloud(){
@@ -2178,23 +2201,12 @@ function saveNutrition(){
     var v=parseFloat(raw.toString().replace(/[, ]/g,''));
     return isNaN(v)?null:v;
   };
-  var rawCal=document.getElementById('nutrCal').value;
   var entry={date:date,cal:pn('nutrCal'),pro:pn('nutrPro'),carb:pn('nutrCarb'),fat:pn('nutrFat'),fib:pn('nutrFib'),sug:pn('nutrSug')};
   var idx=D.nutritionLog.findIndex(function(e){return e.date===date;});
   if(idx>=0)D.nutritionLog[idx]=entry;else D.nutritionLog.push(entry);
   D.nutritionLog.sort(function(a,b){return a.date.localeCompare(b.date);});
   save(D);
-  // Verify what actually landed in localStorage
-  var verifyStored=JSON.parse(localStorage.getItem(SK));
-  var verifyEntry=verifyStored.nutritionLog.find(function(e){return e.date===date;});
-  alert('NUTRITION SAVE DEBUG:\n\n'
-    +'Date field value: '+date+'\n'
-    +'Calories input raw value: '+rawCal+'\n'
-    +'Calories parsed: '+entry.cal+'\n'
-    +'Entry object: '+JSON.stringify(entry)+'\n\n'
-    +'localStorage nutritionLog length: '+verifyStored.nutritionLog.length+'\n'
-    +'Entry found in localStorage: '+(verifyEntry?JSON.stringify(verifyEntry):'NOT FOUND')+'\n\n'
-    +'D.nutritionLog length (in memory): '+D.nutritionLog.length);
+
   renderNutrHist();
   ['nutrCal','nutrPro','nutrCarb','nutrFat','nutrFib','nutrSug'].forEach(function(id){document.getElementById(id).value='';});
   toast('✓ Week saved!');
