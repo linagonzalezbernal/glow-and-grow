@@ -1629,19 +1629,20 @@ async function pushToCloud(force){
     debugLines.push('1. Sending push to: '+SYNC_URL.slice(-20));
     var payload=JSON.stringify({key:SYNC_KEY,data:JSON.stringify(D)});
     debugLines.push('2. Payload size: '+payload.length+' chars');
-    await fetch(SYNC_URL,{
+    var postResp=await fetch(SYNC_URL,{
       method:'POST',
-      mode:'no-cors',
       body:payload,
-      headers:{'Content-Type':'text/plain'},
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
     });
-    debugLines.push('3. POST sent (no-cors — cannot read response)');
-    await new Promise(function(r){setTimeout(r,2000);});
-    debugLines.push('4. Waited 2s, now verifying...');
+    debugLines.push('3. POST HTTP status: '+postResp.status+' (redirected: '+postResp.redirected+')');
+    var postText=await postResp.text();
+    debugLines.push('4. POST raw response (first 300 chars): '+postText.slice(0,300));
+    await new Promise(function(r){setTimeout(r,1500);});
+    debugLines.push('5. Waited 1.5s, now verifying via GET...');
     var verify=await fetch(SYNC_URL+'?key='+SYNC_KEY+'&cb='+Date.now());
-    debugLines.push('5. Verify HTTP status: '+verify.status);
+    debugLines.push('6. Verify HTTP status: '+verify.status);
     var verifyText=await verify.text();
-    debugLines.push('6. Raw response (first 300 chars): '+verifyText.slice(0,300));
+    debugLines.push('7. Raw response (first 300 chars): '+verifyText.slice(0,300));
     var verifyResult;
     try{verifyResult=JSON.parse(verifyText);}catch(pe){debugLines.push('7. JSON PARSE FAILED: '+pe.message);}
     if(verifyResult){
