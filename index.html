@@ -1626,14 +1626,30 @@ async function pushToCloud(force){
   setSS('⏫ Syncing...');
   try{
     var payload=JSON.stringify({key:SYNC_KEY,data:JSON.stringify(D)});
-    var resp=await fetch(SYNC_URL,{
+    await fetch(SYNC_URL,{
       method:'POST',
-      mode:'no-cors',// required for Google Apps Script — avoids CORS/redirect issues
+      mode:'no-cors',
       body:payload,
-      headers:{'Content-Type':'text/plain'}, // text/plain avoids preflight
+      headers:{'Content-Type':'text/plain'},
     });
-    setSS('☁️ Synced '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}));
-    toast('✓ Pushed to cloud');
+    // mode:no-cors means we can't read the response — verify by reading it back
+    await new Promise(function(r){setTimeout(r,1500);});// give Apps Script time to write
+    var verify=await fetch(SYNC_URL+'?key='+SYNC_KEY+'&cb='+Date.now());
+    var verifyResult=await verify.json();
+    if(verifyResult.status==='ok'&&verifyResult.data){
+      var cloudCheck=JSON.parse(verifyResult.data);
+      var matches=cloudCheck.nutritionLog&&D.nutritionLog&&cloudCheck.nutritionLog.length===D.nutritionLog.length;
+      if(matches||!D.nutritionLog||!D.nutritionLog.length){
+        setSS('☁️ Synced & verified '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}));
+        toast('✓ Confirmed saved to cloud');
+      }else{
+        setSS('⚠️ Push unverified');
+        toast('⚠️ Pushed but cloud data doesn\'t match — check script deployment');
+      }
+    }else{
+      setSS('⚠️ Verify failed: '+(verifyResult.message||verifyResult.status));
+      toast('⚠️ Could not verify: '+(verifyResult.message||verifyResult.status));
+    }
   }catch(e){
     setSS('⚠️ Push failed');
     toast('⚠️ Push failed: '+e.message);
