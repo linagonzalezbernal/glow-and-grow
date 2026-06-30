@@ -1616,7 +1616,7 @@ function expSkinCSV(){
 }
 
 // ── GOOGLE SHEETS SYNC ──────────────────────────────────────
-const SYNC_URL='https://script.google.com/macros/s/AKfycbz5g9mcCFIhrlqe78Df5gs7LF97jehxL4iVGqFQcrrzJRLQSmv6hT7-SNf2-lSxSIKdRQ/exec';
+const SYNC_URL='https://script.google.com/macros/s/AKfycbyvLNZpqcePgvxPhLTwA9DMFeSgTsGOtjryvKJv0GgHi_RLwNZq5a7f8QSChfn8UroN5A/exec';
 const SYNC_KEY='glowandgrow2026';
 var syncInProgress=false;
 
@@ -1626,14 +1626,19 @@ async function pushToCloud(force){
   setSS('⏫ Syncing...');
   try{
     var payload=JSON.stringify({key:SYNC_KEY,data:JSON.stringify(D)});
-    // Use no-cors — we won't get a readable response but data will be saved
-    await fetch(SYNC_URL,{
+    var resp=await fetch(SYNC_URL,{
       method:'POST',
+      mode:'no-cors',// required for Google Apps Script — avoids CORS/redirect issues
       body:payload,
       headers:{'Content-Type':'text/plain'}, // text/plain avoids preflight
     });
     setSS('☁️ Synced '+new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'}));
-  }catch(e){setSS('⚠️ Offline — saved locally');}
+    toast('✓ Pushed to cloud');
+  }catch(e){
+    setSS('⚠️ Push failed');
+    toast('⚠️ Push failed: '+e.message);
+    console.error('pushToCloud error:',e);
+  }
   syncInProgress=false;
 }
 
@@ -1680,8 +1685,9 @@ async function pullFromCloud(){
       setSS('● Saved locally');
     }
   }catch(e){
-    // CORS on GET is fine from GitHub Pages — if still failing, just save locally
-    setSS('● Saved locally');
+    setSS('⚠️ Pull failed');
+    toast('⚠️ Pull failed: '+e.message);
+    console.error('pullFromCloud error:',e);
   }
 }
 
