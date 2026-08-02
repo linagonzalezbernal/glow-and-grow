@@ -286,7 +286,7 @@ textarea{resize:none;height:72px;}
         </svg>
         <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;">
           <div id="tdSupps" style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--text);line-height:1;text-align:center;">0</div>
-          <div id="tdSuppsOf" style="font-size:7px;color:var(--text-dim);line-height:1;">of 6</div>
+          <div id="tdSuppsOf" style="font-size:7px;color:var(--text-dim);line-height:1;">of 3</div>
         </div>
       </div>
       <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);font-weight:600;">Supps</div>
@@ -333,13 +333,22 @@ textarea{resize:none;height:72px;}
     <p id="insight" style="position:relative;z-index:1;">Loading...</p>
   </div>
 
-  <!-- Body metrics -->
-  <div class="metrics-grid">
-    <div class="metric-tile"><div class="metric-val" id="dw">55.9<span class="metric-unit">kg</span></div><div class="metric-label">Weight</div><div class="metric-delta dp" id="dwd">↓ 5.9kg from peak</div></div>
-    <div class="metric-tile"><div class="metric-val" id="dbf">27.9<span class="metric-unit">%</span></div><div class="metric-label">Body Fat</div><div class="metric-delta dp">Goal: 20–22%</div></div>
-    <div class="metric-tile"><div class="metric-val" id="dm">67.7<span class="metric-unit">%</span></div><div class="metric-label">Muscle Mass</div><div class="metric-delta dp">↑ Best ever</div></div>
-    <div class="metric-tile"><div class="metric-val" id="dwst">71<span class="metric-unit">cm</span></div><div class="metric-label">Waist</div><div class="metric-delta dp">↓ 8cm since Jun '25</div></div>
+  <!-- Body metrics — weight + waist only -->
+  <div class="metrics-grid" style="grid-template-columns:1fr 1fr;">
+    <div class="metric-tile"><div class="metric-val" id="dw">55.8<span class="metric-unit">kg</span></div><div class="metric-label">Weight</div><div class="metric-delta dp" id="dwd">↓ 6.0kg from peak</div></div>
+    <div class="metric-tile"><div class="metric-val" id="dwst">71<span class="metric-unit">cm</span></div><div class="metric-label">Waist</div><div class="metric-delta dp" id="dwstd">↓ 8cm since Jun '25</div></div>
   </div>
+  <!-- Weekly Steps Log button -->
+  <button onclick="document.getElementById('stepsModal').classList.add('open');renderStepsHist();" style="width:100%;background:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.6);border-radius:18px;padding:14px 18px;margin-bottom:10px;box-shadow:0 2px 16px rgba(28,14,6,0.06);backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Figtree',sans-serif;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:32px;height:32px;background:linear-gradient(135deg,#E8F0E0,#C8DDB8);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;">👟</div>
+      <div style="text-align:left;">
+        <div style="font-size:13px;font-weight:600;color:var(--brown);">Weekly Steps Log</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:1px;">7-day avg steps · log every Sunday</div>
+      </div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
   <!-- Weekly Nutrition Tracker button -->
   <button onclick="document.getElementById('nutritionModal').classList.add('open');renderNutrHist();" style="width:100%;background:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.6);border-radius:18px;padding:14px 18px;margin-bottom:10px;box-shadow:0 2px 16px rgba(28,14,6,0.06);backdrop-filter:blur(12px);cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Figtree',sans-serif;">
     <div style="display:flex;align-items:center;gap:10px;">
@@ -379,10 +388,10 @@ textarea{resize:none;height:72px;}
   <div class="day-tabs">
     <div class="day-tab active" data-day="1" onclick="switchDay(1)">1 · Glutes</div>
     <div class="day-tab" data-day="2" onclick="switchDay(2)">2 · Upper</div>
-    <div class="day-tab" data-day="3" onclick="switchDay(3)">3 · Recovery</div>
+    <div class="day-tab" data-day="3" onclick="switchDay(3)">3 · Class</div>
     <div class="day-tab" data-day="4" onclick="switchDay(4)">4 · Quads</div>
     <div class="day-tab" data-day="5" onclick="switchDay(5)">5 · Back</div>
-    <div class="day-tab" data-day="6" onclick="switchDay(6)">6 · Recovery</div>
+    <div class="day-tab" data-day="6" onclick="switchDay(6)">6 · Cardio</div>
   </div>
   <div id="exList" class="ex-log"></div>
   <div class="form-group" style="margin-top:12px;"><label class="form-label">Notes</label><textarea id="gymNotes" placeholder="How did it feel?"></textarea></div>
@@ -511,9 +520,9 @@ textarea{resize:none;height:72px;}
     </div>
     <div class="chart-tabs">
       <div class="chart-tab active" onclick="showCT('weight',this)">Weight</div>
-      <div class="chart-tab" onclick="showCT('recomp',this)">BF & Muscle</div>
-      <div class="chart-tab" onclick="showCT('bmi',this)">BMI</div>
-      <div class="chart-tab" onclick="showCT('norm',this)">All normalised</div>
+      <div class="chart-tab" onclick="showCT('waist',this)">Waist</div>
+      <div class="chart-tab" onclick="showCT('glute',this)">Glute</div>
+      <div class="chart-tab" onclick="showCT('thigh',this)">Thigh</div>
     </div>
     <div class="chart-wrap"><canvas id="mainC"></canvas></div>
     <div id="cFn" style="font-size:10px;color:var(--text-dim);text-align:center;margin-top:6px;"></div>
@@ -522,21 +531,19 @@ textarea{resize:none;height:72px;}
   <p class="sec-lbl">Log Body Scan</p>
   <div class="card">
     <div class="form-group"><label class="form-label">Date</label><input type="date" id="bDate"></div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Weight (kg)</label><input type="number" id="bW" step="0.1" placeholder="55.9"></div>
-      <div class="form-group"><label class="form-label">Body Fat (%)</label><input type="number" id="bBF" step="0.1" placeholder="27.9"></div>
+    <!-- Daily weight — logs to weekly average -->
+    <div class="form-group" style="margin-bottom:12px;">
+      <label class="form-label">Today's weight (kg) <span style="font-size:10px;color:var(--text-dim);">— log daily, weekly avg shown in graph</span></label>
+      <input type="number" id="bW" step="0.1" placeholder="55.8">
     </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Hydration (%)</label><input type="number" id="bH" step="0.1" placeholder="48.2"></div>
-      <div class="form-group"><label class="form-label">Muscle Mass (%)</label><input type="number" id="bM" step="0.1" placeholder="67.7"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Bone (%)</label><input type="number" id="bBn" step="0.1" placeholder="4.3"></div>
-      <div class="form-group"><label class="form-label">TDEE (kcal)</label><input type="number" id="bT" step="1" placeholder="1819"></div>
-    </div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin:14px 0 10px;">Measurements <span style="font-weight:400;color:var(--text-dim);">(log weekly)</span></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Waist (cm)</label><input type="number" id="bWst" step="0.5" placeholder="71"></div>
-      <div class="form-group"><label class="form-label">Hip (cm)</label><input type="number" id="bHp" step="0.5" placeholder="95"></div>
+      <div class="form-group"><label class="form-label">Hip / Glute (cm)</label><input type="number" id="bHp" step="0.5" placeholder="95"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Thigh (cm) <span style="font-size:9px;color:var(--text-dim);">15cm above kneecap</span></label><input type="number" id="bThigh" step="0.5" placeholder="55"></div>
+      <div class="form-group"><label class="form-label">Body Fat (%) <span style="font-size:9px;color:var(--text-dim);">scanner only</span></label><input type="number" id="bBF" step="0.1" placeholder="25.6"></div>
     </div>
     <div class="form-group"><label class="form-label">Life note (optional)</label><input type="text" id="bNote" placeholder="e.g. After Thailand trip"></div>
     <button class="btn btn-rose" onclick="saveBody()">Save Measurement</button>
@@ -727,6 +734,7 @@ function load(){
   try{
     var d=JSON.parse(localStorage.getItem(SK))||seed();
     if(!d.nutritionLog)d.nutritionLog=[];
+    if(!d.stepsLog)d.stepsLog=[];
     return d;
   }catch(e){return seed();}
 }
@@ -795,7 +803,7 @@ function seed(){return{
     {date:'2026-03-30',weight:55.9,bf:27.9,muscle:67.7,hydration:48.2,bone:4.3,tdee:1819,waist:71,hip:null,note:''},
   ],
   gymSessions:SEED_SESSIONS,
-  suppChecks:{},photos:[],bfChecks:{},habitChecks:{},nutritionLog:[]
+  suppChecks:{},photos:[],bfChecks:{},habitChecks:{},nutritionLog:[],stepsLog:[]
 };}
 
 let D=load();
@@ -880,7 +888,7 @@ const EQ={
   'Cable Kickback':'Gym80 Bootymizer / dual pulley — 3×12. Squeeze at top.',
   'Inclined Treadmill Walk':'Technogym treadmill — 20 min. Incline 10–12%, moderate pace.',
   'Pull Ups':'Assisted chin/dip machine (build to unassisted) — 4×8-8-6-6.',
-  'Shoulder Press Machine':'Technogym pin loaded — 3×10-10-8.',
+  'Landmine Press':'Barbell in landmine attachment — 3×10 each side. Unilateral push that targets anterior deltoid and upper chest while protecting the shoulder joint. Find the arc of movement before loading heavy.',
   'Rear Delt Machine':'Technogym pin loaded — 3×12-12-10.',
   'Dumbbell Row':'Free weights, expansive area — 3×10-8-8. Last set heavy.',
   'Lateral Raises':'Dual Crossover + Lateral Raise machine — 3×12.',
@@ -932,19 +940,19 @@ const DAYS={
   ]},
   2:{name:'Upper Body — Back + Shoulders',exercises:[
     {name:'Pull Ups',sets:'4',reps:'8-8-6-6',n:4},
-    {name:'Shoulder Press Machine',sets:'3',reps:'10-10-8',n:3},
+    {name:'Landmine Press',sets:'3',reps:'10 each side',n:3},
     {name:'Rear Delt Machine',sets:'3',reps:'12-12-10',n:3},
     {name:'Dumbbell Row',sets:'3',reps:'10-8-8',n:3},
-    {name:'Lateral Raises',sets:'3',reps:'12',n:3},
+    {name:'Lateral Raises',sets:'3',reps:'15',n:3},
     {name:'45-Degree Back Extension',sets:'3',reps:'15',n:3},
     {name:'Hanging Knee Raises',sets:'2',reps:'10 reps × 2 rounds',checkbox:true},
     {name:'Dead Bug',sets:'2',reps:'10 reps × 2 rounds',checkbox:true},
     {name:'Side Plank',sets:'2',reps:'30–40 sec × 2 rounds',checkbox:true},
   ]},
-  3:{name:'Active Recovery + Wellness',exercises:[
-    {name:'Spa Circuit',sets:'1',reps:'Infrared → Cold plunge → Hot pool → Steam',checkbox:true},
-    {name:'Class',sets:'1',reps:'Yin Yoga / Reformer / Breathwork',checkbox:true},
-    {name:'Swim',sets:'1',reps:'25m pool · 20–30 min easy laps',checkbox:true},
+  3:{name:'Class + Cardio',exercises:[
+    {name:'Class',sets:'1',reps:'Reformer Pilates / Yin Yoga / Cycle / Breathwork',checkbox:true},
+    {name:'Cardio',sets:'1',reps:'Swim 20–30 min OR treadmill 30 min OR outdoor walk',checkbox:true},
+    {name:'Spa Circuit (optional)',sets:'1',reps:'Infrared → Cold plunge → Hot pool → Steam',checkbox:true},
   ]},
   4:{name:'Lower Body — Quads',exercises:[
     {name:'Leg Press',sets:'4',reps:'10-10-8-8',n:4},
@@ -952,7 +960,7 @@ const DAYS={
     {name:'Hack Squat',sets:'3',reps:'10-10-8',n:3},
     {name:'Reverse Lunges',sets:'3',reps:'10-10-8',n:3},
     {name:'Leg Extension',sets:'3',reps:'12',n:3},
-    {name:'Calf Raises',sets:'4',reps:'20',n:4},
+    {name:'Calf Raises',sets:'2',reps:'15',n:2},
     {name:'Inclined Treadmill Walk',sets:'1',reps:'20 min',checkbox:true},
   ]},
   5:{name:'Upper Body — Back Focus',exercises:[
@@ -963,52 +971,55 @@ const DAYS={
     {name:'Light Hip Thrust / Frog Pumps',sets:'3',reps:'15',n:3},
     {name:'Hanging Knee Raises',sets:'2',reps:'10 + Vacuum Hold 20 sec',checkbox:true},
   ]},
-  6:{name:'Classes + Active Recovery',exercises:[
-    {name:'Spa Circuit',sets:'1',reps:'Infrared → Cold plunge → Hot pool → Steam',checkbox:true},
-    {name:'Class',sets:'1',reps:'Cycle / Fusion / Reformer Pilates',checkbox:true},
-    {name:'Swim',sets:'1',reps:'25m pool · 20–30 min easy laps',checkbox:true},
+  6:{name:'Cardio + Class',exercises:[
+    {name:'Cardio',sets:'1',reps:'Swim 20–30 min OR treadmill 30 min OR outdoor walk',checkbox:true},
+    {name:'Class',sets:'1',reps:'Cycle / Fusion / Reformer Pilates / Yin Yoga',checkbox:true},
+    {name:'Spa Circuit (optional)',sets:'1',reps:'Infrared → Cold plunge → Hot pool → Steam',checkbox:true},
   ]},
 };
 
 const SUPPS=[
   // MORNING
   {id:'creatine',  name:'Creatine',            detail:'ATP Creapure 5g — every day',  time:'Morning with food',               mandatory:true,  weekdays:false, block:'Morning', info:'Creapure is the purest creatine monohydrate. Builds ATP (cellular energy), supports muscle growth, strength and cognitive function. Works cumulatively — missing days resets saturation. Daily without exception.'},
-  {id:'vitd',      name:'Vitamin D3 + K2',    detail:'Opti Active 1 capsule',        time:'Morning with food',               mandatory:true,  weekdays:false, block:'Morning', info:'Essential for immune function, bone health, muscle function and mood. Most Australians are deficient. The K2 directs calcium to bones, not arteries. Non-negotiable year-round.'},
-  {id:'collagen',  name:'Collagen + Vit C',   detail:'True Collagen 10–15g',         time:'Morning — stir into drink',       mandatory:false, weekdays:true,  block:'Morning', info:'Collagen peptides support skin elasticity, joint health and hair strength. Vitamin C is essential for collagen synthesis — always take together. Weekdays only.'},
-  {id:'bcomplex',  name:'B Complex',           detail:'Thorne Basic B 1 capsule',     time:'Morning with food',               mandatory:false, weekdays:false, block:'Morning', info:'B vitamins support energy metabolism, nervous system health, and skin. Optional but valuable for stress support and hormone balance.'},
+  {id:'vitd',      name:'Vitamin D3 + K2',    detail:'Opti Active 1 capsule — 3×/week', time:'Morning with food (Mon/Wed/Fri)', mandatory:false, weekdays:false, block:'Morning', threeday:true, info:'Essential for immune function, bone health, muscle function and mood. 3× per week is sufficient for maintenance in Australia. Take with your fattiest meal for best absorption.'},
+  {id:'collagen',  name:'Collagen + Vit C',   detail:'10g — 60 min before weights', time:'Morning — 60 min pre-gym (weightlifting days only)', mandatory:false, weekdays:false, block:'Morning', info:'Take exactly 60 minutes before your weightlifting session — this timing maximises collagen synthesis in connective tissue during the mechanical stimulus. Weightlifting days only (not cardio/class days). Vitamin C must be included for synthesis.'},
   {id:'biotin',    name:'Biotin',              detail:'2,500–5,000mcg — 3×/week',    time:'Morning with food',               mandatory:false, weekdays:false, block:'Morning', threeday:true, info:'Biotin (B7) is critical for hair growth, scalp health and nail strength — especially important during your psoriasis and hair loss recovery. 3× per week (e.g. Mon, Wed, Fri). Takes 3–6 months of consistent use to see results.'},
   // TRAINING DAYS ONLY
   {id:'relyte',    name:'Electrolytes',        detail:'RE-LYTE 1 scoop',              time:'Training days — pre/during',      mandatory:false, weekdays:false, block:'Training Days Only', info:'Replenishes sodium, potassium and magnesium lost through sweat. Supports hydration, performance and prevents cramping. Only on training days.'},
   // DINNER
   {id:'omega3',    name:'Omega-3',             detail:'Nordic Naturals 2–3g EPA+DHA', time:'Dinner with food',                mandatory:true,  weekdays:false, block:'Dinner', info:'EPA+DHA reduce systemic inflammation, support brain function, heart health, skin quality and are critical for scalp psoriasis management. Always take with food for absorption.'},
-  {id:'zinc',      name:'Zinc',                detail:'Zinc Citrate 1 capsule',       time:'Dinner with food',                mandatory:false, weekdays:true,  block:'Dinner', info:'Supports immune function, skin healing, hormone production and hair growth. Critical for psoriasis management and hair regrowth. Never take on empty stomach. Weekdays only.'},
   {id:'turmeric',  name:'Turmeric KURK',       detail:'Liquid — dose on bottle',      time:'Dinner with food',                mandatory:false, weekdays:true,  block:'Dinner', info:'Curcumin is a powerful anti-inflammatory and antioxidant. Liquid form has much higher bioavailability than capsules. Supports skin, joints and longevity. Optional, weekdays only.'},
   // BEFORE BED
   {id:'magnesium', name:'Magnesium',           detail:'BIOptimizers 2 capsules',      time:'Before bed',                      mandatory:true,  weekdays:false, block:'Before Bed', info:'Magnesium Breakthrough contains 7 forms for maximum absorption. Supports deep sleep, muscle recovery, cortisol reduction and over 300 enzymatic processes. Non-negotiable nightly.'},
-  {id:'ashwagandha',name:'Ashwagandha KSM-66', detail:'KSM-66 300mg',                time:'Before bed',                      mandatory:true,  weekdays:false, block:'Before Bed', info:'The most clinically studied ashwagandha extract. Reduces cortisol, supports sleep quality, hormone balance, energy and stress resilience. Takes 4–8 weeks for full effect. Daily essential.'},
+  {id:'ashwagandha',name:'Ashwagandha KSM-66', detail:'KSM-66 300mg — as needed',    time:'Before bed (optional)',           mandatory:false, weekdays:false, block:'Before Bed', info:'The most clinically studied ashwagandha extract. Reduces cortisol, supports sleep quality, hormone balance and stress resilience. Take on high-stress days or when sleep feels difficult. Optional — not daily.'},
 ];
 
 const INSIGHTS=[
-  'Your weight dropped from 61.8kg (peak Apr 2025) to 55.9kg (Mar 2026). <strong>5.9kg of net loss</strong> — the recomp is working.',
-  'Waist is down 8cm since June 2025 — from ~79cm to 71cm. <strong>That is real fat loss from the right places.</strong>',
-  'Muscle mass hit <strong>67.7% — an all-time high.</strong> Simultaneous fat loss and muscle gain. This is textbook recomp.',
-  'Hip Thrust: from 80kg to 140kg. <strong>+75% strength in 6 months.</strong> The Gym80 Glute Booster Rack is your edge.',
-  'Body fat goal is 20–22%. You are at ~27.9% — <strong>every clean week of protein + training closes this gap.</strong>',
-  'Copper peptide and Differin alternate nights — they cannot be used together. <strong>Alternate for best results.</strong>',
-  'AHK-Cu Scalp Serum every single day — this copper tripeptide is the most evidence-backed treatment for hair regrowth. <strong>Don\'t skip it.</strong>',
-  'Omega-3 at 2–3g EPA+DHA is anti-inflammatory for psoriasis AND supports body composition. <strong>Take it with dinner.</strong>',
-  'Good Mornings replace Sumo Deadlift — same posterior chain target with significantly less spinal loading. <strong>Start light, feel the hinge.</strong>',
-  '45-Degree Back Extension is new on Day 5 — directly strengthens your lower back and hamstring tie-in. <strong>No overlap with Day 2.</strong>',
-  'Cold plunge on upper body days only. Hot magnesium pool on leg days. <strong>This is not random — it protects your gains.</strong>',
-  'Creatine works cumulatively — missing days resets saturation. <strong>Set a morning reminder right now.</strong>',
-  'Poor sleep raises cortisol which drives waist fat retention. Magnesium + Ashwagandha before bed. <strong>Protect your 7.5–8 hours.</strong>',
-  'Biotin 3×/week for hair regrowth — takes 3–6 months to see results. <strong>Patience + consistency is the only strategy that works.</strong>',
-  'TotalFusion membership: Reformer Pilates ($15/w) is the single most important add-on. <strong>Targets your shoulder imbalance, posture and glute connection.</strong>',
-  'Face LED therapy 4–5×/week at TotalFusion compounds skin and inflammation benefits. <strong>Skip days 1–7 post-microneedling only.</strong>',
-  'The recomp started June 2025 with your nutritionist. <strong>Consistency is the compound interest of health.</strong>',
-  'Your best tracking weeks equal your best results. <strong>Log today\'s session — the data tells your story.</strong>',
+  'Your scanner rated your skeletal muscle mass as <strong>EXCELLENT at 22.4kg</strong>. You are not building from scratch — you are refining a strong foundation.',
+  'At 25.6% BF with 14 weeks to 22% BF — <strong>you are closer to your goal than any previous point in your data.</strong>',
+  'Your waist went from 79cm to 71cm in 13 months. <strong>8cm of real visceral fat loss</strong> — the kind that matters most for health.',
+  'The Sep 2025 protein collapse (101–103g × 3 weeks) directly caused your Oct–Nov plateau. <strong>Never let protein drop below 115g for more than one week.</strong>',
+  'Your best week ever: Jul 13, 2025 — 1,638 kcal / 134g protein / 33g sugar. <strong>That is your blueprint.</strong>',
+  'Travel never derailed you — UAE trip actually produced −1.7kg / −1.1% BF. <strong>Your baseline habits are strong enough to maintain on holiday.</strong>',
+  'Every time you returned from a tracking gap, protein bounced back higher. <strong>You use tracking as fuel. Re-engage within 3 days of returning from travel.</strong>',
+  'Lat Pulldown: 14kg → 30kg in 5 months (+114%). <strong>Your back is your fastest-developing muscle group right now.</strong>',
+  'Collagen 60 min before training — not just any time. <strong>This timing maximises collagen synthesis in connective tissue during the workout stimulus.</strong>',
+  'Landmine Press targets your shoulder from a safer angle than overhead press. <strong>It directly addresses your shoulder imbalance while building pushing strength.</strong>',
+  'Phase angle of 6.0° is average — athletes hit 7–8°. <strong>Consistent hydration (2.5–3L) + protein + sleep will push this toward 6.5–7° over time.</strong>',
+  'Your 11% calorie deficit keeps mTOR partially active. <strong>This is why you can build muscle AND lose fat simultaneously on this plan.</strong>',
+  'Reformer Pilates ($15/w) is the highest ROI class in your membership. <strong>It directly targets the shoulder imbalance your scanner shows.</strong>',
+  'Copper peptide and Differin cannot be used on the same night. <strong>Tick one — the other greys out automatically.</strong>',
+  'AHK-Cu Scalp Serum after every wash — copper tripeptide is the most evidence-backed ingredient for hair regrowth. <strong>Consistency over 6+ months is what matters.</strong>',
+  'Magnesium before bed supports deep sleep AND muscle recovery. <strong>Two goals, one supplement — never skip it.</strong>',
+  '8,000 steps on rest days burns ~200–250 kcal without touching recovery. <strong>Walking is your highest-leverage free tool for fat loss.</strong>',
+  'Sugar over 60g correlates directly with your lowest protein weeks in 30 weeks of data. <strong>Sugar crowds out protein in your calorie budget.</strong>',
+  'The body composition lag is 3–5 weeks. <strong>If the scale isn\'t moving, check what you were eating 3 weeks ago — not yesterday.</strong>',
+  'Vitamin D3+K2 three times a week is enough for maintenance. <strong>Take it with your fattiest meal of the day for best absorption.</strong>',
+  'Your BMR is 1,242 kcal — the app calls it "poor" because it\'s comparing you to heavier women. <strong>Low BMR at 55kg is physics, not a problem.</strong>',
+  'Creatine takes 3–4 weeks to fully saturate muscle cells. <strong>Missing days resets this — daily is the only protocol that works.</strong>',
+  'Leg Press: 60kg → 100kg in one month. <strong>Your lower body responds fastest to progressive overload — keep pushing the weight.</strong>',
+  'At 1,480 kcal on weekdays, Saturday at 1,900 kcal feels like freedom. <strong>That contrast is built into the plan — it\'s not a cheat day, it\'s a feature.</strong>',
 ];
-
 let cRange='all',cType='weight',cStart=null,cEnd=null,cInst=null,exCharts={};
 let doneState={warmup:false,finishers:{}};
 
@@ -1103,27 +1114,57 @@ function renderChart(){
       y:{ticks:{color:'#A8977F',font:{size:9}},grid:{color:'rgba(58,46,34,0.04)'}}
     }
   };
+  // ── Compute weekly average weight ──────────────────────────
+  // Group daily weights by ISO week (Mon–Sun), average per week
+  function weekKey(dateStr){
+    var d=new Date(dateStr);var day=d.getDay()||7;
+    d.setDate(d.getDate()-day+7);// set to Sunday of that week
+    return d.toISOString().slice(0,10);
+  }
+  var wkGroups={};
+  D.bodyScans.filter(function(s){return s.weight;}).forEach(function(s){
+    var wk=weekKey(s.date);
+    if(!wkGroups[wk])wkGroups[wk]=[];
+    wkGroups[wk].push(s.weight);
+  });
+  var wkAvgData=Object.keys(wkGroups).sort().map(function(wk){
+    var vals=wkGroups[wk];
+    return {date:wk,weight:+(vals.reduce(function(a,b){return a+b;},0)/vals.length).toFixed(1)};
+  });
+
+  // Key date colours for weekly avg — map Sunday date to any KD in that week
+  var wkPtBg=wkAvgData.map(function(w){
+    var wEnd=new Date(w.date);
+    var wStart=new Date(w.date);wStart.setDate(wStart.getDate()-6);
+    var matchKD=Object.keys(KD_CAT).find(function(k){var d=new Date(k);return d>=wStart&&d<=wEnd;});
+    if(matchKD)return KD_CAT_C[KD_CAT[matchKD].cat]||CC.w;
+    return CC.w;
+  });
+  var wkPtR=wkAvgData.map(function(w){
+    var wEnd=new Date(w.date);var wStart=new Date(w.date);wStart.setDate(wStart.getDate()-6);
+    var matchKD=Object.keys(KD_CAT).find(function(k){var d=new Date(k);return d>=wStart&&d<=wEnd;});
+    return matchKD?ptR+2:ptR;
+  });
+
   let ds=[];
   if(cType==='weight'){
-    ds=[{label:'Weight (kg)',data:sc.map(function(s){return s.weight;}),borderColor:CC.w,backgroundColor:'rgba(212,168,186,0.08)',tension:0.4,fill:true,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg(CC.w),pointBorderWidth:ptBorderKD()}];
-  } else if(cType==='recomp'){
-    ds=[
-      {label:'Body Fat %',data:sc.map(function(s){return s.bf;}),borderColor:CC.bf,backgroundColor:'transparent',tension:0.4,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg(CC.bf),pointBorderWidth:ptBorderKD()},
-      {label:'Muscle %',data:sc.map(function(s){return s.muscle;}),borderColor:CC.mu,backgroundColor:'transparent',tension:0.4,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg(CC.mu),pointBorderWidth:ptBorderKD()}
-    ];
-  } else if(cType==='bmi'){
-    ds=[{label:'BMI',data:sc.map(function(s){return s.weight?+(s.weight/(HM*HM)).toFixed(1):null;}),borderColor:CC.bmi,backgroundColor:'rgba(148,178,210,0.08)',tension:0.4,fill:true,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg(CC.bmi),pointBorderWidth:ptBorderKD()}];
-    document.getElementById('cFn').textContent='Healthy BMI: 18.5–24.9 · Height: 1.65m';
-  } else if(cType==='norm'){
-    document.getElementById('cFn').textContent='All metrics normalised 0–1 for direct comparison';
-    var norm=function(arr){var c=arr.filter(function(v){return v!=null;});var mn=Math.min.apply(null,c),mx=Math.max.apply(null,c),r=mx-mn||1;return arr.map(function(v){return v!=null?+((v-mn)/r).toFixed(3):null;});};
-    ds=[
-      {label:'Weight',data:norm(sc.map(function(s){return s.weight;})),borderColor:CC.n1,backgroundColor:'transparent',tension:0.4,pointRadius:ptR,borderWidth:1.5,pointBackgroundColor:CC.n1,pointBorderWidth:0},
-      {label:'BF %',data:norm(sc.map(function(s){return s.bf;})),borderColor:CC.n2,backgroundColor:'transparent',tension:0.4,pointRadius:ptR,borderWidth:1.5,pointBackgroundColor:CC.n2,pointBorderWidth:0},
-      {label:'Muscle %',data:norm(sc.map(function(s){return s.muscle;})),borderColor:CC.n3,backgroundColor:'transparent',tension:0.4,pointRadius:ptR,borderWidth:1.5,pointBackgroundColor:CC.n3,pointBorderWidth:0},
-      {label:'BMI',data:norm(sc.map(function(s){return s.weight?+(s.weight/(HM*HM)).toFixed(1):null;})),borderColor:CC.n4,backgroundColor:'transparent',tension:0.4,pointRadius:ptR,borderWidth:1.5,pointBackgroundColor:CC.n4,pointBorderWidth:0,borderDash:[4,3]},
-    ];
-    baseOpts.scales.y.min=0;baseOpts.scales.y.max=1;
+    var wkLabels=wkAvgData.map(function(d){return d.date;});
+    var wkWeights=wkAvgData.map(function(d){return d.weight;});
+    ds=[{label:'Weekly avg weight (kg)',data:wkWeights,borderColor:CC.w,backgroundColor:'rgba(212,168,186,0.1)',tension:0.4,fill:true,pointRadius:wkPtR,borderWidth:2,pointBackgroundColor:wkPtBg,pointBorderWidth:0}];
+    if(cInst)cInst.destroy();
+    cInst=new Chart(document.getElementById('mainC'),{type:'line',data:{labels:wkLabels,datasets:ds},options:baseOpts});
+    return;
+  } else if(cType==='waist'){
+    // Build parallel arrays keeping nulls aligned with sc
+    var waistBg=sc.map(function(s){if(!s.waist||s.waist<=20)return null;if(KD_CAT[s.date])return KD_CAT_C[KD_CAT[s.date].cat]||'#8B6A9A';if(s.note)return KD_CAT_C.other;return '#8B6A9A';});
+    ds=[{label:'Waist (cm)',data:sc.map(function(s){return s.waist&&s.waist>20?s.waist:null;}),borderColor:'#8B6A9A',backgroundColor:'rgba(139,106,154,0.07)',tension:0.4,fill:true,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:waistBg.map(function(c){return c||'#8B6A9A';}),pointBorderWidth:ptBorderKD()}];
+    document.getElementById('cFn').textContent='Waist measurements — goal: 68cm';
+  } else if(cType==='glute'){
+    ds=[{label:'Hip / Glute (cm)',data:sc.map(function(s){return s.hip||null;}),borderColor:'#C2524A',backgroundColor:'rgba(194,82,74,0.07)',tension:0.4,fill:true,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg('#C2524A'),pointBorderWidth:ptBorderKD()}];
+    document.getElementById('cFn').textContent='Hip / Glute measurements';
+  } else if(cType==='thigh'){
+    ds=[{label:'Thigh (cm)',data:sc.map(function(s){return s.thigh||null;}),borderColor:'#B8841E',backgroundColor:'rgba(184,132,30,0.07)',tension:0.4,fill:true,pointRadius:ptRKD(),borderWidth:1.5,pointBackgroundColor:ptBg('#B8841E'),pointBorderWidth:ptBorderKD()}];
+    document.getElementById('cFn').textContent='Thigh measurements (15cm above kneecap)';
   }
   if(cInst)cInst.destroy();
   cInst=new Chart(document.getElementById('mainC'),{type:'line',data:{labels:lbl,datasets:ds},options:baseOpts});
@@ -1134,9 +1175,14 @@ function updateDash(){
   var lat=s[s.length-1],peak=Math.max.apply(null,s.map(function(x){return x.weight;}));
   document.getElementById('dw').innerHTML=lat.weight+'<span class="metric-unit">kg</span>';
   document.getElementById('dwd').textContent='↓ '+(peak-lat.weight).toFixed(1)+'kg from peak';
-  if(lat.bf)document.getElementById('dbf').innerHTML=lat.bf+'<span class="metric-unit">%</span>';
-  if(lat.muscle)document.getElementById('dm').innerHTML=lat.muscle+'<span class="metric-unit">%</span>';
-  var ws=s.filter(function(x){return x.waist;});if(ws.length)document.getElementById('dwst').innerHTML=ws[ws.length-1].waist+'<span class="metric-unit">cm</span>';
+  var ws=s.filter(function(x){return x.waist;});
+  if(ws.length){
+    var latWst=ws[ws.length-1].waist;
+    var peakWst=Math.max.apply(null,ws.map(function(x){return x.waist;}));
+    document.getElementById('dwst').innerHTML=latWst+'<span class="metric-unit">cm</span>';
+    var dwstd=document.getElementById('dwstd');
+    if(dwstd)dwstd.textContent='↓ '+((peakWst-latWst).toFixed(1))+'cm from peak';
+  }
   // today gym ring
   var t=today();
   var todayGym=D.gymSessions.filter(function(x){return x.date===t;}).length>0;
@@ -1211,6 +1257,9 @@ function exHistData(name){
     'Vuelos Laterales':'Lateral Raises',
     'Calf Raises on Press':'Calf Raises',
     'Calf Raises en prensa':'Calf Raises',
+    'Sumo Deadlift':'Good Mornings',
+    'Sumo Squat Goblet':'Good Mornings',
+    'Cable Abduction':'Hip Abduction',
   };
   var h=[];
   D.gymSessions.forEach(function(s){
@@ -1218,7 +1267,8 @@ function exHistData(name){
       return e.name===name||(aliases[e.name]===name)||e.name===aliases[name];
     });
     if(ex&&ex.weights&&ex.weights.some(Boolean)){
-      var nums=ex.weights.filter(Boolean).map(Number).filter(function(n){return !isNaN(n);});
+      var parseW=function(v){return parseFloat(String(v).replace(',','.'));};
+      var nums=ex.weights.filter(Boolean).map(parseW).filter(function(n){return !isNaN(n);});
       if(nums.length>0){var mx=Math.max.apply(null,nums);h.push({date:s.date,max:mx,weights:ex.weights.filter(Boolean)});}
     }
   });
@@ -1299,7 +1349,8 @@ function renderEx(){
     var sets=Array.from({length:ex.n},function(_,si){
       var ph=(last&&last.exercises?last.exercises.find(function(e){return e.name===ex.name;}):null)||_exNameMap[ex.name]||{};
       var prevW=ph&&ph.weights?ph.weights[si]||'':'';
-      return '<div class="w-set"><input class="w-field" type="text" id="ex-'+i+'-'+si+'" placeholder="'+(prevW||'—')+'" inputmode="decimal"><div class="w-lbl">S'+(si+1)+'</div></div>';
+      var prevR=ph&&ph.reps?ph.reps[si]||'':'';
+      return '<div class="w-set"><input class="w-field" type="text" id="ex-'+i+'-'+si+'" placeholder="'+(prevW||'—')+'" inputmode="decimal"><input class="w-field" type="text" id="ex-r-'+i+'-'+si+'" placeholder="'+(prevR||'reps')+'" inputmode="numeric" style="margin-top:3px;font-size:9px;color:var(--text-dim);"><div class="w-lbl">S'+(si+1)+'</div></div>';
     }).join('');
 
     var h=exHistData(ex.name);
@@ -1362,22 +1413,21 @@ function saveGym(){
   var date=document.getElementById('gymD').value;if(!date){toast('Please select a date');return;}
   var day=DAYS[curDay];
   var exercises=day.exercises.map(function(ex,i){
-    return {name:ex.name,weights:Array.from({length:ex.n},function(_,si){
-      var el=document.getElementById('ex-'+i+'-'+si);
-      return el?el.value||null:null;
-    })};
+    return {name:ex.name,
+      weights:Array.from({length:ex.n||0},function(_,si){var el=document.getElementById('ex-'+i+'-'+si);return el?el.value||null:null;}),
+      reps:Array.from({length:ex.n||0},function(_,si){var el=document.getElementById('ex-r-'+i+'-'+si);return el?el.value||null:null;})
+    };
   });
   var notes=document.getElementById('gymNotes').value;
   // Find existing session for same date+day to merge into
   var existing=D.gymSessions.find(function(s){return s.date===date&&s.day===curDay;});
   if(existing){
-    // Merge: only overwrite a weight if the new value is non-empty
     exercises.forEach(function(ex,i){
       var prev=existing.exercises[i];
       if(!prev){existing.exercises[i]=ex;return;}
-      ex.weights.forEach(function(w,si){
-        if(w!==null&&w!==''){prev.weights[si]=w;}
-      });
+      ex.weights.forEach(function(w,si){if(w!==null&&w!==''){prev.weights[si]=w;}});
+      if(!prev.reps)prev.reps=[];
+      ex.reps.forEach(function(r,si){if(r!==null&&r!==''){prev.reps[si]=r;}});
     });
     if(notes)existing.notes=notes;
     existing.warmup=doneState.warmup||existing.warmup;
@@ -1403,10 +1453,10 @@ function renderGymHist(){
 
 function saveBody(){
   var date=document.getElementById('bDate').value;if(!date){toast('Please select a date');return;}
-  var s={date:date,weight:pf('bW'),bf:pf('bBF'),muscle:pf('bM'),hydration:pf('bH'),bone:pf('bBn'),tdee:pf('bT'),waist:pf('bWst'),hip:pf('bHp'),note:document.getElementById('bNote').value||''};
+  var s={date:date,weight:pf('bW'),bf:pf('bBF'),waist:pf('bWst'),hip:pf('bHp'),thigh:pf('bThigh'),note:document.getElementById('bNote').value||''};
   D.bodyScans.push(s);D.bodyScans.sort(function(a,b){return a.date.localeCompare(b.date);});
   save(D);renderBodyHist();updateDash();renderChart();
-  ['bW','bBF','bM','bH','bBn','bT','bWst','bHp','bNote'].forEach(function(id){document.getElementById(id).value='';});
+  ['bW','bBF','bWst','bHp','bThigh','bNote'].forEach(function(id){document.getElementById(id).value='';});
   toast('✓ Measurement saved!');
 }
 function pf(id){return parseFloat(document.getElementById(id).value)||null;}
@@ -1710,6 +1760,11 @@ async function pullFromCloud(){
         cloud.nutritionLog.forEach(function(e){var idx=D.nutritionLog.findIndex(function(x){return x.date===e.date;});if(idx>=0)D.nutritionLog[idx]=e;else D.nutritionLog.push(e);});
         D.nutritionLog.sort(function(a,b){return a.date.localeCompare(b.date);});
         try{localStorage.setItem(SK_NUTR,JSON.stringify(D.nutritionLog));}catch(e){}
+      }
+      if(cloud.stepsLog&&cloud.stepsLog.length){
+        if(!D.stepsLog)D.stepsLog=[];
+        cloud.stepsLog.forEach(function(e){var idx=D.stepsLog.findIndex(function(x){return x.date===e.date;});if(idx>=0)D.stepsLog[idx]=e;else D.stepsLog.push(e);});
+        D.stepsLog.sort(function(a,b){return a.date.localeCompare(b.date);});
       }
       if(cloud.gymSessions&&cloud.gymSessions.length>(D.gymSessions||[]).length)D.gymSessions=cloud.gymSessions;
       if(cloud.suppChecks){if(!D.suppChecks)D.suppChecks={};Object.keys(cloud.suppChecks).forEach(function(k){if(!D.suppChecks[k])D.suppChecks[k]={};Object.assign(D.suppChecks[k],cloud.suppChecks[k]);});}
@@ -2067,11 +2122,16 @@ function init(){
   var nutrDateEl=document.getElementById('nutrDate');
   if(nutrDateEl){var nd=new Date();var dow=nd.getDay();var diff=dow===0?0:7-dow;nd.setDate(nd.getDate()+diff);nutrDateEl.value=nd.toISOString().slice(0,10);}
   if(!D.nutritionLog)D.nutritionLog=[];
+  if(!D.stepsLog)D.stepsLog=[];
   renderNutrHist();
+  renderStepsHist();
+  // Set steps date to upcoming Sunday
+  var stepsDateEl=document.getElementById('stepsDate');
+  if(stepsDateEl){var sd=new Date();var sdow=sd.getDay();var sdiff=sdow===0?0:7-sdow;sd.setDate(sd.getDate()+sdiff);stepsDateEl.value=sd.toISOString().slice(0,10);}
   // Pre-fill latest body scan values as placeholders
   if(D.bodyScans&&D.bodyScans.length){
     var lat=D.bodyScans[D.bodyScans.length-1];
-    var fields={bW:lat.weight,bBF:lat.bf,bM:lat.muscle,bH:lat.hydration,bBn:lat.bone,bT:lat.tdee,bWst:lat.waist,bHp:lat.hip};
+    var fields={bW:lat.weight,bBF:lat.bf,bWst:lat.waist,bHp:lat.hip,bThigh:lat.thigh};
     Object.keys(fields).forEach(function(id){
       var el=document.getElementById(id);
       if(el&&fields[id]){el.placeholder=String(fields[id]);}
@@ -2111,7 +2171,7 @@ function dl2(content,name,mime){
 }
 
 function expJSON(){
-  dl2(JSON.stringify({exported:new Date().toISOString(),bodyScans:D.bodyScans,gymSessions:D.gymSessions,supplementLogs:D.suppChecks},null,2),'glow_grow_'+today()+'.json','application/json');
+  dl2(JSON.stringify({exported:new Date().toISOString(),bodyScans:D.bodyScans,gymSessions:D.gymSessions,supplementLogs:D.suppChecks,skinChecks:D.skinChecks,habitChecks:D.habitChecks,nutritionLog:D.nutritionLog||[],stepsLog:D.stepsLog||[]},null,2),'glow_grow_'+today()+'.json','application/json');
 }
 
 function expCSV(){
@@ -2212,6 +2272,40 @@ function saveNutrition(){
   toast('✓ Week saved!');
 }
 
+function saveSteps(){
+  var date=document.getElementById('stepsDate').value;
+  if(!date){toast('Please select a week-end date');return;}
+  var avg=parseInt(document.getElementById('stepsAvg').value);
+  if(isNaN(avg)||avg<=0){toast('Please enter a valid step count');return;}
+  if(!D.stepsLog)D.stepsLog=[];
+  var idx=D.stepsLog.findIndex(function(e){return e.date===date;});
+  var entry={date:date,avg:avg};
+  if(idx>=0)D.stepsLog[idx]=entry;else D.stepsLog.push(entry);
+  D.stepsLog.sort(function(a,b){return a.date.localeCompare(b.date);});
+  save(D);renderStepsHist();
+  document.getElementById('stepsAvg').value='';
+  toast('✓ Steps saved!');
+}
+
+function renderStepsHist(){
+  var el=document.getElementById('stepsHist');if(!el)return;
+  if(!D.stepsLog||!D.stepsLog.length){el.innerHTML='<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:12px;">No entries yet — log your first week.</div>';return;}
+  var rows=[...D.stepsLog].reverse().slice(0,8);
+  el.innerHTML=rows.map(function(e){
+    var target=8000;
+    var pct=Math.min(e.avg/target*100,100);
+    var col=e.avg>=target?'var(--emerald)':e.avg>=6000?'var(--gold)':'var(--blush)';
+    var bar='<div style="height:4px;background:var(--cream2);border-radius:2px;margin-top:6px;overflow:hidden;"><div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:2px;"></div></div>';
+    return '<div style="background:var(--cream2);border-radius:10px;padding:10px 12px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+      +'<div style="font-size:12px;font-weight:600;color:var(--brown);">Week of '+e.date+'</div>'
+      +'<div style="font-family:DM Mono,monospace;font-size:14px;font-weight:700;color:'+col+';">'+e.avg.toLocaleString()+'</div>'
+      +'</div>'
+      +'<div style="font-size:10px;color:var(--text-dim);margin-top:2px;">steps/day avg · target 8,000</div>'
+      +bar+'</div>';
+  }).join('');
+}
+
 function renderNutrHist(){
   var el=document.getElementById('nutrHist');if(!el)return;
   var log=D.nutritionLog||[];
@@ -2274,37 +2368,37 @@ init();
         <div style="background:var(--cream2);border-radius:14px;padding:14px;">
           <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Mon–Thu <span style="font-weight:400;color:var(--text-dim);">training, strict</span></div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,573</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">126–135g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">155g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,480</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">125g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">130g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
             <div><div style="font-size:15px;font-weight:700;color:var(--text);">50g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
           </div>
         </div>
         <div style="background:var(--cream2);border-radius:14px;padding:14px;">
           <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Friday <span style="font-weight:400;color:var(--text-dim);">training + dinner out</span></div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,723</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">126–135g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">192g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">50g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,650</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">125g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">165g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">55g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
           </div>
         </div>
         <div style="background:var(--cream2);border-radius:14px;padding:14px;">
           <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Saturday <span style="font-weight:400;color:var(--text-dim);">flex day</span></div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,910</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">126–135g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">239g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">50g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,900</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">125g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">205g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">65g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
           </div>
         </div>
         <div style="background:var(--cream2);border-radius:14px;padding:14px;">
           <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Sunday <span style="font-weight:400;color:var(--text-dim);">wind down</span></div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,660</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">126–135g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">176g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">50g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,730</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--blush);">125g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">175g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">58g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
           </div>
         </div>
       </div>
@@ -2315,7 +2409,7 @@ init();
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div style="background:white;border-radius:10px;padding:10px;text-align:center;">
           <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Daily avg kcal</div>
-          <div style="font-size:16px;font-weight:700;color:var(--text);">~1,655</div>
+          <div style="font-size:16px;font-weight:700;color:var(--text);">~1,600</div>
           <div style="font-size:9px;color:var(--text-dim);margin-top:2px;">kcal/day</div>
         </div>
         <div style="background:white;border-radius:10px;padding:10px;text-align:center;">
@@ -2327,8 +2421,22 @@ init();
     </div>
     <div style="background:linear-gradient(135deg,var(--brown),#3A1E2A);border-radius:14px;padding:14px;color:white;margin-top:4px;">
       <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;margin-bottom:6px;opacity:0.8;">THE NON-NEGOTIABLE</div>
-      <div style="font-size:13px;line-height:1.6;">Protein stays at <strong>126–135g every single day</strong> including weekends — it never cycles down. Everything else flexes, protein doesn't.</div>
+      <div style="font-size:13px;line-height:1.6;">Protein stays at <strong>125g every single day</strong> including weekends — it never cycles down. Everything else flexes, protein doesn't.</div>
     </div>
+  </div>
+</div>
+
+<!-- WEEKLY STEPS MODAL -->
+<div class="modal-overlay" id="stepsModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" style="max-height:88vh;">
+    <button class="modal-close" onclick="document.getElementById('stepsModal').classList.remove('open')">✕</button>
+    <div class="modal-title">Weekly Steps Log</div>
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:14px;line-height:1.5;">Log your 7-day average steps every Sunday. Target: 8,000+ steps/day.</div>
+    <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Week ending (Sunday date)</label><input type="date" id="stepsDate"></div>
+    <div class="form-group" style="margin-bottom:16px;"><label class="form-label">7-day average steps</label><input type="text" inputmode="numeric" id="stepsAvg" placeholder="8000"></div>
+    <button class="btn btn-rose" onclick="saveSteps()" style="width:100%;margin-bottom:12px;">Save Week</button>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-dim);margin-bottom:8px;">Recent Entries</div>
+    <div id="stepsHist" style="display:flex;flex-direction:column;gap:6px;max-height:220px;overflow-y:auto;"></div>
   </div>
 </div>
 
@@ -2340,10 +2448,10 @@ init();
     <div style="font-size:11px;color:var(--text-dim);margin-bottom:14px;line-height:1.5;">Enter your 7-day averages (from your tracker app). Log every Sunday — saved automatically.</div>
     <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Week ending (Sunday date)</label><input type="date" id="nutrDate"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-      <div class="form-group"><label class="form-label">Avg Calories (kcal)</label><input type="text" inputmode="numeric" id="nutrCal" placeholder="1655"></div>
-      <div class="form-group"><label class="form-label">Avg Protein (g)</label><input type="text" inputmode="decimal" id="nutrPro" placeholder="126"></div>
-      <div class="form-group"><label class="form-label">Avg Carbs (g)</label><input type="text" inputmode="decimal" id="nutrCarb" placeholder="175"></div>
-      <div class="form-group"><label class="form-label">Avg Fat (g)</label><input type="text" inputmode="decimal" id="nutrFat" placeholder="50"></div>
+      <div class="form-group"><label class="form-label">Avg Calories (kcal)</label><input type="text" inputmode="numeric" id="nutrCal" placeholder="1600"></div>
+      <div class="form-group"><label class="form-label">Avg Protein (g)</label><input type="text" inputmode="decimal" id="nutrPro" placeholder="125"></div>
+      <div class="form-group"><label class="form-label">Avg Carbs (g)</label><input type="text" inputmode="decimal" id="nutrCarb" placeholder="152"></div>
+      <div class="form-group"><label class="form-label">Avg Fat (g)</label><input type="text" inputmode="decimal" id="nutrFat" placeholder="54"></div>
       <div class="form-group"><label class="form-label">Avg Fiber (g)</label><input type="text" inputmode="decimal" id="nutrFib" placeholder="25"></div>
       <div class="form-group"><label class="form-label">Avg Sugar (g)</label><input type="text" inputmode="decimal" id="nutrSug" placeholder="40"></div>
     </div>
