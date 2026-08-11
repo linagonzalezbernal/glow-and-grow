@@ -548,7 +548,7 @@ textarea{resize:none;height:72px;}
     <div class="form-group"><label class="form-label">Life note (optional)</label><input type="text" id="bNote" placeholder="e.g. After Thailand trip"></div>
     <button class="btn btn-rose" onclick="saveBody()">Save Measurement</button>
   </div>
-  <div class="card"><div class="card-title">Recent History</div><div id="bodyHist"></div></div>
+  <div class="card"><div class="card-title">Recent History <span id="scanCount" style="font-size:10px;font-weight:400;color:var(--text-dim);"></span></div><div id="bodyHist"></div></div>
   <div class="card">
     <div class="card-title">Progress Photos <span>tap to add · max 6</span></div>
     <div class="photo-grid" id="photoG">
@@ -1018,7 +1018,7 @@ const INSIGHTS=[
   'Your BMR is 1,242 kcal — the app calls it "poor" because it\'s comparing you to heavier women. <strong>Low BMR at 55kg is physics, not a problem.</strong>',
   'Creatine takes 3–4 weeks to fully saturate muscle cells. <strong>Missing days resets this — daily is the only protocol that works.</strong>',
   'Leg Press: 60kg → 100kg in one month. <strong>Your lower body responds fastest to progressive overload — keep pushing the weight.</strong>',
-  'At 1,540 kcal on weekdays, Saturday at 1,850 kcal feels like freedom. <strong>That contrast is built into the plan — it\'s not a cheat day, it\'s a feature.</strong>',
+  'At 1,720 kcal on weekdays, Saturday at 2,050 kcal feels like freedom. <strong>That contrast is built into the plan — it\'s not a cheat day, it\'s a feature.</strong>',
 ];
 let cRange='all',cType='weight',cStart=null,cEnd=null,cInst=null,exCharts={};
 let doneState={warmup:false,finishers:{}};
@@ -1114,25 +1114,28 @@ function renderChart(){
       y:{ticks:{color:'#A8977F',font:{size:9}},grid:{color:'rgba(58,46,34,0.04)'}}
     }
   };
-  // ── Compute weekly average weight ──────────────────────────
-  // Group daily weights by ISO week (Mon–Sun), average per week
+  // ── Weight chart: show original scan dates as-is for history,
+  // group only when multiple scans fall in the same calendar week
   function weekKey(dateStr){
     var d=new Date(dateStr);var day=d.getDay()||7;
-    d.setDate(d.getDate()-day+7);// set to Sunday of that week
+    d.setDate(d.getDate()-day+7);// Sunday of that week
     return d.toISOString().slice(0,10);
   }
   var wkGroups={};
   D.bodyScans.filter(function(s){return s.weight;}).forEach(function(s){
     var wk=weekKey(s.date);
     if(!wkGroups[wk])wkGroups[wk]=[];
-    wkGroups[wk].push(s.weight);
+    wkGroups[wk].push({date:s.date,weight:s.weight});
   });
+  // Only average if multiple scans in same week; otherwise use original date
   var wkAvgData=Object.keys(wkGroups).sort().map(function(wk){
-    var vals=wkGroups[wk];
-    return {date:wk,weight:+(vals.reduce(function(a,b){return a+b;},0)/vals.length).toFixed(1)};
+    var entries=wkGroups[wk];
+    var avgW=+(entries.reduce(function(a,b){return a+b.weight;},0)/entries.length).toFixed(1);
+    // Use the last scan date in that week as the label (most recent = most accurate)
+    var label=entries.length>1?wk:entries[0].date;
+    return {date:label,weight:avgW,isAvg:entries.length>1};
   });
 
-  // Key date colours for weekly avg — map Sunday date to any KD in that week
   var wkPtBg=wkAvgData.map(function(w){
     var wEnd=new Date(w.date);
     var wStart=new Date(w.date);wStart.setDate(wStart.getDate()-6);
@@ -1150,7 +1153,7 @@ function renderChart(){
   if(cType==='weight'){
     var wkLabels=wkAvgData.map(function(d){return d.date;});
     var wkWeights=wkAvgData.map(function(d){return d.weight;});
-    ds=[{label:'Weekly avg weight (kg)',data:wkWeights,borderColor:CC.w,backgroundColor:'rgba(212,168,186,0.1)',tension:0.4,fill:true,pointRadius:wkPtR,borderWidth:2,pointBackgroundColor:wkPtBg,pointBorderWidth:0}];
+    ds=[{label:'Weight (kg)',data:wkWeights,borderColor:CC.w,backgroundColor:'rgba(212,168,186,0.1)',tension:0.4,fill:true,pointRadius:wkPtR,borderWidth:2,pointBackgroundColor:wkPtBg,pointBorderWidth:0}];
     if(cInst)cInst.destroy();
     cInst=new Chart(document.getElementById('mainC'),{type:'line',data:{labels:wkLabels,datasets:ds},options:baseOpts});
     return;
@@ -1463,6 +1466,8 @@ function pf(id){return parseFloat(document.getElementById(id).value)||null;}
 
 function renderBodyHist(){
   var el=document.getElementById('bodyHist');if(!el)return;
+  var countEl=document.getElementById('scanCount');
+  if(countEl)countEl.textContent='('+D.bodyScans.length+' total)';
   var sc=[...D.bodyScans].filter(function(s){return s.weight;}).reverse().slice(0,5);
   if(!sc.length){el.innerHTML='<div style="font-size:12px;color:var(--text-dim);text-align:center;padding:14px;">Log measurements above</div>';return;}
   el.innerHTML=sc.map(function(s,i){
@@ -2356,7 +2361,7 @@ function askClaude(){
   var ctx='My context: I am Lina, 31yo Colombian woman in Melbourne. I am doing body recomposition — losing fat, gaining muscle. ';
   if(lat)ctx+='Latest body scan ('+lat.date+'): weight '+lat.weight+'kg, body fat '+lat.bf+'%, muscle mass '+lat.muscle+'%. ';
   if(lastGym)ctx+='Last gym session: '+lastGym.dayName+' on '+lastGym.date+'. ';
-  ctx+='Daily calorie targets: Mon–Thu 1,540kcal, Fri 1,650kcal, Sat 1,850kcal, Sun 1,700kcal. Weekly avg 1,623kcal. Protein always 135g. ';
+  ctx+='Daily calorie targets: Mon–Thu 1,720kcal, Fri 1,800kcal, Sat 2,050kcal, Sun 1,880kcal. Weekly avg 1,801kcal. Protein always 135g. ';
   ctx+='Today is '+dow+' '+t+'. ';
   var prompt=ctx+(q?'My question: '+q:'');
   // Open Claude.ai with the pre-filled prompt
@@ -2383,37 +2388,37 @@ init();
         <div style="background:var(--cream2);border-radius:14px;padding:14px;">
           <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Mon–Thu <span style="font-weight:400;color:var(--text-dim);">training, strict</span></div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,540</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,720</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
             <div><div style="font-size:15px;font-weight:700;color:var(--blush);">135g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">150g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">44g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">178g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">52g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
           </div>
         </div>
         <div style="background:var(--cream2);border-radius:14px;padding:14px;">
           <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Friday <span style="font-weight:400;color:var(--text-dim);">training + dinner out</span></div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,650</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,800</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
             <div><div style="font-size:15px;font-weight:700;color:var(--blush);">135g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">165g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">50g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">191g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">55g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
           </div>
         </div>
         <div style="background:var(--cream2);border-radius:14px;padding:14px;">
           <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Saturday <span style="font-weight:400;color:var(--text-dim);">flex day</span></div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,850</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">2,050</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
             <div><div style="font-size:15px;font-weight:700;color:var(--blush);">135g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">195g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">60g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">224g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">68g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
           </div>
         </div>
         <div style="background:var(--cream2);border-radius:14px;padding:14px;">
           <div style="font-size:12px;font-weight:700;color:var(--brown);margin-bottom:6px;">Sunday <span style="font-weight:400;color:var(--text-dim);">wind down</span></div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,700</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">1,880</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">kcal</div></div>
             <div><div style="font-size:15px;font-weight:700;color:var(--blush);">135g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">protein</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">175g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
-            <div><div style="font-size:15px;font-weight:700;color:var(--text);">52g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">204g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">carbs</div></div>
+            <div><div style="font-size:15px;font-weight:700;color:var(--text);">58g</div><div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;">fats</div></div>
           </div>
         </div>
       </div>
@@ -2424,7 +2429,7 @@ init();
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div style="background:white;border-radius:10px;padding:10px;text-align:center;">
           <div style="font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Daily avg kcal</div>
-          <div style="font-size:16px;font-weight:700;color:var(--text);">~1,623</div>
+          <div style="font-size:16px;font-weight:700;color:var(--text);">~1,801</div>
           <div style="font-size:9px;color:var(--text-dim);margin-top:2px;">kcal/day</div>
         </div>
         <div style="background:white;border-radius:10px;padding:10px;text-align:center;">
@@ -2463,10 +2468,10 @@ init();
     <div style="font-size:11px;color:var(--text-dim);margin-bottom:14px;line-height:1.5;">Enter your 7-day averages (from your tracker app). Log every Sunday — saved automatically.</div>
     <div class="form-group" style="margin-bottom:12px;"><label class="form-label">Week ending (Sunday date)</label><input type="date" id="nutrDate"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-      <div class="form-group"><label class="form-label">Avg Calories (kcal)</label><input type="text" inputmode="numeric" id="nutrCal" placeholder="1623"></div>
+      <div class="form-group"><label class="form-label">Avg Calories (kcal)</label><input type="text" inputmode="numeric" id="nutrCal" placeholder="1801"></div>
       <div class="form-group"><label class="form-label">Avg Protein (g)</label><input type="text" inputmode="decimal" id="nutrPro" placeholder="135"></div>
-      <div class="form-group"><label class="form-label">Avg Carbs (g)</label><input type="text" inputmode="decimal" id="nutrCarb" placeholder="162"></div>
-      <div class="form-group"><label class="form-label">Avg Fat (g)</label><input type="text" inputmode="decimal" id="nutrFat" placeholder="48"></div>
+      <div class="form-group"><label class="form-label">Avg Carbs (g)</label><input type="text" inputmode="decimal" id="nutrCarb" placeholder="190"></div>
+      <div class="form-group"><label class="form-label">Avg Fat (g)</label><input type="text" inputmode="decimal" id="nutrFat" placeholder="56"></div>
       <div class="form-group"><label class="form-label">Avg Fiber (g)</label><input type="text" inputmode="decimal" id="nutrFib" placeholder="25"></div>
       <div class="form-group"><label class="form-label">Avg Sugar (g)</label><input type="text" inputmode="decimal" id="nutrSug" placeholder="40"></div>
     </div>
